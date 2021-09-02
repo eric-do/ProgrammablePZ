@@ -4,7 +4,7 @@ import {
   Text,
   Progress
 } from "@chakra-ui/react";
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Workout } from 'types'
 
 interface TimerProps {
@@ -24,18 +24,21 @@ export const Timer = ({ workout }: TimerProps = defaultProps) => {
   const [elapsedTime, setElapsedTime] = React.useState<number>(0)
   const [minutes, setMinutes] = React.useState<number>(Math.floor(timeInSeconds / 60));
   const [seconds, setSeconds] = React.useState<number>(timeInSeconds % 60);
+  // const [interval, setInterval] = React.useState<number>(0);
   const formattedSeconds = seconds.toLocaleString('en-US', {
     minimumIntegerDigits: 2,
   })
 
   useEffect(() => {
-    let interval = setInterval(() => {
+    console.log('Using effect')
+    let timerCountdown = setInterval(() => {
+      console.log('Setting interval')
       if (seconds > 0) {
         setSeconds(seconds => seconds - 1)
       }
       if (seconds === 0) {
         if (minutes === 0) {
-          clearInterval(interval);
+          clearInterval(timerCountdown);
         } else {
           setMinutes(minutes => minutes - 1)
           setSeconds(59)
@@ -44,8 +47,8 @@ export const Timer = ({ workout }: TimerProps = defaultProps) => {
       setElapsedTime(time => time + 1)
     }, 1000);
 
-    return () => clearInterval(interval);
-  })
+    return () => clearInterval(timerCountdown);
+  }, [minutes, seconds])
 
   return (
     <div>
