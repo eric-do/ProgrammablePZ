@@ -61,6 +61,7 @@ export const ZoneModal = ({ isOpen, onClose, addInterval }: ZoneModalProps) => {
                   name="zone"
                   value={zone}
                   onChange={handleInterval}
+                  data-testid="zone-dropdown"
                 >
                   <option value="0">Spin ups</option>
                   <option value="1">Zone 1</option>
@@ -78,6 +79,7 @@ export const ZoneModal = ({ isOpen, onClose, addInterval }: ZoneModalProps) => {
                   name="length"
                   value={length}
                   onChange={handleInterval}
+                  data-testid="length-dropdown"
                 >
                   <option value="30">30 seconds</option>
                   <option value="60">1 minute</option>

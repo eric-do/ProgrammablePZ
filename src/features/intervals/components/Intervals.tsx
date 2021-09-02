@@ -42,7 +42,7 @@ export const Intervals = () => {
       <Stack direction="column" spacing={4}>
         <Heading as="h1" size="lg">Intervals</Heading>
         { intervals.length === 0 && <Text>No intervals set</Text>}
-        <Table>
+        <Table size="lg">
           <Thead>
             <Tr>
               <Th>Interval</Th>
@@ -70,9 +70,17 @@ export const Intervals = () => {
           </Tbody>
           <Tfoot>
             <Tr>
-              <Th>Total time</Th>
+              <Th>
+                <Text fontSize="lg">
+                  Total time
+                </Text>
+              </Th>
               <Th></Th>
-              <Th>{minutes}:{seconds}</Th>
+              <Th>
+                <Text fontSize="lg">
+                  {minutes}:{seconds}
+                </Text>
+              </Th>
             </Tr>
           </Tfoot>
         </Table>
@@ -83,7 +91,7 @@ export const Intervals = () => {
           Add Zone
         </Button>
         <Button
-          colorScheme="blue"
+          colorScheme="green"
           isDisabled={intervals.length === 0}
         >
           Start!
