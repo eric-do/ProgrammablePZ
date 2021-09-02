@@ -17,8 +17,13 @@ import {
 import { useDisclosure, Box } from "@chakra-ui/react"
 import { Interval } from '../types';
 import { ZoneModal } from './ZoneModal';
+import { Workout } from 'types';
 
-export const Intervals = () => {
+interface Props {
+  startWorkout: (workout: Workout) => void;
+}
+
+export const Intervals = ({ startWorkout }: Props ) => {
   const [intervals, setIntervals] = React.useState<Interval[]>([]);
   const [totalTime, setTotalTime] = React.useState<number>(0);
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -26,6 +31,13 @@ export const Intervals = () => {
   const addInterval = (i: Interval) => {
     setIntervals([...intervals, i])
   };
+
+  const setWorkout = () => {
+    startWorkout({
+      intervals,
+      timeInSeconds: totalTime
+    })
+  }
 
   useEffect(() => {
     setTotalTime(intervals.reduce((total, interval) => total + interval.length, 0))
@@ -93,6 +105,7 @@ export const Intervals = () => {
         <Button
           colorScheme="green"
           isDisabled={intervals.length === 0}
+          onClick={setWorkout}
         >
           Start!
         </Button>
