@@ -2,8 +2,17 @@ import React, { useEffect } from 'react';
 import {
   Button,
   ButtonGroup,
+  Stack,
+  Heading,
   Text,
-  Stack
+  Table,
+  Thead,
+  Tbody,
+  Tfoot,
+  Tr,
+  Th,
+  Td,
+  TableCaption,
 } from "@chakra-ui/react"
 import { useDisclosure, Box } from "@chakra-ui/react"
 import { Interval } from '../types';
@@ -31,15 +40,48 @@ export const Intervals = () => {
   return (
     <Box>
       <Stack direction="column" spacing={4}>
+        <Heading as="h1" size="lg">Intervals</Heading>
         { intervals.length === 0 && <Text>No intervals set</Text>}
+        <Table>
+          <Thead>
+            <Tr>
+              <Th>Interval</Th>
+              <Th>Zone</Th>
+              <Th>Length</Th>
+            </Tr>
+          </Thead>
+          <Tbody>
+            {
+              intervals.map((interval, index) => {
+                const minutes = Math.floor(interval.length / 60)
+                const seconds = (interval.length % 60).toLocaleString('en-US', {
+                  minimumIntegerDigits: 2,
+                });
+
+                return (
+                  <Tr key={index}>
+                    <Td>{index}</Td>
+                    <Td>{interval.zone}</Td>
+                    <Td>{minutes}:{seconds}</Td>
+                  </Tr>
+                )
+                })
+            }
+          </Tbody>
+          <Tfoot>
+            <Tr>
+              <Th>Total time</Th>
+              <Th></Th>
+              <Th>{minutes}:{seconds}</Th>
+            </Tr>
+          </Tfoot>
+        </Table>
         <Button
           colorScheme="blue"
           onClick={onOpen}
         >
           Add Zone
         </Button>
-        <Text>{`Total time`}</Text>
-        <Text>{`${minutes}:${seconds}`}</Text>
         <Button
           colorScheme="blue"
           isDisabled={intervals.length === 0}
