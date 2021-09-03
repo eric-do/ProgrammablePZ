@@ -1,6 +1,6 @@
 import React from 'react';
 import { Timer } from '../components/Timer';
-import { render, screen, userEvent } from 'test/test-utils';
+import { render, screen } from 'test/test-utils';
 
 it('should render with default props', () => {
   const defaultProps = {

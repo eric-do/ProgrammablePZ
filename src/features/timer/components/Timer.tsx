@@ -8,6 +8,7 @@ import {
 } from "@chakra-ui/react";
 import React, { useState, useEffect } from 'react';
 import { Workout } from 'types'
+import { zoneColors, inactiveZoneColors } from 'shared';
 
 interface TimerProps {
   workout: Workout
@@ -19,6 +20,7 @@ const defaultProps = {
     timeInSeconds: 0
   }
 }
+
 
 export const Timer = ({ workout }: TimerProps = defaultProps) => {
   const { intervals, timeInSeconds } = workout;
@@ -77,8 +79,8 @@ export const Timer = ({ workout }: TimerProps = defaultProps) => {
   }, [intervals, minutes, seconds, zoneInterval, zoneSeconds])
 
   return (
-    <Box>
-      <Stack direction="column" spacing={4}>
+    <Box w='80%'>
+      <Stack direction="column" spacing={5}>
         <Heading as="h1" size="lg">Timer</Heading>
         <Heading as="h2" size="md">Zone: {intervals[zoneInterval]?.zone}</Heading>
         <Text>{zoneMinutes}:{formattedZoneSeconds}</Text>
@@ -87,6 +89,26 @@ export const Timer = ({ workout }: TimerProps = defaultProps) => {
         <Heading as="h2" size="md">Total time</Heading>
         <Text>{minutes}:{formattedSeconds}</Text>
         <Progress colorScheme="green" hasStripe size="lg" value={(elapsedTime / timeInSeconds) * 100}/>
+        <Stack
+          direction="row"
+          spacing={1}
+          d="flex"
+          align="flex-end"
+          h={100}
+        >
+          {
+            intervals.map((interval, index) => (
+              <Box
+                key={index}
+                bg={index === zoneInterval
+                    ? zoneColors[parseInt(interval.zone)]
+                    : inactiveZoneColors[parseInt(interval.zone)]}
+                h={`${(parseInt(interval.zone) / 7) * 100}%`}
+                w={`${((interval.length) / timeInSeconds) * 100}%`}
+              />
+            ))
+          }
+        </Stack>
       </Stack>
     </Box>
   )
