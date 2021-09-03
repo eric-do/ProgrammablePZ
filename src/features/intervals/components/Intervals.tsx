@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
   Button,
   ButtonGroup,
@@ -16,35 +16,30 @@ import {
 import { useDisclosure, Box } from "@chakra-ui/react"
 import { Interval } from '../types';
 import { ZoneModal } from './ZoneModal';
-import { Workout } from 'types'
 import { zoneColors } from 'shared';
 
 interface Props {
-  startWorkout: (workout: Workout) => void;
+  intervals: Interval[];
+  addInterval: (interval: Interval) => void;
+  resetIntervals: () => void;
+  startWorkout: () => void;
+  time: {
+    minutes: number;
+    seconds: number;
+    timeInSeconds: number;
+  }
 }
 
-export const Intervals = ({ startWorkout }: Props ) => {
-  const [intervals, setIntervals] = React.useState<Interval[]>([]);
-  const [totalTime, setTotalTime] = React.useState<number>(0);
+export const Intervals = ({
+  addInterval,
+  intervals,
+  time,
+  resetIntervals,
+  startWorkout
+}: Props ) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-
-  const addInterval = (i: Interval) => {
-    setIntervals([...intervals, i])
-  };
-
-  const setWorkout = () => {
-    startWorkout({
-      intervals,
-      timeInSeconds: totalTime
-    })
-  }
-
-  useEffect(() => {
-    setTotalTime(intervals.reduce((total, interval) => total + interval.length, 0))
-  }, [intervals])
-
-  const minutes = Math.floor(totalTime / 60)
-  const seconds = (totalTime % 60).toLocaleString('en-US', {
+  const { minutes, seconds, timeInSeconds } = time;
+  const formattedSeconds = seconds.toLocaleString('en-US', {
     minimumIntegerDigits: 2,
   })
 
@@ -101,7 +96,7 @@ export const Intervals = ({ startWorkout }: Props ) => {
               <Th></Th>
               <Th>
                 <Text fontSize="md">
-                  {minutes}:{seconds}
+                  {minutes}:{formattedSeconds}
                 </Text>
               </Th>
             </Tr>
@@ -120,7 +115,7 @@ export const Intervals = ({ startWorkout }: Props ) => {
                 key={index}
                 bg={zoneColors[parseInt(interval.zone)]}
                 h={`${(parseInt(interval.zone) / 7) * 100}%`}
-                w={`${((interval.length) / totalTime) * 100}%`}
+                w={`${((interval.length) / timeInSeconds) * 100}%`}
               />
             ))
           }
@@ -136,7 +131,7 @@ export const Intervals = ({ startWorkout }: Props ) => {
             isFullWidth
             colorScheme="gray"
             isDisabled={intervals.length === 0}
-            onClick={() => setIntervals([])}
+            onClick={resetIntervals}
           >
             Reset
           </Button>
@@ -144,7 +139,7 @@ export const Intervals = ({ startWorkout }: Props ) => {
             isFullWidth
             colorScheme="green"
             isDisabled={intervals.length === 0}
-            onClick={setWorkout}
+            onClick={startWorkout}
           >
             Start!
           </Button>

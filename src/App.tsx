@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState, useEffect} from "react";
 import {
   ChakraProvider,
   Box,
@@ -8,22 +8,25 @@ import {
 import { ColorModeSwitcher } from "./ColorModeSwitcher";
 import { Intervals } from "features/intervals";
 import { Timer } from "features/timer";
-import { Workout } from "types";
+import { Interval } from "types";
 import theme from 'theme';
 
-const defaultWorkout = {
-  intervals: [],
-  timeInSeconds: 0
-}
-
 export const App = () => {
-  const [workout, setWorkout] = React.useState<Workout>(defaultWorkout);
-  const [displayTimer, setDisplayTimer] = React.useState<boolean>(false);
+  const [intervals, setIntervals] = useState<Interval[]>([]);
+  const [timeInSeconds, setTimeInSeconds] = useState<number>(0);
+  const [displayTimer, setDisplayTimer] = useState<boolean>(false);
+  const minutes = Math.floor(timeInSeconds / 60)
+  const seconds = timeInSeconds % 60;
+  const time = { minutes, seconds, timeInSeconds }
+  const workout = { intervals, timeInSeconds }
 
-  const startWorkout = (workout: Workout) => {
-    setDisplayTimer(true);
-    setWorkout(workout)
-  }
+  const startWorkout = () => setDisplayTimer(true);
+  const addInterval = (interval: Interval) => setIntervals([...intervals, interval])
+  const resetIntervals = () => setIntervals([]);
+
+  useEffect(() => {
+    setTimeInSeconds(intervals.reduce((total, interval) => total + interval.length, 0))
+  }, [intervals])
 
   return (
     <ChakraProvider theme={theme}>
@@ -31,7 +34,13 @@ export const App = () => {
         <Grid minH="100vh" p={3}>
           <ColorModeSwitcher justifySelf="flex-end" />
           <VStack spacing={8}>
-            { !displayTimer && <Intervals startWorkout={startWorkout}/> }
+            { !displayTimer && <Intervals
+                                  intervals={intervals}
+                                  addInterval={addInterval}
+                                  resetIntervals={resetIntervals}
+                                  startWorkout={startWorkout}
+                                  time={time}
+                                /> }
             { displayTimer && <Timer workout={workout} displayTimer={setDisplayTimer}/>}
           </VStack>
         </Grid>
