@@ -7,7 +7,8 @@ it('should render with default props', () => {
     workout: {
       timeInSeconds: 0,
       intervals: []
-    }
+    },
+    displayTimer: () => {}
   }
   render(<Timer {...defaultProps}/>)
   expect(screen.getByRole('heading', { name: 'Timer' })).toBeInTheDocument();

@@ -32,7 +32,7 @@ export const App = () => {
           <ColorModeSwitcher justifySelf="flex-end" />
           <VStack spacing={8}>
             { !displayTimer && <Intervals startWorkout={startWorkout}/> }
-            { displayTimer && <Timer workout={workout} />}
+            { displayTimer && <Timer workout={workout} displayTimer={setDisplayTimer}/>}
           </VStack>
         </Grid>
       </Box>

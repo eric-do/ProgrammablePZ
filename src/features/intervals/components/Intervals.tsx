@@ -112,7 +112,7 @@ export const Intervals = ({ startWorkout }: Props ) => {
           spacing={1}
           d="flex"
           align="flex-end"
-          h={100}
+          h={50}
         >
           {
             intervals.map((interval, index) => (

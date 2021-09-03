@@ -4,25 +4,28 @@ import {
   Text,
   Progress,
   Stack,
-  Box
+  Box,
+  Button
 } from "@chakra-ui/react";
 import React, { useState, useEffect } from 'react';
 import { Workout } from 'types'
 import { zoneColors, inactiveZoneColors } from 'shared';
 
 interface TimerProps {
-  workout: Workout
+  workout: Workout;
+  displayTimer: (b: boolean) => void;
 };
 
 const defaultProps = {
   workout: {
     intervals: [],
     timeInSeconds: 0
-  }
+  },
+  displayTimer: () => {}
 }
 
 
-export const Timer = ({ workout }: TimerProps = defaultProps) => {
+export const Timer = ({ workout, displayTimer }: TimerProps = defaultProps) => {
   const { intervals, timeInSeconds } = workout;
 
   // Global countdown states
@@ -109,6 +112,12 @@ export const Timer = ({ workout }: TimerProps = defaultProps) => {
             ))
           }
         </Stack>
+        <Button
+          colorScheme="green"
+          onClick={() => displayTimer(false)}
+        >
+          Go back
+        </Button>
       </Stack>
     </Box>
   )
