@@ -9,7 +9,7 @@ import {
 } from "@chakra-ui/react";
 import React, { useState, useEffect } from 'react';
 import { Workout } from 'types'
-import { zoneColors, inactiveZoneColors } from 'shared';
+import { zoneColors, inactiveZoneColors, zoneColorSchemes } from 'shared';
 
 interface TimerProps {
   workout: Workout;
@@ -83,36 +83,54 @@ export const Timer = ({ workout, displayTimer }: TimerProps = defaultProps) => {
 
   return (
     <Box w='80%'>
-      <Stack direction="column" spacing={5}>
-        <Heading as="h1" size="lg">Timer</Heading>
-        <Heading as="h2" size="md">Zone: {intervals[zoneInterval]?.zone}</Heading>
-        <Text>{zoneMinutes}:{formattedZoneSeconds}</Text>
-        <Progress colorScheme="green" hasStripe size="lg" value={(zoneElapsedTime / zoneTimeInSeconds) * 100}/>
+      <Stack direction="column" spacing={7}>
+        <Heading as="h1" size="lg">
+          Zone {intervals[zoneInterval]?.zone}
+        </Heading>
+        <Stack direction="column" spacing={2}>
+          <Progress
+            colorScheme={intervals[zoneInterval]?.length - zoneElapsedTime < 5
+                         ? "red"
+                         : zoneColorSchemes[parseInt(intervals[zoneInterval]?.zone)]}
+            hasStripe
+            size="lg"
+            value={(zoneElapsedTime / zoneTimeInSeconds) * 100}
+          />
+          <Text>{zoneMinutes}:{formattedZoneSeconds}</Text>
+        </Stack>
 
-        <Heading as="h2" size="md">Total time</Heading>
-        <Text>{minutes}:{formattedSeconds}</Text>
-        <Stack direction="column" spacing={1}>
+        <Stack
+          direction="column"
+          spacing={1}>
           <Stack
             direction="row"
             spacing={1}
             d="flex"
             align="flex-end"
             h={100}
+            data-testid="active-zone-graph"
           >
             {
               intervals.map((interval, index) => (
                 <Box
                   key={index}
                   bg={index === zoneInterval
-                      ? zoneColors[parseInt(interval.zone)]
-                      : inactiveZoneColors[parseInt(interval.zone)]}
+                    ? zoneColors[parseInt(interval.zone)]
+                        : inactiveZoneColors[parseInt(interval.zone)]}
                   h={`${(parseInt(interval.zone) / 7) * 100}%`}
                   w={`${((interval.length) / timeInSeconds) * 100}%`}
                 />
               ))
             }
           </Stack>
-          <Progress colorScheme="blue" hasStripe size="lg" value={(elapsedTime / timeInSeconds) * 100}/>
+          <Progress
+            colorScheme="blue"
+            hasStripe
+            size="lg"
+            value={(elapsedTime / timeInSeconds) * 100}
+          />
+          <Text>{minutes}:{formattedSeconds}</Text>
+
         </Stack>
         <Button
           colorScheme="green"

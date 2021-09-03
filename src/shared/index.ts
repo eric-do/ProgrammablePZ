@@ -1,7 +1,16 @@
 import { ColorDict } from "types"
 
+export const zoneColorSchemes: ColorDict = {
+  1: 'blue',
+  2: 'green',
+  3: 'yellow',
+  4: 'orange',
+  5: 'pink',
+  6: 'red',
+  7: 'purple'
+}
+
 export const zoneColors: ColorDict = {
-  0: 'blue.200',
   1: 'blue.200',
   2: 'green.200',
   3: 'yellow.200',
