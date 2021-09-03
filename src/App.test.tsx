@@ -53,6 +53,8 @@ test('it should update table when user adds new interval', () => {
 
   expect(screen.getAllByRole('row')).toHaveLength(3);
   expect(screen.getAllByText('1:00')).toHaveLength(2);
+  expect(screen.getByTestId('interval-zone-chart')).toBeInTheDocument();
+  expect(screen.getAllByTestId('interval-chart-bar')).toHaveLength(1);
 })
 
 test('it should reset table when user hits Reset button', () => {
@@ -72,7 +74,9 @@ test('it should reset table when user hits Reset button', () => {
   userEvent.click(addButton);
 
   expect(screen.getAllByRole('row')).toHaveLength(3);
+  expect(screen.getAllByTestId('interval-chart-bar')).toHaveLength(1);
 
   userEvent.click(resetButton);
   expect(screen.getAllByRole('row')).toHaveLength(2);
+  expect(screen.queryByTestId('interval-chart-bar')).toBeNull()
 })
