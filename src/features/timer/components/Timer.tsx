@@ -49,7 +49,6 @@ export const Timer = ({ workout }: TimerProps = defaultProps) => {
       if (seconds === 0) {
         if (minutes === 0) {
           clearInterval(timerCountdown)
-          setStopCount(true)
         } else {
           setMinutes(minutes - 1)
           setSeconds(59)
