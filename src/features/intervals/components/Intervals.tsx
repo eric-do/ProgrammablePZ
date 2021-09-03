@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import {
   Button,
-  ButtonGroup,
   Stack,
   Heading,
   Text,
@@ -12,7 +11,6 @@ import {
   Tr,
   Th,
   Td,
-  TableCaption,
 } from "@chakra-ui/react"
 import { useDisclosure, Box } from "@chakra-ui/react"
 import { Interval } from '../types';
@@ -43,7 +41,6 @@ export const Intervals = ({ startWorkout }: Props ) => {
     setTotalTime(intervals.reduce((total, interval) => total + interval.length, 0))
   }, [intervals])
 
-  const timeInMS = totalTime * 60 * 1000;
   const minutes = Math.floor(totalTime / 60)
   const seconds = (totalTime % 60).toLocaleString('en-US', {
     minimumIntegerDigits: 2,
