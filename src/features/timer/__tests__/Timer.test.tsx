@@ -12,5 +12,5 @@ it('should render with default props', () => {
   render(<Timer {...defaultProps}/>)
   expect(screen.getByRole('heading', { name: 'Timer' })).toBeInTheDocument();
   expect(screen.getByText('0:00')).toBeInTheDocument();
-  expect(screen.getByRole('progressbar')).toBeInTheDocument();
+  expect(screen.getAllByRole('progressbar')).toHaveLength(2);
 })
