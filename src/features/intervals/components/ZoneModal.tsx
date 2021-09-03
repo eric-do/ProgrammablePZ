@@ -21,7 +21,7 @@ interface ZoneModalProps {
 };
 
 const defaultInterval = {
-  zone: 'Spin ups',
+  zone: '1',
   length: 30
 }
 
@@ -58,7 +58,6 @@ export const ZoneModal = ({ isOpen, onClose, addInterval }: ZoneModalProps) => {
                   onChange={handleInterval}
                   data-testid="zone-dropdown"
                 >
-                  <option value="0">Spin ups</option>
                   <option value="1">Zone 1</option>
                   <option value="2">Zone 2</option>
                   <option value="3">Zone 3</option>
