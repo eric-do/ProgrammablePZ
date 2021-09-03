@@ -4,12 +4,12 @@ import {
   Box,
   VStack,
   Grid,
-  theme,
 } from "@chakra-ui/react";
 import { ColorModeSwitcher } from "./ColorModeSwitcher";
 import { Intervals } from "features/intervals";
 import { Timer } from "features/timer";
 import { Workout } from "types";
+import theme from 'theme';
 
 const defaultWorkout = {
   intervals: [],

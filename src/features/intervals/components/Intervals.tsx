@@ -50,7 +50,7 @@ export const Intervals = ({ startWorkout }: Props ) => {
 
   return (
     <Box>
-      <Stack direction="column" spacing={4}>
+      <Stack direction="column" spacing={6}>
         <Heading as="h1" size="lg">Intervals</Heading>
         { intervals.length === 0 && <Text>No intervals set</Text>}
         <Table size="md">
