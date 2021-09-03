@@ -91,26 +91,28 @@ export const Timer = ({ workout, displayTimer }: TimerProps = defaultProps) => {
 
         <Heading as="h2" size="md">Total time</Heading>
         <Text>{minutes}:{formattedSeconds}</Text>
-        <Progress colorScheme="green" hasStripe size="lg" value={(elapsedTime / timeInSeconds) * 100}/>
-        <Stack
-          direction="row"
-          spacing={1}
-          d="flex"
-          align="flex-end"
-          h={100}
-        >
-          {
-            intervals.map((interval, index) => (
-              <Box
-                key={index}
-                bg={index === zoneInterval
-                    ? zoneColors[parseInt(interval.zone)]
-                    : inactiveZoneColors[parseInt(interval.zone)]}
-                h={`${(parseInt(interval.zone) / 7) * 100}%`}
-                w={`${((interval.length) / timeInSeconds) * 100}%`}
-              />
-            ))
-          }
+        <Stack direction="column" spacing={1}>
+          <Stack
+            direction="row"
+            spacing={1}
+            d="flex"
+            align="flex-end"
+            h={100}
+          >
+            {
+              intervals.map((interval, index) => (
+                <Box
+                  key={index}
+                  bg={index === zoneInterval
+                      ? zoneColors[parseInt(interval.zone)]
+                      : inactiveZoneColors[parseInt(interval.zone)]}
+                  h={`${(parseInt(interval.zone) / 7) * 100}%`}
+                  w={`${((interval.length) / timeInSeconds) * 100}%`}
+                />
+              ))
+            }
+          </Stack>
+          <Progress colorScheme="blue" hasStripe size="lg" value={(elapsedTime / timeInSeconds) * 100}/>
         </Stack>
         <Button
           colorScheme="green"
