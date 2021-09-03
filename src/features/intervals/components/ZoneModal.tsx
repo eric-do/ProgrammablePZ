@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   Button,
-  Text,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -10,13 +9,9 @@ import {
   ModalCloseButton,
   ModalFooter,
   FormControl,
-  FormLabel,
-  FormErrorMessage,
-  FormHelperText,
   Select,
   Stack
 } from "@chakra-ui/react"
-import { useDisclosure } from "@chakra-ui/react"
 import { Interval } from '../types';
 
 interface ZoneModalProps {

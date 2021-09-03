@@ -2,19 +2,13 @@ import * as React from "react";
 import {
   ChakraProvider,
   Box,
-  Text,
-  Link,
   VStack,
-  Code,
   Grid,
   theme,
-  useDisclosure
 } from "@chakra-ui/react";
 import { ColorModeSwitcher } from "./ColorModeSwitcher";
-import { Logo } from "./Logo";
 import { Intervals } from "features/intervals";
 import { Timer } from "features/timer";
-import { Interval } from "features/intervals/types";
 import { Workout } from "types";
 
 const defaultWorkout = {
