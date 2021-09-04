@@ -26,8 +26,8 @@ const defaultProps = {
 
 
 export const Timer = ({ workout, displayTimer }: TimerProps = defaultProps) => {
-  const { intervals, timeInSeconds } = workout;
-
+  let { intervals, timeInSeconds } = workout;
+  timeInSeconds -= 1;
   // Global countdown states
   const [elapsedTime, setElapsedTime] = useState<number>(0)
   const [minutes, setMinutes] = useState<number>(Math.floor(timeInSeconds / 60));
@@ -40,8 +40,10 @@ export const Timer = ({ workout, displayTimer }: TimerProps = defaultProps) => {
   const [zoneInterval, setZoneInterval] = useState<number>(0);
   const [zoneElapsedTime, setZoneElapsedTime] = useState<number>(0);
   const zoneTimeInSeconds = intervals[zoneInterval]?.length;
-  const [zoneMinutes, setZoneMinutes] = useState<number>(Math.floor(zoneTimeInSeconds / 60));
-  const [zoneSeconds, setZoneSeconds] = useState<number>(Math.floor(zoneTimeInSeconds % 60));
+  const tempSeconds = Math.floor(zoneTimeInSeconds % 60);
+  const tempMinutes = Math.floor(zoneTimeInSeconds / 60);
+  const [zoneMinutes, setZoneMinutes] = useState<number>(tempSeconds === 0 ? tempMinutes - 1 : tempMinutes);
+  const [zoneSeconds, setZoneSeconds] = useState<number>(tempSeconds === 0 ? 59 : tempSeconds - 1);
   const formattedZoneSeconds = zoneSeconds.toLocaleString('en-US', {
     minimumIntegerDigits: 2,
   })
@@ -66,8 +68,10 @@ export const Timer = ({ workout, displayTimer }: TimerProps = defaultProps) => {
         if (zoneInterval < intervals.length - 1) {
           const nextInterval = zoneInterval + 1
           setZoneInterval(nextInterval)
-          setZoneMinutes(Math.floor(intervals[zoneInterval].length / 60))
-          setZoneSeconds(Math.floor(intervals[zoneInterval].length % 60))
+          const tempSeconds = Math.floor(intervals[nextInterval].length % 60);
+          const tempMinutes = Math.floor(intervals[nextInterval].length / 60);
+          setZoneMinutes(tempSeconds === 0 ? tempMinutes - 1 : tempMinutes)
+          setZoneSeconds(tempSeconds === 0 ? 59 : tempSeconds - 1)
           setZoneElapsedTime(0)
         }
       }
