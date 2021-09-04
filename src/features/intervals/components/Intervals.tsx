@@ -14,7 +14,7 @@ import {
   Td,
 } from "@chakra-ui/react"
 import { useDisclosure, Box } from "@chakra-ui/react"
-import { Interval } from '../types';
+import { Interval } from 'types';
 import { ZoneModal } from './ZoneModal';
 import { zoneColors } from 'shared';
 
