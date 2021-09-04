@@ -12,8 +12,8 @@ it('should render with default props', () => {
   }
   render(<Timer {...defaultProps}/>)
   expect(screen.getByRole('heading', { name: 'Zone' })).toBeInTheDocument();
-  expect(screen.getByText('0:00')).toBeInTheDocument();
   expect(screen.getAllByRole('progressbar')).toHaveLength(2);
+  expect(screen.getByRole('button', { name: 'Go back' })).toBeInTheDocument();
 })
 
 it('should render zone chart', () => {

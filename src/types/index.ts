@@ -8,7 +8,6 @@ export interface Workout {
   timeInSeconds: number;
 };
 
-
 export interface ColorDict {
   [k: number]: string
 }

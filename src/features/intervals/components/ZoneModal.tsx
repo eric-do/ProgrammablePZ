@@ -12,7 +12,7 @@ import {
   Select,
   Stack
 } from "@chakra-ui/react"
-import { Interval } from '../types';
+import { Interval } from 'types';
 
 interface ZoneModalProps {
   isOpen: boolean;
