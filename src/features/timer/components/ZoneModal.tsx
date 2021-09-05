@@ -58,13 +58,13 @@ export const ZoneModal = ({ isOpen, onClose, addInterval }: ZoneModalProps) => {
                   onChange={handleInterval}
                   data-testid="zone-dropdown"
                 >
-                  <option value="1">Zone 1</option>
-                  <option value="2">Zone 2</option>
-                  <option value="3">Zone 3</option>
-                  <option value="4">Zone 4</option>
-                  <option value="5">Zone 5</option>
-                  <option value="6">Zone 6</option>
-                  <option value="7">Zone 7</option>
+                  <option value={1}>Zone 1</option>
+                  <option value={2}>Zone 2</option>
+                  <option value={3}>Zone 3</option>
+                  <option value={4}>Zone 4</option>
+                  <option value={5}>Zone 5</option>
+                  <option value={6}>Zone 6</option>
+                  <option value={7}>Zone 7</option>
                 </Select>
               </FormControl>
 
@@ -75,17 +75,17 @@ export const ZoneModal = ({ isOpen, onClose, addInterval }: ZoneModalProps) => {
                   onChange={handleInterval}
                   data-testid="length-dropdown"
                 >
-                  <option value="30">30 seconds</option>
-                  <option value="60">1 minute</option>
-                  <option value="120">2 minutes</option>
-                  <option value="180">3 minutes</option>
-                  <option value="240">4 minutes</option>
-                  <option value="300">5 minutes</option>
-                  <option value="360">6 minutes</option>
-                  <option value="420">7 minutes</option>
-                  <option value="480">8 minutes</option>
-                  <option value="540">9 minutes</option>
-                  <option value="600">10 minutes</option>
+                  <option value={30}>30 seconds</option>
+                  <option value={60}>1 minute</option>
+                  <option value={120}>2 minutes</option>
+                  <option value={180}>3 minutes</option>
+                  <option value={240}>4 minutes</option>
+                  <option value={300}>5 minutes</option>
+                  <option value={360}>6 minutes</option>
+                  <option value={420}>7 minutes</option>
+                  <option value={480}>8 minutes</option>
+                  <option value={540}>9 minutes</option>
+                  <option value={600}>10 minutes</option>
                 </Select>
               </FormControl>
             </Stack>

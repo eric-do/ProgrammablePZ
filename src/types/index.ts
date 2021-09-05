@@ -6,6 +6,7 @@ export interface Interval {
 export interface Workout {
   intervals: Interval[];
   timeInSeconds: number;
+  type?: string;
 };
 
 export interface ColorDict {

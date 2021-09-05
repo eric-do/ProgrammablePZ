@@ -17,7 +17,7 @@ const defaultProps = {
 export const ZoneGraph = ({ intervals, timeInSeconds }: ZoneGraphProps = defaultProps) => (
   <Stack
     direction="row"
-    spacing={1}
+    spacing={0.5}
     d="flex"
     align="flex-end"
     h={50}
