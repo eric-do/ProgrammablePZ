@@ -1,5 +1,5 @@
 export interface Interval {
-  zone: string;
+  zone: number;
   length: number;
 }
 

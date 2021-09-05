@@ -95,7 +95,7 @@ export const Timer = ({ workout, displayTimer }: TimerProps = defaultProps) => {
           <Progress
             colorScheme={intervals[zoneInterval]?.length - zoneElapsedTime < 5
                          ? "red"
-                         : zoneColorSchemes[parseInt(intervals[zoneInterval]?.zone)]}
+                         : zoneColorSchemes[intervals[zoneInterval]?.zone]}
             hasStripe
             size="lg"
             value={(zoneElapsedTime / zoneTimeInSeconds) * 100}
@@ -119,9 +119,9 @@ export const Timer = ({ workout, displayTimer }: TimerProps = defaultProps) => {
                 <Box
                   key={index}
                   bg={index === zoneInterval
-                    ? zoneColors[parseInt(interval.zone)]
-                        : inactiveZoneColors[parseInt(interval.zone)]}
-                  h={`${(parseInt(interval.zone) / 7) * 100}%`}
+                    ? zoneColors[interval.zone]
+                        : inactiveZoneColors[interval.zone]}
+                  h={`${(interval.zone) / 7 * 100}%`}
                   w={`${((interval.length) / timeInSeconds) * 100}%`}
                 />
               ))

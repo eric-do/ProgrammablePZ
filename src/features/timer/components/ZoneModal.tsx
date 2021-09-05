@@ -21,7 +21,7 @@ interface ZoneModalProps {
 };
 
 const defaultInterval = {
-  zone: '1',
+  zone: 1,
   length: 30
 }
 
