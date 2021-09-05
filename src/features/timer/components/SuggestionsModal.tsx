@@ -28,8 +28,8 @@ interface ZoneModalProps {
 };
 
 export const SuggestionsModal = ({ isOpen, onClose, setWorkout }: ZoneModalProps) => {
-  const [filter, setFilter] = useState<{[s: string]: string}>({ type: 'all' })
-  const { type } = filter;
+  const [filter, setFilter] = useState<{[s: string]: string}>({ type: 'all', timeInSeconds: 'all' })
+  const { type, timeInSeconds } = filter;
 
   const handleDropdown = (e: React.ChangeEvent<HTMLSelectElement>): void => {
     const { name, value } = e.currentTarget
@@ -59,10 +59,21 @@ export const SuggestionsModal = ({ isOpen, onClose, setWorkout }: ZoneModalProps
                 onChange={handleDropdown}
                 data-testid="zone-type-dropdown"
               >
-                <option value="all">All</option>
+                <option value="all">All rides</option>
                 <option value="pz">Power Zone</option>
                 <option value="pze">Power Zone Endurance</option>
                 <option value="pzm">Power Zone Max</option>
+            </Select>
+            <Select
+                name="timeInSeconds"
+                value={timeInSeconds}
+                onChange={handleDropdown}
+                data-testid="zone-length-dropdown"
+              >
+                <option value="all">All lengths</option>
+                <option value="1800">30 minutes</option>
+                <option value="2700">45 minutes</option>
+                <option value="3600">60 minutes</option>
             </Select>
             </Stack>
             <Table mt={5}>
@@ -78,7 +89,9 @@ export const SuggestionsModal = ({ isOpen, onClose, setWorkout }: ZoneModalProps
               </Thead>
               <Tbody>
                 {
-                  suggestions.filter(suggestion => suggestion.type === type || type === 'all')
+                  suggestions
+                    .filter(suggestion => suggestion.type === type || type === 'all')
+                    .filter(suggestion => timeInSeconds === 'all' || suggestion.timeInSeconds.toString() === timeInSeconds)
                     .map((suggestion, i) => {
                       return (
                         <Tr key={i} onClick={() => setWorkoutAndClose(suggestion)}>
