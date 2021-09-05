@@ -1,6 +1,6 @@
 import React from 'react';
 import { userEvent, render, screen, fireEvent } from 'test/test-utils';
-import { Intervals } from '../components/';
+import { Intervals } from 'features/timer';
 import { Interval } from 'types';
 
 const defaultProps = {

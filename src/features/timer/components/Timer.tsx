@@ -88,7 +88,7 @@ export const Timer = ({ workout, displayTimer }: TimerProps = defaultProps) => {
   return (
     <Box w='80%'>
       <Stack direction="column" spacing={7}>
-        <Heading as="h1" size="lg">
+        <Heading as="h1" size="xl">
           Zone {intervals[zoneInterval]?.zone}
         </Heading>
         <Stack direction="column" spacing={2}>
