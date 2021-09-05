@@ -69,8 +69,8 @@ test('it should reset table when user hits Reset button', () => {
   const lengthDropdown = screen.getByTestId('length-dropdown') as HTMLSelectElement;
   const addButton = screen.getByRole('button', { name: 'Add' });
 
-  fireEvent.change(zoneDropdown, { target: { value: '1' }});
-  fireEvent.change(lengthDropdown, { target: { value: '60' }});
+  fireEvent.change(zoneDropdown, { target: { value: 1 }});
+  fireEvent.change(lengthDropdown, { target: { value: 60 }});
   userEvent.click(addButton);
 
   expect(screen.getAllByRole('row')).toHaveLength(3);
@@ -79,4 +79,14 @@ test('it should reset table when user hits Reset button', () => {
   userEvent.click(resetButton);
   expect(screen.getAllByRole('row')).toHaveLength(2);
   expect(screen.queryByTestId('interval-chart-bar')).toBeNull()
+})
+
+test('it should display the suggestions modal when user clicks link', () => {
+  render(<App />)
+
+  const suggestionsLink = screen.getByRole('link', { name: 'Need a suggestion?' });
+  userEvent.click(suggestionsLink);
+
+  expect(screen.getByText('Popular rides')).toBeInTheDocument();
+  expect(screen.getAllByRole('table')).toHaveLength(2);
 })

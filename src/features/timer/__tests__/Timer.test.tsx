@@ -21,7 +21,7 @@ it('should render zone chart', () => {
     workout: {
       timeInSeconds: 30,
       intervals: [{
-        zone: '1',
+        zone: 1,
         length: 30
       }]
     },

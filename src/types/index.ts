@@ -1,11 +1,12 @@
 export interface Interval {
-  zone: string;
+  zone: number;
   length: number;
 }
 
 export interface Workout {
   intervals: Interval[];
   timeInSeconds: number;
+  type?: string;
 };
 
 export interface ColorDict {

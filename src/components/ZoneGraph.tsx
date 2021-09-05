@@ -17,7 +17,7 @@ const defaultProps = {
 export const ZoneGraph = ({ intervals, timeInSeconds }: ZoneGraphProps = defaultProps) => (
   <Stack
     direction="row"
-    spacing={1}
+    spacing={0.5}
     d="flex"
     align="flex-end"
     h={50}
@@ -27,8 +27,8 @@ export const ZoneGraph = ({ intervals, timeInSeconds }: ZoneGraphProps = default
       intervals.map((interval, index) => (
         <Box
           key={index}
-          bg={zoneColors[parseInt(interval.zone)]}
-          h={`${(parseInt(interval.zone) / 7) * 100}%`}
+          bg={zoneColors[interval.zone]}
+          h={`${(interval.zone) / 7 * 100}%`}
           w={`${((interval.length) / timeInSeconds) * 100}%`}
           data-testid="interval-chart-bar"
         />
