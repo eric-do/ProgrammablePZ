@@ -28,8 +28,8 @@ interface ZoneModalProps {
 };
 
 export const SuggestionsModal = ({ isOpen, onClose, setWorkout }: ZoneModalProps) => {
-  const [filter, setFilter] = useState<{[s: string]: string}>({ type: 'all', sort:'popularity' })
-  const { type, sort } = filter;
+  const [filter, setFilter] = useState<{[s: string]: string}>({ type: 'all' })
+  const { type } = filter;
 
   const handleDropdown = (e: React.ChangeEvent<HTMLSelectElement>): void => {
     const { name, value } = e.currentTarget
@@ -63,16 +63,7 @@ export const SuggestionsModal = ({ isOpen, onClose, setWorkout }: ZoneModalProps
                 <option value="pz">Power Zone</option>
                 <option value="pze">Power Zone Endurance</option>
                 <option value="pzm">Power Zone Max</option>
-              </Select>
-              <Select
-                name="sort"
-                value={sort}
-                onChange={handleDropdown}
-                data-testid="zone-sort-dropdown"
-              >
-                <option value="popularity">Popularity</option>
-                <option value="newest">Recently added</option>
-              </Select>
+            </Select>
             </Stack>
             <Table mt={5}>
               <Thead>
