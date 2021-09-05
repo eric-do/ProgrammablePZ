@@ -136,6 +136,96 @@ export const suggestions: Workout[] = [
     timeInSeconds: 2700
   },
   {
+    type: 'pz',
+    intervals: [
+      {
+        zone: 1,
+        length: 180
+      },
+      {
+        zone: 2,
+        length: 30
+      },
+      {
+        zone: 1,
+        length: 30
+      },
+      {
+        zone: 2,
+        length: 30
+      },
+      {
+        zone: 1,
+        length: 30
+      },
+      {
+        zone: 2,
+        length: 30
+      },
+      {
+        zone: 1,
+        length: 60
+      },
+      {
+        zone: 3,
+        length: 60
+      },
+      {
+        zone: 4,
+        length: 60
+      },
+      {
+        zone: 5,
+        length: 60
+      },
+      {
+        zone: 1,
+        length: 60
+      },
+      {
+        zone: 5,
+        length: 120
+      },
+      {
+        zone: 1,
+        length: 120
+      },
+      {
+        zone: 5,
+        length: 120
+      },
+      {
+        zone: 1,
+        length: 120
+      },
+      {
+        zone: 5,
+        length: 120
+      },
+      {
+        zone: 1,
+        length: 120
+      },
+      {
+        zone: 5,
+        length: 120
+      },
+      {
+        zone: 1,
+        length: 120
+      },
+      {
+        zone: 5,
+        length: 120
+      },
+      {
+        zone: 1,
+        length: 90
+      },
+    ],
+    timeInSeconds: 1800
+  },
+  {
     type: 'pze',
     intervals: [
       {
@@ -172,6 +262,64 @@ export const suggestions: Workout[] = [
       },
     ],
     timeInSeconds: 2700
+  },
+  {
+    type: 'pze',
+    intervals: [
+      {
+        zone: 1,
+        length: 240
+      },
+      {
+        zone: 2,
+        length: 30
+      },
+      {
+        zone: 1,
+        length: 30
+      },
+      {
+        zone: 2,
+        length: 30
+      },
+      {
+        zone: 1,
+        length: 30
+      },
+      {
+        zone: 2,
+        length: 60
+      },
+      {
+        zone: 3,
+        length: 60
+      },
+      {
+        zone: 1,
+        length: 60
+      },
+      {
+        zone: 3,
+        length: 300
+      },
+      {
+        zone: 2,
+        length: 180
+      },
+      {
+        zone: 3,
+        length: 300
+      },
+      {
+        zone: 2,
+        length: 180
+      },
+      {
+        zone: 3,
+        length: 300
+      },
+    ],
+    timeInSeconds: 1800
   },
   {
     type: 'pzm',

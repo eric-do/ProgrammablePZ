@@ -92,6 +92,7 @@ export const SuggestionsModal = ({ isOpen, onClose, setWorkout }: ZoneModalProps
                   suggestions
                     .filter(suggestion => suggestion.type === type || type === 'all')
                     .filter(suggestion => timeInSeconds === 'all' || suggestion.timeInSeconds.toString() === timeInSeconds)
+                    .slice(0, 3)
                     .map((suggestion, i) => {
                       return (
                         <Tr key={i} onClick={() => setWorkoutAndClose(suggestion)}>
