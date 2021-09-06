@@ -108,7 +108,7 @@ export const Timer = ({ workout, displayTimer }: TimerProps = defaultProps) => {
           spacing={1}>
           <Stack
             direction="row"
-            spacing={1}
+            spacing={0.5}
             d="flex"
             align="flex-end"
             h={100}
