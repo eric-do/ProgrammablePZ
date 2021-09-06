@@ -14,10 +14,9 @@ import {
   Td,
 } from "@chakra-ui/react"
 import { useDisclosure, Box } from "@chakra-ui/react"
-import { Interval, Workout } from 'types';
+import { Interval } from 'types';
 import { ZoneModal } from './ZoneModal';
 import { ZoneGraph } from 'components';
-import { update } from 'lodash';
 
 interface Props {
   intervals: Interval[];
