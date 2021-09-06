@@ -9,9 +9,13 @@ import { Timer } from "features/timer";
 import { Interval, Workout } from "types";
 import { SuggestionsModal } from "./SuggestionsModal";
 
-export const ZoneTimer = () => {
+interface ZoneTimerProps {
+  intervals?: Interval[];
+};
+
+export const ZoneTimer = ({ intervals: intervalProp = [] }: ZoneTimerProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [intervals, setIntervals] = useState<Interval[]>([]);
+  const [intervals, setIntervals] = useState<Interval[]>(intervalProp);
   const [timeInSeconds, setTimeInSeconds] = useState<number>(0);
   const [displayTimer, setDisplayTimer] = useState<boolean>(false);
   const minutes = Math.floor(timeInSeconds / 60)
