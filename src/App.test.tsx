@@ -1,5 +1,7 @@
 import React from "react"
 import { screen } from "@testing-library/react"
+import { Router } from "react-router-dom";
+import {createMemoryHistory} from 'history'
 import { render, userEvent, fireEvent } from "test/test-utils"
 import { App } from "./App"
 
@@ -89,4 +91,20 @@ test('it should display the suggestions modal when user clicks link', () => {
 
   expect(screen.getByText('Popular rides')).toBeInTheDocument();
   expect(screen.getAllByRole('table')).toHaveLength(2);
+})
+
+test('it should redirect to Rides page when user clicks "More" link in suggestions modal', () => {
+  const history = createMemoryHistory({ initialEntries: [ '/' ] })
+  render(
+    <Router history={history}>
+      <App />
+    </Router>,
+  )
+
+  const suggestionsLink = screen.getByRole('link', { name: 'Need a suggestion?' });
+  userEvent.click(suggestionsLink);
+
+  // const seeMoreLink = screen.getByRole('link', { name: 'See more rides' });
+  // userEvent.click(seeMoreLink);
+  // expect(screen.getByRole('heading', {name: 'Power Zone Rides' })).toBeInTheDocument();
 })

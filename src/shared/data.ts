@@ -3,6 +3,14 @@ import { Workout } from "types";
 export const suggestions: Workout[] = [
   {
     type: 'pz',
+    title: 'Power Zone Pyramid',
+    metadata: {
+      rideCount: 345
+    },
+    ratings: {
+      up: 100,
+      total: 105
+    },
     intervals: [
       {
         zone: 1,
@@ -137,6 +145,14 @@ export const suggestions: Workout[] = [
   },
   {
     type: 'pz',
+    title: 'High Fives All Around!',
+    metadata: {
+      rideCount: 234
+    },
+    ratings: {
+      up: 130,
+      total: 140
+    },
     intervals: [
       {
         zone: 1,
@@ -227,6 +243,14 @@ export const suggestions: Workout[] = [
   },
   {
     type: 'pze',
+    title: 'Flat Twos',
+    metadata: {
+      rideCount: 378
+    },
+    ratings: {
+      up: 600,
+      total: 640
+    },
     intervals: [
       {
         zone: 1,
@@ -265,6 +289,14 @@ export const suggestions: Workout[] = [
   },
   {
     type: 'pze',
+    title: 'Standard Endurance Ride',
+    metadata: {
+      rideCount: 397
+    },
+    ratings: {
+      up: 300,
+      total: 350
+    },
     intervals: [
       {
         zone: 1,
@@ -323,6 +355,14 @@ export const suggestions: Workout[] = [
   },
   {
     type: 'pzm',
+    title: 'PZ Max Canyon',
+    metadata: {
+      rideCount: 765
+    },
+    ratings: {
+      up: 400,
+      total: 407
+    },
     intervals: [
       {
         zone: 1,

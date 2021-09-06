@@ -16,9 +16,11 @@ import {
   Tr,
   Th,
   Td,
+  Link
 } from "@chakra-ui/react"
+import { Link as RouterLink} from "react-router-dom";
 import { Workout } from 'types';
-import { suggestions } from './data';
+import { suggestions } from 'shared/data';
 import { ZoneGraph } from 'components';
 
 interface ZoneModalProps {
@@ -111,6 +113,17 @@ export const SuggestionsModal = ({ isOpen, onClose, setWorkout }: ZoneModalProps
                 }
               </Tbody>
             </Table>
+            <Stack mt={5} direction="row" justify="center">
+              <Link
+                as={RouterLink}
+                to="/rides"
+                role="link"
+                color="teal.500"
+                fontSize="sm"
+              >
+                See more rides
+              </Link>
+            </Stack>
           </ModalBody>
           <ModalFooter>
             <Button colorScheme="blue" onClick={onClose}>
