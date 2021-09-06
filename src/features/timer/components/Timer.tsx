@@ -137,7 +137,7 @@ export const Timer = ({ workout, displayTimer }: TimerProps = defaultProps) => {
 
         </Stack>
         <Button
-          colorScheme="green"
+          colorScheme="yellow"
           onClick={() => displayTimer(false)}
         >
           Go back

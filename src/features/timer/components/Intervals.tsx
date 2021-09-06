@@ -30,6 +30,10 @@ interface Props {
   }
 }
 
+interface ZoneSummary {
+  [z: number]: number;
+}
+
 export const Intervals = ({
   addInterval,
   intervals,
@@ -41,39 +45,39 @@ export const Intervals = ({
   const { minutes, seconds, timeInSeconds } = time;
   const formattedSeconds = seconds.toLocaleString('en-US', {
     minimumIntegerDigits: 2,
-  })
+  });
+
+  const zoneSummary = intervals.reduce((acc: ZoneSummary, interval) => {
+    return {
+      ...acc,
+      [interval.zone]: acc[interval.zone] + interval.length || interval.length
+    }
+  }, {})
 
   return (
     <Box>
       <Stack direction="column" spacing={6}>
-        <Heading as="h1" size="lg">Intervals</Heading>
+        <Heading as="h1" size="lg">Zones</Heading>
         { intervals.length === 0 && <Text>No intervals set</Text>}
         <Table size="md">
           <Thead>
             <Tr>
-              <Th>Interval</Th>
               <Th>Zone</Th>
               <Th>Length</Th>
             </Tr>
           </Thead>
           <Tbody>
             {
-              intervals.map((interval, index) => {
-                const minutes = Math.floor(interval.length / 60)
-                const seconds = (interval.length % 60).toLocaleString('en-US', {
+              Object.keys(zoneSummary).sort().map((key: string, index) => {
+                const minutes = Math.floor(zoneSummary[parseInt(key)] / 60);
+                const seconds = (zoneSummary[parseInt(key)] % 60).toLocaleString('en-US', {
                   minimumIntegerDigits: 2,
                 });
-
                 return (
                   <Tr key={index}>
                     <Td>
                       <Text fontSize="md">
-                        {index}
-                      </Text>
-                    </Td>
-                    <Td>
-                      <Text fontSize="md">
-                        {interval.zone}
+                        {key}
                       </Text>
                     </Td>
                     <Td>
@@ -93,7 +97,6 @@ export const Intervals = ({
                   Total time
                 </Text>
               </Th>
-              <Th></Th>
               <Th>
                 <Text fontSize="md">
                   {minutes}:{formattedSeconds}
