@@ -8,6 +8,7 @@ import {
   Flex,
   Spacer
 } from "@chakra-ui/react";
+import { Link } from 'react-router-dom';
 import { suggestions as rides } from 'shared/data';
 import { ZoneGraph } from 'components';
 
@@ -68,6 +69,11 @@ export const Rides = () => {
           {
             rides.map((ride, index) => (
               <Box
+                as={Link}
+                to={{
+                  pathname: '/timer',
+                  state: ride
+                }}
                 key={ride.id || index}
               >
                 <Text fontSize={{base: 'md', lg: 'lg'}}>
