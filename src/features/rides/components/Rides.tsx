@@ -12,7 +12,6 @@ import {
 import { Link } from 'react-router-dom';
 // import { suggestions as rides } from 'shared/data';
 import { ErrorBoundary } from 'react-error-boundary';
-import { Workout as Ride } from 'types';
 import { ZoneGraph } from 'components';
 import { useRides } from '../api/index';
 
