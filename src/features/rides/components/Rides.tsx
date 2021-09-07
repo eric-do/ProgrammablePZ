@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Select,
@@ -9,8 +9,10 @@ import {
   Spacer
 } from "@chakra-ui/react";
 import { Link } from 'react-router-dom';
-import { suggestions as rides } from 'shared/data';
+// import { suggestions as rides } from 'shared/data';
+import { Workout as Ride } from 'types';
 import { ZoneGraph } from 'components';
+import { useRides } from '../api/index';
 
 interface Filter {[k: string]: string};
 
@@ -20,6 +22,7 @@ const defaultFilter =  {
 }
 
 export const Rides = () => {
+  const { data: rides, isLoading, error } = useRides();
   const [filters, setFilters] = useState<Filter>(defaultFilter);
   const { type, length } = filters;
 
@@ -29,6 +32,18 @@ export const Rides = () => {
       ...filters,
       [name]: value
     })
+  }
+
+  // if (isLoading) {
+  //   return (
+  //     <Box>
+  //       <Text>Loading...</Text>
+  //     </Box>
+  //   )
+  // }
+
+  if (!rides) {
+    return null;
   }
 
   return (
@@ -75,6 +90,7 @@ export const Rides = () => {
                   state: ride
                 }}
                 key={ride.id || index}
+                data-testid="ride-description-card"
               >
                 <Text fontSize={{base: 'md', lg: 'lg'}}>
                   {ride.title}
