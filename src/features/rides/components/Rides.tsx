@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Select,
@@ -6,10 +6,12 @@ import {
   Stack,
   Heading,
   Flex,
-  Spacer
+  Spacer,
+  Spinner
 } from "@chakra-ui/react";
 import { Link } from 'react-router-dom';
 // import { suggestions as rides } from 'shared/data';
+import { ErrorBoundary } from 'react-error-boundary';
 import { Workout as Ride } from 'types';
 import { ZoneGraph } from 'components';
 import { useRides } from '../api/index';
@@ -22,7 +24,6 @@ const defaultFilter =  {
 }
 
 export const Rides = () => {
-  const { data: rides, isLoading, error } = useRides();
   const [filters, setFilters] = useState<Filter>(defaultFilter);
   const { type, length } = filters;
 
@@ -32,18 +33,6 @@ export const Rides = () => {
       ...filters,
       [name]: value
     })
-  }
-
-  // if (isLoading) {
-  //   return (
-  //     <Box>
-  //       <Text>Loading...</Text>
-  //     </Box>
-  //   )
-  // }
-
-  if (!rides) {
-    return null;
   }
 
   return (
@@ -77,42 +66,66 @@ export const Rides = () => {
           <option value="45">45 minutes</option>
           <option value="60">60 minutes</option>
         </Select>
-        <Stack
-          direction="column"
-          spacing={4}
-        >
-          {
-            rides.map((ride, index) => (
-              <Box
-                as={Link}
-                to={{
-                  pathname: '/timer',
-                  state: ride
-                }}
-                key={ride.id || index}
-                data-testid="ride-description-card"
-              >
-                <Text fontSize={{base: 'md', lg: 'lg'}}>
-                  {ride.title}
-                </Text>
-                <ZoneGraph
-                  intervals={ride.intervals}
-                  timeInSeconds={ride.timeInSeconds}
-                />
-                <Flex direction="row">
-                  <Text fontSize={'sm'}>
-                    {ride.ratings?.up || 0} 👍
-                  </Text>
-                  <Spacer />
-                  <Text fontSize={'sm'}>
-                    {ride.metadata?.rideCount || 0} 🚴
-                  </Text>
-                </Flex>
-              </Box>
-            ))
-          }
-        </Stack>
+        <ErrorBoundary FallbackComponent={Fallback}>
+        <RideList />
+        </ErrorBoundary>
       </Stack>
     </Flex>
   )
 };
+
+const RideList = () => {
+  const { data: rides, isLoading, error } = useRides();
+
+  return (
+    <>
+    { error &&
+      <Text data-testid='error-message'>
+        Something went wrong. Please reload the page.
+      </Text>
+    }
+    { isLoading && <Spinner data-testid='spinner'/> }
+    { rides &&
+      <Stack
+        direction="column"
+        spacing={4}
+      >
+        {
+          rides.map((ride, index) => (
+            <Box
+              as={Link}
+              to={{
+                pathname: '/timer',
+                state: ride
+              }}
+              key={ride.id || index}
+              data-testid="ride-description-card"
+            >
+              <Text fontSize={{base: 'md', lg: 'lg'}}>
+                {ride.title}
+              </Text>
+              <ZoneGraph
+                intervals={ride.intervals}
+                timeInSeconds={ride.timeInSeconds}
+              />
+              <Flex direction="row">
+                <Text fontSize={'sm'}>
+                  {ride.ratings?.up || 0} 👍
+                </Text>
+                <Spacer />
+                <Text fontSize={'sm'}>
+                  {ride.metadata?.rideCount || 0} 🚴
+                </Text>
+              </Flex>
+            </Box>
+          ))
+        }
+      </Stack>
+    }
+    </>
+  )
+}
+
+const Fallback = () => (
+  <Text>Oops! Something went wrong.</Text>
+)

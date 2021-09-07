@@ -7,25 +7,23 @@ import {
   waitFor
 } from 'test/test-utils';
 import { API_URL } from 'config';
+import { QueryClient, QueryClientProvider } from 'react-query';
 import { MemoryRouter } from 'react-router-dom'
-import { QueryClientProvider } from 'react-query';
-import { queryClient } from "lib/react-query";
-import {rest} from 'msw'
-import {setupServer} from 'msw/node'
+import { rest } from 'msw'
+import { server } from 'test/server/server';
 import { Rides } from 'features/rides';
 import { suggestions as rides } from 'shared/data';
 
-const server = setupServer(
-  rest.get(`${API_URL}/api/rides`, (req, res, ctx) => {
-    return res(ctx.json(rides))
-  }),
-)
 
-beforeAll(() => server.listen())
-afterEach(() => server.resetHandlers())
-afterAll(() => server.close())
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false
+    }
+  }
+})
 
-xtest('it should render initial UI', () => {
+test('it should render initial UI', () => {
   render(
     <QueryClientProvider client={queryClient}>
       <Rides />
@@ -37,7 +35,7 @@ xtest('it should render initial UI', () => {
   expect(screen.getByText('All lengths')).toBeInTheDocument();
 })
 
-test('it render rides after API request', async () => {
+test('it renders appropriate UI based on fetch status', async () => {
   render(
     <QueryClientProvider client={queryClient}>
       <Rides />
@@ -45,6 +43,25 @@ test('it render rides after API request', async () => {
     {wrapper: MemoryRouter}
   );
 
+  expect(screen.getByTestId('spinner')).toBeInTheDocument();
   await waitFor(() => screen.getByText(rides[0].title as string))
   expect(screen.queryAllByTestId('ride-description-card')).toHaveLength(rides.length)
+})
+
+xtest('it renders an error message if fetch returned an error', () => {
+  server.use(
+    rest.get(`${API_URL}/api/rides`, (req, res, ctx) => {
+      return res.once(
+        ctx.status(500),
+        ctx.json({ message: 'Internal server error' }),
+      )
+    }),
+  );
+  render(
+    <QueryClientProvider client={queryClient}>
+      <Rides />
+    </QueryClientProvider>,
+    {wrapper: MemoryRouter}
+  );
+  expect(screen.getByTestId('error-message')).toBeInTheDocument();
 })

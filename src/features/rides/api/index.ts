@@ -15,6 +15,6 @@ export const useRides = ({ config }: UseRidesOptions = {}) => {
   return useQuery({
     ...config,
     queryKey: ['rides'],
-    queryFn: () => getRides(),
+    queryFn: () => getRides()
   });
 }
