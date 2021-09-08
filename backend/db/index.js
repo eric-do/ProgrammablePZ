@@ -1,24 +1,17 @@
 const { Pool } = require('pg');
 
-const localDb = 'postgres://postgres@localhost:5432/ppz';
+const prodConfig = {
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false }
+}
 
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL || localDb,
-  // ssl: {
-  //   rejectUnauthorized: false
-  // }
-});
+const devConfig = {
+  connectionString: 'postgres://postgres@localhost:5432/ppz'
+}
 
-// module.exports = {
-//   query: (text, params, callback) => {
-//     const start = Date.now()
-//     return pool.query(text, params, (err, res) => {
-//       const duration = Date.now() - start;
-//       console.log(err, res)
-//       console.log('executed query', { text, duration });
-//     });
-//   }
-// }
+const pool = process.env.DATABASE_URL
+             ? new Pool(prodConfig)
+             : new Pool(devConfig)
 
 module.exports = {
   query: async (text, params, callback) => {
