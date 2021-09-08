@@ -109,7 +109,7 @@ const RideList = () => {
               />
               <Flex direction="row">
                 <Text fontSize={'sm'}>
-                  {ride.ratings?.up || 0} 👍
+                  {ride.ratings?.likes || 0} 👍
                 </Text>
                 <Spacer />
                 <Text fontSize={'sm'}>

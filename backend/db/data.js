@@ -1,6 +1,4 @@
-import { Workout } from "types";
-
-export const suggestions: Workout[] = [
+module.exports.rides = [
   {
     type: 'pz',
     title: 'Power Zone Pyramid',
@@ -123,6 +121,10 @@ export const suggestions: Workout[] = [
       {
         zone: 5,
         length: 120
+      },
+      {
+        zone: 1,
+        length: 60
       },
       {
         zone: 4,

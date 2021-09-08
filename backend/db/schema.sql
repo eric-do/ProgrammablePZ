@@ -16,12 +16,12 @@ CREATE TABLE rides (
   id INT GENERATED ALWAYS AS IDENTITY,
   title TEXT,
   type VARCHAR(5) REFERENCES ride_types (type),
-  likes INT,
-  dislikes INT,
-  total_votes INT,
-  ride_count INT,
-  intervals JSONB,
-  timeInSeconds SMALLINT,
+  likes INT DEFAULT 0,
+  dislikes INT DEFAULT 0,
+  total_votes INT DEFAULT 0,
+  ride_count INT DEFAULT 0,
+  intervals JSONB NOT NULL,
+  timeInSeconds SMALLINT NOT NULL,
   created_on TIMESTAMPTZ,
   PRIMARY KEY(id)
 );
