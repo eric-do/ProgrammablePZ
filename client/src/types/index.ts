@@ -13,9 +13,10 @@ export interface Workout {
     rideCount: number
   };
   ratings?: {
-    up: number;
+    likes: number;
     total: number;
-  }
+  },
+  createdOn?: string;
 };
 
 export interface ColorDict {

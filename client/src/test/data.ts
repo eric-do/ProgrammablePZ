@@ -1,6 +1,6 @@
 import { Workout } from "types";
 
-export const suggestions: Workout[] = [
+export const rides: Workout[] = [
   {
     type: 'pz',
     title: 'Power Zone Pyramid',
