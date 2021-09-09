@@ -33,11 +33,14 @@ const lengths = '1200,1800,2700,3600'
 
 const getRides = async (req, res) => {
   try {
-    const {
+    let {
       type = rideTypes,
       timeInSeconds = lengths,
       limit = 10
     } = req.query;
+
+    type = type === 'all' ? rideTypes : type;
+    timeInSeconds = timeInSeconds === 'all' ? lengths : timeInSeconds;
 
     const typesList = type.split(',');
     const lengthsList = timeInSeconds.split(',');

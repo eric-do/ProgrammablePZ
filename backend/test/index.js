@@ -4,7 +4,7 @@ let request = require('supertest');
 const app = require('../server/app');
 
 describe("/api/rides", () => {
-  it("It should response the GET method", async () => {
+  it("It should respond to the GET method", async () => {
     const response = await request(app).get("/api/rides");
     expect(response.status).to.eql(200);
     expect(response.body).to.be.an.instanceOf(Array)
