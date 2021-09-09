@@ -65,6 +65,7 @@ export const SuggestionsModal = ({ isOpen, onClose, setWorkout }: ZoneModalProps
                 <option value="pz">Power Zone</option>
                 <option value="pze">Power Zone Endurance</option>
                 <option value="pzm">Power Zone Max</option>
+                <option value="ftp">Power Zone FTP</option>
             </Select>
             <Select
                 name="timeInSeconds"
@@ -78,7 +79,10 @@ export const SuggestionsModal = ({ isOpen, onClose, setWorkout }: ZoneModalProps
                 <option value="3600">60 minutes</option>
             </Select>
             </Stack>
-            <Table mt={5}>
+            <Table
+              mt={5}
+              data-testid="modal-rides-table"
+            >
               <Thead>
                 <Tr>
                   <Th pr={0}>
@@ -97,7 +101,11 @@ export const SuggestionsModal = ({ isOpen, onClose, setWorkout }: ZoneModalProps
                     .slice(0, 3)
                     .map((suggestion, i) => {
                       return (
-                        <Tr key={i} onClick={() => setWorkoutAndClose(suggestion)}>
+                        <Tr
+                          key={i}
+                          onClick={() => setWorkoutAndClose(suggestion)}
+                          data-testid="modal-table-row"
+                        >
                           <Td pr={0}>
                             {Math.floor(suggestion.timeInSeconds / 60 )}
                           </Td>
