@@ -28,14 +28,29 @@ const formatRide = ride => {
   }
 }
 
+const rideTypes = 'pz,pze,pzm,ftp';
+const lengths = '1200,1800,2700,3600'
+
 const getRides = async (req, res) => {
   try {
-    const rides = await RideModel.getRides();
+    const {
+      type = rideTypes,
+      timeInSeconds = lengths,
+      limit = 10
+    } = req.query;
+
+    const typesList = type.split(',');
+    const lengthsList = timeInSeconds.split(',');
+    const rides = await RideModel.getRides(limit, typesList, lengthsList);
     const formattedRides = rides.map(formatRide);
+
     res.status(200).send(formattedRides);
-  } catch (e) {
-    res.status(500).send()
+  } catch (err) {
+    console.log(err)
+    res.status(500).send();
   }
 }
 
-module.exports = { getRides }
+module.exports = {
+  getRides,
+}

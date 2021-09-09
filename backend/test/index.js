@@ -13,4 +13,27 @@ describe("/api/rides", () => {
       'ratings', 'intervals', 'timeInSeconds'
     );
   });
-});
+
+  it("It should respond with rides filtered by ride type", async () => {
+    const response = await request(app).get("/api/rides?type=pz");
+    const validateType = ride => ride.type === 'pz'
+
+    expect(response.status).to.eql(200);
+    expect(response.body.every(validateType)).to.eql(true);
+  })
+
+  it("It should respond with rides filtered by ride length", async () => {
+    const response = await request(app).get("/api/rides?timeInSeconds=2700");
+    const validateLength = ride => ride.timeInSeconds === 2700;
+
+    expect(response.status).to.eql(200);
+    expect(response.body.every(validateLength)).to.eql(true);
+  })
+
+  it("It should respond with the correct number of rides using limit", async () => {
+    const response = await request(app).get("/api/rides?limit=3");
+
+    expect(response.status).to.eql(200);
+    expect(response.body.length).to.eql(3);
+  })
+})
