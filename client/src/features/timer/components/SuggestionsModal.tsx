@@ -18,7 +18,8 @@ import {
   Td,
   Link,
   Spinner,
-  Text
+  Text,
+  Flex
 } from "@chakra-ui/react"
 import { Link as RouterLink} from "react-router-dom";
 import { QueryOptions } from 'lib/react-query';
@@ -64,7 +65,7 @@ export const SuggestionsModal = ({ isOpen, onClose, setWorkout }: ZoneModalProps
         <ModalCloseButton></ModalCloseButton>
         <Stack spacing={5}>
           <ModalBody>
-            <Stack spacing={3}>
+            <Stack spacing={3} pb={10}>
               <Select
                 name="type"
                 value={type}
@@ -94,7 +95,11 @@ export const SuggestionsModal = ({ isOpen, onClose, setWorkout }: ZoneModalProps
                 Something went wrong. Please reload the page.
               </Text>
             }
-            { isLoading && <Spinner data-testid='spinner'/> }
+            { isLoading &&
+              <Flex align="center" justify="center">
+                <Spinner data-testid='spinner'/>
+              </Flex>
+            }
             { rides &&
               <>
                 <Table

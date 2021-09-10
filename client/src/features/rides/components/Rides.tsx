@@ -88,7 +88,11 @@ const RideList = ({options}: RideListProps) => {
           Something went wrong. Please reload the page.
         </Text>
       }
-      { isLoading && <Spinner data-testid='spinner'/> }
+      { isLoading &&
+        <Flex justify="center" align="center">
+          <Spinner data-testid='spinner'/>
+        </Flex>
+      }
       { rides &&
         <Stack
           direction="column"
