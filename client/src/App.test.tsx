@@ -10,7 +10,6 @@ import {
   waitFor
 } from "test/test-utils"
 import { App } from "./App"
-import { suggestions as rides } from 'shared/data';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -111,9 +110,10 @@ test(
   userEvent.click(suggestionsLink);
 
   expect(screen.getByText('Popular rides')).toBeInTheDocument();
-  expect(screen.getByTestId('modal-rides-table')).toBeInTheDocument();
 
-  await waitFor(() => screen.getAllByTestId('modal-table-row'))
+  await waitFor(() => screen.getAllByTestId('modal-rides-table'))
+
+  expect(screen.getByTestId('modal-rides-table')).toBeInTheDocument();
   expect(screen.getAllByTestId('modal-table-row')).toHaveLength(3)
 })
 

@@ -12,7 +12,7 @@ import { MemoryRouter } from 'react-router-dom'
 import { rest } from 'msw'
 import { server } from 'test/server/server';
 import { Rides } from 'features/rides';
-import { suggestions as rides } from 'shared/data';
+import { rides } from 'test/data';
 
 
 const queryClient = new QueryClient({

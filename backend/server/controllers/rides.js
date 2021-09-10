@@ -14,6 +14,7 @@ const formatRide = ride => {
   } = ride;
 
   return {
+    id,
     type,
     title,
     metadata: {

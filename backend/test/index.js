@@ -10,7 +10,7 @@ describe("/api/rides", () => {
     expect(response.body).to.be.an.instanceOf(Array)
     expect(response.body[0]).to.have.keys(
       'title', 'type', 'metadata',
-      'ratings', 'intervals', 'timeInSeconds'
+      'ratings', 'intervals', 'timeInSeconds', 'id'
     );
   });
 

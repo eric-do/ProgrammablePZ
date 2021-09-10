@@ -2,13 +2,14 @@ import { Workout } from "types";
 
 export const rides: Workout[] = [
   {
+    id: 1,
     type: 'pz',
     title: 'Power Zone Pyramid',
     metadata: {
       rideCount: 345
     },
     ratings: {
-      up: 100,
+      likes: 100,
       total: 105
     },
     intervals: [
@@ -144,13 +145,14 @@ export const rides: Workout[] = [
     timeInSeconds: 2700
   },
   {
+    id: 2,
     type: 'pz',
     title: 'High Fives All Around!',
     metadata: {
       rideCount: 234
     },
     ratings: {
-      up: 130,
+      likes: 130,
       total: 140
     },
     intervals: [
@@ -242,13 +244,14 @@ export const rides: Workout[] = [
     timeInSeconds: 1800
   },
   {
+    id: 3,
     type: 'pze',
     title: 'Flat Twos',
     metadata: {
       rideCount: 378
     },
     ratings: {
-      up: 600,
+      likes: 600,
       total: 640
     },
     intervals: [
@@ -288,13 +291,14 @@ export const rides: Workout[] = [
     timeInSeconds: 2700
   },
   {
+    id: 4,
     type: 'pze',
     title: 'Standard Endurance Ride',
     metadata: {
       rideCount: 397
     },
     ratings: {
-      up: 300,
+      likes: 300,
       total: 350
     },
     intervals: [
@@ -354,13 +358,14 @@ export const rides: Workout[] = [
     timeInSeconds: 1800
   },
   {
+    id: 5,
     type: 'pzm',
     title: 'PZ Max Canyon',
     metadata: {
       rideCount: 765
     },
     ratings: {
-      up: 400,
+      likes: 400,
       total: 407
     },
     intervals: [
