@@ -10,21 +10,19 @@ import {
   Spinner
 } from "@chakra-ui/react";
 import { Link } from 'react-router-dom';
-// import { suggestions as rides } from 'shared/data';
 import { ErrorBoundary } from 'react-error-boundary';
+import { QueryOptions } from 'lib/react-query';
 import { ZoneGraph } from 'components';
 import { useRides } from '../api/index';
 
-interface Filter {[k: string]: string};
-
 const defaultFilter =  {
   type: 'all',
-  length:'all'
+  timeInSeconds:'all'
 }
 
 export const Rides = () => {
-  const [filters, setFilters] = useState<Filter>(defaultFilter);
-  const { type, length } = filters;
+  const [filters, setFilters] = useState<QueryOptions>(defaultFilter);
+  const { type, timeInSeconds } = filters;
 
   const handleFilter = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = event.currentTarget;
@@ -49,6 +47,7 @@ export const Rides = () => {
           value={type}
           name="type"
           onChange={handleFilter}
+          data-testid="type-dropdown"
         >
           <option value="all">All rides</option>
           <option value="pz">Power Zone</option>
@@ -56,71 +55,86 @@ export const Rides = () => {
           <option value="pzm">Power Zone Max</option>
         </Select>
         <Select
-          value={length}
-          name="length"
+          value={timeInSeconds}
+          name="timeInSeconds"
           onChange={handleFilter}
+          data-testid="length-dropdown"
         >
           <option value="all">All lengths</option>
-          <option value="30">30 minutes</option>
-          <option value="45">45 minutes</option>
-          <option value="60">60 minutes</option>
+          <option value="1200">20 minutes</option>
+          <option value="1800">30 minutes</option>
+          <option value="2700">45 minutes</option>
+          <option value="3600">60 minutes</option>
         </Select>
         <ErrorBoundary FallbackComponent={Fallback}>
-        <RideList />
+        <RideList options={filters}/>
         </ErrorBoundary>
       </Stack>
     </Flex>
   )
 };
 
-const RideList = () => {
-  const { data: rides, isLoading, error } = useRides();
+interface RideListProps {
+  options: QueryOptions
+}
+
+const RideList = ({options}: RideListProps) => {
+  const { data: rides, isLoading, error } = useRides({ options });
 
   return (
     <>
-    { error &&
-      <Text data-testid='error-message'>
-        Something went wrong. Please reload the page.
-      </Text>
-    }
-    { isLoading && <Spinner data-testid='spinner'/> }
-    { rides &&
-      <Stack
-        direction="column"
-        spacing={4}
-      >
-        {
-          rides.map((ride, index) => (
-            <Box
-              as={Link}
-              to={{
-                pathname: '/timer',
-                state: ride
-              }}
-              key={ride.id || index}
-              data-testid="ride-description-card"
-            >
-              <Text fontSize={{base: 'md', lg: 'lg'}}>
-                {ride.title}
-              </Text>
-              <ZoneGraph
-                intervals={ride.intervals}
-                timeInSeconds={ride.timeInSeconds}
-              />
-              <Flex direction="row">
-                <Text fontSize={'sm'}>
-                  {ride.ratings?.likes || 0} 👍
+      { error &&
+        <Text data-testid='error-message'>
+          Something went wrong. Please reload the page.
+        </Text>
+      }
+      { isLoading &&
+        <Flex justify="center" align="center">
+          <Spinner data-testid='spinner'/>
+        </Flex>
+      }
+      { rides &&
+        <Stack
+          direction="column"
+          spacing={4}
+        >
+          {
+            rides.map((ride, index) => (
+              <Box
+                as={Link}
+                to={{
+                  pathname: '/timer',
+                  state: ride
+                }}
+                key={ride.id || index}
+                data-testid="ride-description-card"
+              >
+                <Text fontSize={{base: 'md', lg: 'lg'}}>
+                  {ride.title}
                 </Text>
-                <Spacer />
-                <Text fontSize={'sm'}>
-                  {ride.metadata?.rideCount || 0} 🚴
-                </Text>
-              </Flex>
-            </Box>
-          ))
-        }
-      </Stack>
-    }
+                <ZoneGraph
+                  intervals={ride.intervals}
+                  timeInSeconds={ride.timeInSeconds}
+                />
+                <Flex direction="row">
+                  <Text fontSize={'sm'}>
+                    {ride.ratings?.likes || 0} 👍
+                  </Text>
+                  <Spacer />
+                  <Text fontSize={'sm'}>
+                    {ride.metadata?.rideCount || 0} 🚴
+                  </Text>
+                </Flex>
+              </Box>
+            ))
+          }
+        </Stack>
+      }
+      { rides?.length === 0 &&
+        <Text>
+          No rides found.
+        </Text>
+      }
     </>
   )
 }

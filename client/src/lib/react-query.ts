@@ -16,6 +16,12 @@ const queryConfig: DefaultOptions = {
   }
 };
 
+export interface QueryOptions {
+  limit?: number;
+  type?: string;
+  timeInSeconds?: string;
+}
+
 export const queryClient = new QueryClient({ defaultOptions: queryConfig});
 
 export type QueryConfig<FetcherFnType extends (...args: any) => any> = UseQueryOptions<

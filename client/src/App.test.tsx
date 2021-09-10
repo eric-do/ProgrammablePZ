@@ -1,9 +1,23 @@
 import React from "react"
 import { screen } from "@testing-library/react"
 import { Router } from "react-router-dom";
-import {createMemoryHistory} from 'history'
-import { render, userEvent, fireEvent } from "test/test-utils"
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { createMemoryHistory } from 'history'
+import {
+  render,
+  userEvent,
+  fireEvent,
+  waitFor
+} from "test/test-utils"
 import { App } from "./App"
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false
+    }
+  }
+})
 
 test('it should render default interface', () => {
   render(<App />);
@@ -83,14 +97,24 @@ test('it should reset table when user hits Reset button', () => {
   expect(screen.queryByTestId('interval-chart-bar')).toBeNull()
 })
 
-test('it should display the suggestions modal when user clicks link', () => {
-  render(<App />)
+test(
+  'it should display relevant rides when user interacts with suggestions',
+  async () => {
+  render(
+    <QueryClientProvider client={queryClient}>
+      <App />
+    </QueryClientProvider>
+  );
 
   const suggestionsLink = screen.getByRole('link', { name: 'Need a suggestion?' });
   userEvent.click(suggestionsLink);
 
   expect(screen.getByText('Popular rides')).toBeInTheDocument();
-  expect(screen.getAllByRole('table')).toHaveLength(2);
+
+  await waitFor(() => screen.getAllByTestId('modal-rides-table'))
+
+  expect(screen.getByTestId('modal-rides-table')).toBeInTheDocument();
+  expect(screen.getAllByTestId('modal-table-row')).toHaveLength(3)
 })
 
 test('it should redirect to Rides page when user clicks "More" link in suggestions modal', () => {
