@@ -1,5 +1,6 @@
 const RideModel = require('../models/rides');
 const { formatRide } = require('../utils')
+const { InternalServerError } = require('../utils/errors');
 
 const getRides = async (req, res, next) => {
   try {
@@ -9,13 +10,13 @@ const getRides = async (req, res, next) => {
       limit = 10
     } = req.query;
 
-    type = type === 'all' ? rideTypes : type;
-    timeInSeconds = timeInSeconds === 'all' ? lengths : timeInSeconds;
+    type = type === 'all' ? null : type;
+    timeInSeconds = timeInSeconds === 'all' ? null : timeInSeconds;
 
     res.locals.data = await RideModel.getRides(limit, type, timeInSeconds);
     next();
   } catch (err) {
-    next(err);
+    next(new InternalServerError(err));
   }
 }
 
@@ -26,7 +27,7 @@ const getRideById = async (req, res, next) => {
     res.locals.data =  await RideModel.getRideById(id)
     next();
   } catch (err) {
-    next(err);
+    next(new InternalServerError(err));
   }
 }
 
