@@ -6,8 +6,8 @@ import { QueryConfig, QueryOptions } from 'lib/react-query';
 export const getRides = (
   {
     limit = 10,
-    type = 'pz,pzm,pze,ftp',
-    timeInSeconds ='1200,1800,2700,3600'
+    type,
+    timeInSeconds
   }: QueryOptions
 ): Promise<Ride[]> => {
   return axios.get('/api/rides', {
@@ -24,11 +24,7 @@ type UseRidesOptions = {
   config?: QueryConfig<typeof getRides>;
 };
 
-const defaultOptions = {
-  limit: 10,
-  type: 'pz,pzm,pze,ftp',
-  timeInSeconds: '1200,1800,2700,3600'
-}
+const defaultOptions = { limit: 10 }
 
 export const useRides = ({ options = defaultOptions, config }: UseRidesOptions) => {
   return useQuery({

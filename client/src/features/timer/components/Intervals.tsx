@@ -14,20 +14,13 @@ import {
   Td,
 } from "@chakra-ui/react"
 import { useDisclosure, Box } from "@chakra-ui/react"
+import { useRide } from 'providers/RideProvider';
 import { Interval } from 'types';
 import { ZoneModal } from './ZoneModal';
 import { ZoneGraph } from 'components';
 
 interface Props {
-  intervals: Interval[];
-  addInterval: (interval: Interval) => void;
-  resetIntervals: () => void;
   startWorkout: () => void;
-  time: {
-    minutes: number;
-    seconds: number;
-    timeInSeconds: number;
-  }
 }
 
 interface ZoneSummary {
@@ -35,16 +28,31 @@ interface ZoneSummary {
 }
 
 export const Intervals = ({
-  addInterval,
-  intervals,
-  time,
-  resetIntervals,
   startWorkout
 }: Props ) => {
+  const { ride, setRide } = useRide();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { minutes, seconds, timeInSeconds } = time;
+  const minutes = Math.floor(ride.timeInSeconds / 60)
+  const seconds = ride.timeInSeconds % 60;
   const formattedSeconds = seconds.toLocaleString('en-US', {
     minimumIntegerDigits: 2,
+  });
+  const { intervals, timeInSeconds } = ride;
+
+  const addInterval = (interval: Interval) => {
+    const intervals = [...ride.intervals, interval];
+    const timeInSeconds = intervals.reduce((total, interval) => total + interval.length, 0)
+
+    setRide({
+      ...ride,
+      intervals,
+      timeInSeconds
+    })
+  }
+
+  const resetIntervals = () => setRide({
+    ...ride,
+    intervals: []
   });
 
   const zoneSummary = intervals.reduce((acc: ZoneSummary, interval) => {
