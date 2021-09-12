@@ -17,6 +17,13 @@ const getRides = async (
   return rides;
 }
 
+const getRideById = async (id) => {
+  const q = `SELECT * FROM rides WHERE id = $1`;
+  const rides = await query(q, [id]);
+  return rides[0];
+}
+
 module.exports = {
-  getRides
+  getRides,
+  getRideById
 }

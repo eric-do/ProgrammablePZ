@@ -1,7 +1,7 @@
 const RideModel = require('../models/rides');
 const { formatRide } = require('../utils')
 
-const getRides = async (req, res) => {
+const getRides = async (req, res, next) => {
   try {
     let {
       type,
@@ -12,16 +12,31 @@ const getRides = async (req, res) => {
     type = type === 'all' ? rideTypes : type;
     timeInSeconds = timeInSeconds === 'all' ? lengths : timeInSeconds;
 
-    const rides = await RideModel.getRides(limit, type, timeInSeconds);
-    const formattedRides = rides.map(formatRide);
-
-    res.status(200).send(formattedRides);
+    res.locals.data = await RideModel.getRides(limit, type, timeInSeconds);
+    next();
   } catch (err) {
-    console.log(err)
-    res.status(500).send();
+    next(err);
   }
+}
+
+const getRideById = async (req, res, next) => {
+  const { id } = req.params;
+
+  try {
+    const ride = await RideModel.getRideById(id)
+    const formattedRide = formatRide(ride);
+    res.status(200).send(formattedRide);
+  } catch (err) {
+    next(err);
+  }
+}
+
+const sendRides = (req, res) => {
+  res.status(200).send(res.locals.data);
 }
 
 module.exports = {
   getRides,
+  getRideById,
+  sendRides
 }
