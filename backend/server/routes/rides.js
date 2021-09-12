@@ -13,6 +13,11 @@ router.get(
   rideFormatter,
   sendRides
 );
-router.get('/:id', getRideById);
+router.get(
+  '/:id',
+  getRideById,
+  rideFormatter,
+  sendRides
+);
 
 module.exports = router;

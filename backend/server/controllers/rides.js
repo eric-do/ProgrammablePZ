@@ -23,9 +23,8 @@ const getRideById = async (req, res, next) => {
   const { id } = req.params;
 
   try {
-    const ride = await RideModel.getRideById(id)
-    const formattedRide = formatRide(ride);
-    res.status(200).send(formattedRide);
+    res.locals.data =  await RideModel.getRideById(id)
+    next();
   } catch (err) {
     next(err);
   }
