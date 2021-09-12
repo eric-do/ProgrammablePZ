@@ -1,60 +1,42 @@
 const RideModel = require('../models/rides');
+const { formatRide } = require('../utils')
+const { InternalServerError } = require('../utils/errors');
 
-const formatRide = ride => {
-  const {
-    id,
-    type,
-    title,
-    created_on,
-    likes,
-    ride_count,
-    timeinseconds,
-    total_votes,
-    intervals
-  } = ride;
-
-  return {
-    id,
-    type,
-    title,
-    metadata: {
-      rideCount: ride_count
-    },
-    ratings: {
-      likes,
-      total: total_votes
-    },
-    intervals,
-    timeInSeconds: timeinseconds
-  }
-}
-
-const rideTypes = 'pz,pze,pzm,ftp';
-const lengths = '1200,1800,2700,3600'
-
-const getRides = async (req, res) => {
+const getRides = async (req, res, next) => {
   try {
     let {
-      type = rideTypes,
-      timeInSeconds = lengths,
+      type,
+      timeInSeconds,
       limit = 10
     } = req.query;
 
-    type = type === 'all' ? rideTypes : type;
-    timeInSeconds = timeInSeconds === 'all' ? lengths : timeInSeconds;
+    type = type === 'all' ? null : type;
+    timeInSeconds = timeInSeconds === 'all' ? null : timeInSeconds;
 
-    const typesList = type.split(',');
-    const lengthsList = timeInSeconds.split(',');
-    const rides = await RideModel.getRides(limit, typesList, lengthsList);
-    const formattedRides = rides.map(formatRide);
-
-    res.status(200).send(formattedRides);
+    res.locals.data = await RideModel.getRides(limit, type, timeInSeconds);
+    next();
   } catch (err) {
-    console.log(err)
-    res.status(500).send();
+    next(new InternalServerError(err));
   }
+}
+
+const getRideById = async (req, res, next) => {
+  const { id } = req.params;
+
+  try {
+    res.locals.data =  await RideModel.getRideById(id)
+    next();
+  } catch (err) {
+    next(new InternalServerError(err));
+  }
+}
+
+const sendRides = (req, res) => {
+  res.status(200).send(res.locals.data);
 }
 
 module.exports = {
   getRides,
+  getRideById,
+  sendRides
 }

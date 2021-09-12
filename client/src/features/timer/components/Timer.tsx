@@ -8,27 +8,24 @@ import {
   Button
 } from "@chakra-ui/react";
 import React, { useState, useEffect } from 'react';
-import { Workout } from 'types'
 import { zoneColors, inactiveZoneColors, zoneColorSchemes } from 'shared';
+import { useRide } from 'providers/RideProvider';
 
 interface TimerProps {
-  workout: Workout;
   displayTimer: (b: boolean) => void;
 };
 
 const defaultProps = {
-  workout: {
-    intervals: [],
-    timeInSeconds: 0
-  },
   displayTimer: () => {}
 }
 
 
-export const Timer = ({ workout, displayTimer }: TimerProps = defaultProps) => {
-  let { intervals, timeInSeconds } = workout;
-  timeInSeconds -= 1;
+export const Timer = ({ displayTimer }: TimerProps = defaultProps) => {
+  const { ride } = useRide();
+  let { intervals, timeInSeconds } = ride;
+
   // Global countdown states
+  timeInSeconds -= 1;
   const [elapsedTime, setElapsedTime] = useState<number>(0)
   const [minutes, setMinutes] = useState<number>(Math.floor(timeInSeconds / 60));
   const [seconds, setSeconds] = useState<number>(timeInSeconds % 60);

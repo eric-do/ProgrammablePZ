@@ -98,7 +98,7 @@ test('it should reset table when user hits Reset button', () => {
 })
 
 test(
-  'it should display relevant rides when user interacts with suggestions',
+  'it should allow users to select a suggested ride',
   async () => {
   render(
     <QueryClientProvider client={queryClient}>
@@ -113,8 +113,12 @@ test(
 
   await waitFor(() => screen.getAllByTestId('modal-rides-table'))
 
+  const suggestedRides = screen.getAllByTestId('modal-table-row');
   expect(screen.getByTestId('modal-rides-table')).toBeInTheDocument();
-  expect(screen.getAllByTestId('modal-table-row')).toHaveLength(3)
+  expect(suggestedRides).toHaveLength(3)
+
+  userEvent.click(suggestedRides[0]);
+  expect(screen.getByRole('heading', { name: 'Zones' })).toBeInTheDocument();
 })
 
 test('it should redirect to Rides page when user clicks "More" link in suggestions modal', () => {

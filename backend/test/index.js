@@ -37,3 +37,14 @@ describe("/api/rides", () => {
     expect(response.body.length).to.eql(3);
   })
 })
+
+describe("/api/rides/:id", () => {
+  it("It should respond to the GET method", async () => {
+    const response = await request(app).get("/api/rides/11");
+    expect(response.status).to.eql(200);
+    expect(response.body).to.have.keys(
+      'title', 'type', 'metadata',
+      'ratings', 'intervals', 'timeInSeconds', 'id'
+    );
+  });
+})

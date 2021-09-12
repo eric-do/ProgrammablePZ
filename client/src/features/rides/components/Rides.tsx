@@ -9,9 +9,11 @@ import {
   Spacer,
   Spinner
 } from "@chakra-ui/react";
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { ErrorBoundary } from 'react-error-boundary';
 import { QueryOptions } from 'lib/react-query';
+import { useRide } from 'providers/RideProvider';
+import { Workout } from 'types';
 import { ZoneGraph } from 'components';
 import { useRides } from '../api/index';
 
@@ -80,6 +82,13 @@ interface RideListProps {
 
 const RideList = ({options}: RideListProps) => {
   const { data: rides, isLoading, error } = useRides({ options });
+  const history = useHistory();
+  const { setRide } = useRide();
+
+  const handleSetRide = (ride: Workout) => {
+    setRide(ride);
+    history.push('/timer')
+  }
 
   return (
     <>
@@ -101,11 +110,7 @@ const RideList = ({options}: RideListProps) => {
           {
             rides.map((ride, index) => (
               <Box
-                as={Link}
-                to={{
-                  pathname: '/timer',
-                  state: ride
-                }}
+                onClick={() => handleSetRide(ride)}
                 key={ride.id || index}
                 data-testid="ride-description-card"
               >

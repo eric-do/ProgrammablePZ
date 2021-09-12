@@ -1,7 +1,23 @@
 const express = require('express');
 const router = express.Router();
-const { getRides } = require('../controllers/rides');
+const {
+  getRides,
+  getRideById,
+  sendRides
+} = require('../controllers/rides');
+const rideFormatter = require('../middleware/rideFormatter');
 
-router.get('/', getRides);
+router.get(
+  '/',
+  getRides,
+  rideFormatter,
+  sendRides
+);
+router.get(
+  '/:id',
+  getRideById,
+  rideFormatter,
+  sendRides
+);
 
 module.exports = router;
