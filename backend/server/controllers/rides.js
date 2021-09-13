@@ -31,6 +31,28 @@ const getRideById = async (req, res, next) => {
   }
 }
 
+const incrementRideCount = async (req, res, next) => {
+  const { id } = req.params;
+
+  try {
+    res.locals.data = await RideModel.incrementRideCount(id);
+    next()
+  } catch (err) {
+    next(new InternalServerError(err));
+  }
+}
+
+const incrementRideLikes = async (req, res, next) => {
+  const { id } = req.params;
+
+  try {
+    res.locals.data = await RideModel.incrementRideLikes(id);
+    next()
+  } catch (err) {
+    next(new InternalServerError(err));
+  }
+}
+
 const sendRides = (req, res) => {
   res.status(200).send(res.locals.data);
 }
@@ -38,5 +60,7 @@ const sendRides = (req, res) => {
 module.exports = {
   getRides,
   getRideById,
+  incrementRideCount,
+  incrementRideLikes,
   sendRides
 }

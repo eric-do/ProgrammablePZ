@@ -17,13 +17,37 @@ const getRides = async (
   return rides;
 }
 
-const getRideById = async (id) => {
+const incrementRideCount = async (rideId) => {
+  const q = `
+    UPDATE rides
+      SET ride_count = ride_count + 1
+    WHERE id = $1
+  `;
+
+  const rows = await query(q, [rideId]);
+  return rows;
+}
+
+const incrementRideLikes = async (rideId) => {
+  const q = `
+    UPDATE rides
+      SET likes = likes + 1
+    WHERE id = $1
+  `;
+
+  const rows = await query(q, [rideId]);
+  return rows;
+}
+
+const getRideById = async (rideId) => {
   const q = `SELECT * FROM rides WHERE id = $1`;
-  const rides = await query(q, [id]);
+  const rides = await query(q, [rideId]);
   return rides[0];
 }
 
 module.exports = {
   getRides,
-  getRideById
+  getRideById,
+  incrementRideCount,
+  incrementRideLikes
 }
