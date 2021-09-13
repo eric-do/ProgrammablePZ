@@ -98,7 +98,7 @@ test('it should reset table when user hits Reset button', () => {
 })
 
 test(
-  'it should allow users to select a suggested ride',
+  'it should allow users to select a suggested ride from modal',
   async () => {
   render(
     <QueryClientProvider client={queryClient}>
@@ -121,7 +121,7 @@ test(
   expect(screen.getByRole('heading', { name: 'Zones' })).toBeInTheDocument();
 })
 
-test('it should redirect to Rides page when user clicks "More" link in suggestions modal', () => {
+test('user can navigate to rides page from modal, then select a ride', async () => {
   const history = createMemoryHistory({ initialEntries: [ '/' ] })
   render(
     <Router history={history}>
@@ -132,7 +132,20 @@ test('it should redirect to Rides page when user clicks "More" link in suggestio
   const suggestionsLink = screen.getByRole('link', { name: 'Need a suggestion?' });
   userEvent.click(suggestionsLink);
 
-  // const seeMoreLink = screen.getByRole('link', { name: 'See more rides' });
-  // userEvent.click(seeMoreLink);
-  // expect(screen.getByRole('heading', {name: 'Power Zone Rides' })).toBeInTheDocument();
+  await waitFor(() => screen.getByRole('link', { name: 'See more rides' }));
+
+  const seeMoreLink = screen.getByRole('link', { name: 'See more rides' });
+  userEvent.click(seeMoreLink);
+
+  expect(screen.getByRole('heading', {name: 'Power Zone Rides' })).toBeInTheDocument();
+
+  await waitFor(() => screen.getAllByTestId('ride-description-card'));
+  expect(screen.queryAllByTestId('ride-description-card')).toBeTruthy();
+
+  const rides = screen.queryAllByTestId('ride-description-card');
+
+  userEvent.click(rides[0]);
+
+  expect(screen.getByRole('heading', { name: 'Zones' })).toBeInTheDocument();
+  expect(screen.getByTestId('interval-zone-chart')).toBeInTheDocument();
 })

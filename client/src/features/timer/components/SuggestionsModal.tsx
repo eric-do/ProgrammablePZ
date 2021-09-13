@@ -25,12 +25,12 @@ import { Link as RouterLink} from "react-router-dom";
 import { QueryOptions } from 'lib/react-query';
 import { Workout } from 'types';
 import { ZoneGraph } from 'components';
+import { useRide } from 'providers/RideProvider';
 import { useRides } from 'features/rides/api';
 
 interface ZoneModalProps {
   isOpen: boolean;
   onClose: () => void;
-  setWorkout: (w: Workout) => void;
 };
 
 const defaultFilter =  {
@@ -39,7 +39,8 @@ const defaultFilter =  {
   limit: 3
 }
 
-export const SuggestionsModal = ({ isOpen, onClose, setWorkout }: ZoneModalProps) => {
+export const SuggestionsModal = ({ isOpen, onClose }: ZoneModalProps) => {
+  const { setRide } = useRide();
   const [filter, setFilter] = useState<QueryOptions>(defaultFilter)
   const { data: rides, isLoading, error } = useRides({ options: filter });
   const { type, timeInSeconds } = filter;
@@ -53,7 +54,7 @@ export const SuggestionsModal = ({ isOpen, onClose, setWorkout }: ZoneModalProps
   }
 
   const setWorkoutAndClose = (w: Workout) => {
-    setWorkout(w);
+    setRide(w);
     onClose();
   }
 
@@ -122,6 +123,7 @@ export const SuggestionsModal = ({ isOpen, onClose, setWorkout }: ZoneModalProps
                         return <Tr
                           key={ride.id}
                           onClick={() => setWorkoutAndClose(ride)}
+                          cursor="pointer"
                           data-testid="modal-table-row"
                         >
                           <Td pr={0}>

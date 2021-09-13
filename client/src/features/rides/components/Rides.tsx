@@ -113,6 +113,7 @@ const RideList = ({options}: RideListProps) => {
                 onClick={() => handleSetRide(ride)}
                 key={ride.id || index}
                 data-testid="ride-description-card"
+                cursor="pointer"
               >
                 <Text fontSize={{base: 'md', lg: 'lg'}}>
                   {ride.title}

@@ -7,10 +7,8 @@ import {
 import { Intervals } from "features/timer";
 import { Timer } from "features/timer";
 import { SuggestionsModal } from "./SuggestionsModal";
-import { useRide } from 'providers/RideProvider';
 
 export const ZoneTimer = () => {
-  const { setRide } = useRide();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [displayTimer, setDisplayTimer] = useState<boolean>(false);
 
@@ -34,7 +32,6 @@ export const ZoneTimer = () => {
           <SuggestionsModal
             isOpen={isOpen}
             onClose={onClose}
-            setWorkout={setRide}
           />
         </>
       }
