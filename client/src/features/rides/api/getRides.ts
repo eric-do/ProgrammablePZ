@@ -1,4 +1,4 @@
-import { useQuery, useMutation } from 'react-query';
+import { useQuery } from 'react-query';
 import { axios } from 'lib/axios';
 import { Workout as Ride} from 'types'
 import { QueryConfig, QueryOptions } from 'lib/react-query';
