@@ -1,6 +1,7 @@
 import React from 'react';
 import { Timer } from 'features/timer';
 import { render, screen } from 'test/test-utils';
+import { AppProvider } from 'providers/app';
 
 it('should render with default props', () => {
   const defaultProps = {
@@ -10,7 +11,7 @@ it('should render with default props', () => {
     },
     displayTimer: () => {}
   }
-  render(<Timer {...defaultProps}/>)
+  render(<AppProvider><Timer {...defaultProps}/></AppProvider>)
   expect(screen.getByRole('heading', { name: 'Zone' })).toBeInTheDocument();
   expect(screen.getAllByRole('progressbar')).toHaveLength(2);
   expect(screen.getByRole('button', { name: 'Go back' })).toBeInTheDocument();
@@ -27,6 +28,6 @@ it('should render zone chart', () => {
     },
     displayTimer: () => {}
   }
-  render(<Timer {...props}/>)
+  render(<AppProvider><Timer {...props}/></AppProvider>)
   expect(screen.getByTestId('active-zone-graph')).toBeInTheDocument();
 })

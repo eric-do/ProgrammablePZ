@@ -17,5 +17,5 @@ module.exports = {
   query: async (text, params, callback) => {
     const { rows } = await pool.query(text, params)
     return rows;
-  }
+  },
 }

@@ -2,9 +2,16 @@ const { expect } = require('chai');
 let express = require('express'); // (npm install --save express)
 let request = require('supertest');
 const app = require('../server/app');
+const { query } = require('../db/index')
+const { testRide } = require('./data');
+const {
+  getRides,
+  insertRide,
+  deleteRide
+} = require('./sqlQueries');
 
 describe("/api/rides", () => {
-  it("It should respond to the GET method", async () => {
+  it("Should respond to the GET method", async () => {
     const response = await request(app).get("/api/rides");
     expect(response.status).to.eql(200);
     expect(response.body).to.be.an.instanceOf(Array)
@@ -14,7 +21,7 @@ describe("/api/rides", () => {
     );
   });
 
-  it("It should respond with rides filtered by ride type", async () => {
+  it("Should respond with rides filtered by ride type", async () => {
     const response = await request(app).get("/api/rides?type=pz");
     const validateType = ride => ride.type === 'pz'
 
@@ -22,7 +29,7 @@ describe("/api/rides", () => {
     expect(response.body.every(validateType)).to.eql(true);
   })
 
-  it("It should respond with rides filtered by ride length", async () => {
+  it("Should respond with rides filtered by ride length", async () => {
     const response = await request(app).get("/api/rides?timeInSeconds=2700");
     const validateLength = ride => ride.timeInSeconds === 2700;
 
@@ -30,7 +37,7 @@ describe("/api/rides", () => {
     expect(response.body.every(validateLength)).to.eql(true);
   })
 
-  it("It should respond with the correct number of rides using limit", async () => {
+  it("Should respond with the correct number of rides using limit", async () => {
     const response = await request(app).get("/api/rides?limit=3");
 
     expect(response.status).to.eql(200);
@@ -39,12 +46,70 @@ describe("/api/rides", () => {
 })
 
 describe("/api/rides/:id", () => {
-  it("It should respond to the GET method", async () => {
+  beforeEach(async () => {
+
+  });
+
+  afterEach(async () => {
+    await query(deleteRide, [testRide.title])
+  })
+
+  it("Should respond to the GET method", async () => {
     const response = await request(app).get("/api/rides/11");
     expect(response.status).to.eql(200);
     expect(response.body).to.have.keys(
       'title', 'type', 'metadata',
       'ratings', 'intervals', 'timeInSeconds', 'id'
     );
+  });
+
+  it("Should increment ride count", async () => {
+    const oldRows = await query(getRides);
+    const oldCount = oldRows.length;
+
+    const rows = await query(insertRide, [
+      testRide.type,
+      testRide.title,
+      testRide.metadata.rideCount,
+      testRide.ratings.likes,
+      testRide.ratings.total,
+      testRide.timeInSeconds,
+      JSON.stringify(testRide.intervals)
+    ]);
+
+    const id = rows[0].id;
+
+    const { body: oldRide } = await request(app).get(`/api/rides/${id}`);
+    expect(oldRide.metadata.rideCount).to.eql(0)
+
+    await request(app).post(`/api/rides/${id}/ride-count`);
+
+    const { body: newRide } = await request(app).get(`/api/rides/${id}`);
+    expect(newRide.metadata.rideCount).to.eql(1)
+  });
+
+  it("Should increment ride likes", async () => {
+    const oldRows = await query(getRides);
+    const oldCount = oldRows.length;
+
+    const rows = await query(insertRide, [
+      testRide.type,
+      testRide.title,
+      testRide.metadata.rideCount,
+      testRide.ratings.likes,
+      testRide.ratings.total,
+      testRide.timeInSeconds,
+      JSON.stringify(testRide.intervals)
+    ]);
+
+    const id = rows[0].id;
+
+    const { body: oldRide } = await request(app).get(`/api/rides/${id}`);
+    expect(oldRide.ratings.likes).to.eql(0)
+
+    await request(app).post(`/api/rides/${id}/likes`);
+
+    const { body: newRide } = await request(app).get(`/api/rides/${id}`);
+    expect(newRide.ratings.likes).to.eql(1)
   });
 })

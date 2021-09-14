@@ -1,7 +1,9 @@
 import React from "react"
 import { screen } from "@testing-library/react"
 import { Router } from "react-router-dom";
+import { rest } from 'msw'
 import { QueryClient, QueryClientProvider } from 'react-query';
+import { server } from 'test/server/server';
 import { createMemoryHistory } from 'history'
 import {
   render,
@@ -10,6 +12,7 @@ import {
   waitFor
 } from "test/test-utils"
 import { App } from "./App"
+import { API_URL } from "config";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -52,10 +55,10 @@ test('it should display the Add Zone modal when user clicks Add Zone', () => {
   expect(screen.getByRole('button', { name: 'Add' })).toBeInTheDocument()
 })
 
-test('it should update table when user adds new interval', () => {
+test('user can add interval to ride, and time is shown in minutes', () => {
   render(<App />);
   const modalButton = screen.getByRole('button', { name: 'Add Zone' });
-
+  const startButton = screen.getByRole('button', { name: 'Start!' });
   expect(screen.getAllByRole('row')).toHaveLength(2);
   userEvent.click(modalButton);
 
@@ -71,6 +74,9 @@ test('it should update table when user adds new interval', () => {
   expect(screen.getAllByText('1:00')).toHaveLength(2);
   expect(screen.getByTestId('interval-zone-chart')).toBeInTheDocument();
   expect(screen.getAllByTestId('interval-chart-bar')).toHaveLength(1);
+
+  userEvent.click(startButton);
+  expect(screen.getByRole('heading', { name: 'Zone 1' })).toBeInTheDocument();
 })
 
 test('it should reset table when user hits Reset button', () => {
@@ -121,8 +127,17 @@ test(
   expect(screen.getByRole('heading', { name: 'Zones' })).toBeInTheDocument();
 })
 
-test('user can navigate to rides page from modal, then select a ride', async () => {
+test('navigate to rides page, select ride, start ride', async () => {
   const history = createMemoryHistory({ initialEntries: [ '/' ] })
+  let count = 0;
+
+  server.use(
+    rest.post(`${API_URL}/api/rides/:rideId/ride-count`, (req, res, ctx) => {
+      count++;
+      return res.once(ctx.status(200))
+    }),
+  );
+
   render(
     <Router history={history}>
       <App />
@@ -148,4 +163,10 @@ test('user can navigate to rides page from modal, then select a ride', async () 
 
   expect(screen.getByRole('heading', { name: 'Zones' })).toBeInTheDocument();
   expect(screen.getByTestId('interval-zone-chart')).toBeInTheDocument();
+
+  userEvent.click(screen.getByRole('button', { name: 'Start!' }));
+  expect(screen.getByRole('button', { name: 'Go back' })).toBeInTheDocument();
+  expect(screen.getByTestId('zone-timer')).toBeInTheDocument();
+  expect(screen.getByTestId('ride-timer')).toBeInTheDocument();
+
 })
