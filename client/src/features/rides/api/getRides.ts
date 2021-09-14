@@ -33,13 +33,3 @@ export const useRides = ({ options = defaultOptions, config }: UseRidesOptions) 
     queryFn: () => getRides(options)
   });
 }
-
-export const incrementRideCount = (rideId: number) => {
-  return axios.post(`/api/rides/${rideId}/ride-count`);
-}
-
-export const useRideCount = (rideId: number) => {
-  return useMutation(() => incrementRideCount(rideId), {
-    onSuccess: () => {}
-  });
-}

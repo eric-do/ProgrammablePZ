@@ -96,7 +96,11 @@ export const Timer = ({ displayTimer }: TimerProps = defaultProps) => {
         <Heading as="h1" size="xl">
           Zone {intervals[zoneInterval]?.zone}
         </Heading>
-        <Stack direction="column" spacing={2}>
+        <Stack
+          direction="column"
+          spacing={2}
+          data-testid="zone-timer"
+        >
           <Progress
             colorScheme={intervals[zoneInterval]?.length - zoneElapsedTime < 5
                          ? "red"
@@ -110,7 +114,9 @@ export const Timer = ({ displayTimer }: TimerProps = defaultProps) => {
 
         <Stack
           direction="column"
-          spacing={1}>
+          spacing={1}
+          data-testid="ride-timer"
+        >
           <Stack
             direction="row"
             spacing={0.5}

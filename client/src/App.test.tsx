@@ -1,7 +1,9 @@
 import React from "react"
 import { screen } from "@testing-library/react"
 import { Router } from "react-router-dom";
+import { rest } from 'msw'
 import { QueryClient, QueryClientProvider } from 'react-query';
+import { server } from 'test/server/server';
 import { createMemoryHistory } from 'history'
 import {
   render,
@@ -10,6 +12,7 @@ import {
   waitFor
 } from "test/test-utils"
 import { App } from "./App"
+import { API_URL } from "config";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -124,8 +127,17 @@ test(
   expect(screen.getByRole('heading', { name: 'Zones' })).toBeInTheDocument();
 })
 
-test('user can navigate to rides page from modal, then select a ride', async () => {
+test('navigate to rides page, select ride, start ride', async () => {
   const history = createMemoryHistory({ initialEntries: [ '/' ] })
+  let count = 0;
+
+  server.use(
+    rest.post(`${API_URL}/api/rides/:rideId/ride-count`, (req, res, ctx) => {
+      count++;
+      return res.once(ctx.status(200))
+    }),
+  );
+
   render(
     <Router history={history}>
       <App />
@@ -151,4 +163,10 @@ test('user can navigate to rides page from modal, then select a ride', async () 
 
   expect(screen.getByRole('heading', { name: 'Zones' })).toBeInTheDocument();
   expect(screen.getByTestId('interval-zone-chart')).toBeInTheDocument();
+
+  userEvent.click(screen.getByRole('button', { name: 'Start!' }));
+  expect(screen.getByRole('button', { name: 'Go back' })).toBeInTheDocument();
+  expect(screen.getByTestId('zone-timer')).toBeInTheDocument();
+  expect(screen.getByTestId('ride-timer')).toBeInTheDocument();
+
 })
