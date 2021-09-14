@@ -51,8 +51,8 @@ export const Intervals = ({
   }
 
   const resetIntervals = () => setRide({
-    ...ride,
-    intervals: []
+    intervals: [],
+    timeInSeconds: 0
   });
 
   const zoneSummary = intervals.reduce((acc: ZoneSummary, interval) => {

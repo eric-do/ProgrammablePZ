@@ -52,10 +52,10 @@ test('it should display the Add Zone modal when user clicks Add Zone', () => {
   expect(screen.getByRole('button', { name: 'Add' })).toBeInTheDocument()
 })
 
-test('it should update table when user adds new interval', () => {
+test('user can add interval to ride, and time is shown in minutes', () => {
   render(<App />);
   const modalButton = screen.getByRole('button', { name: 'Add Zone' });
-
+  const startButton = screen.getByRole('button', { name: 'Start!' });
   expect(screen.getAllByRole('row')).toHaveLength(2);
   userEvent.click(modalButton);
 
@@ -71,6 +71,9 @@ test('it should update table when user adds new interval', () => {
   expect(screen.getAllByText('1:00')).toHaveLength(2);
   expect(screen.getByTestId('interval-zone-chart')).toBeInTheDocument();
   expect(screen.getAllByTestId('interval-chart-bar')).toHaveLength(1);
+
+  userEvent.click(startButton);
+  expect(screen.getByRole('heading', { name: 'Zone 1' })).toBeInTheDocument();
 })
 
 test('it should reset table when user hits Reset button', () => {

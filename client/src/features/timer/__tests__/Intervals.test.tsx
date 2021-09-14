@@ -1,5 +1,6 @@
 import React from 'react';
 import { userEvent, render, screen, fireEvent } from 'test/test-utils';
+import { AppProvider } from 'providers/app';
 import { Intervals } from 'features/timer';
 import { Interval } from 'types';
 
@@ -16,7 +17,7 @@ const defaultProps = {
 }
 
 test('it should render default interface', () => {
-  render(<Intervals {...defaultProps}/>);
+  render(<AppProvider><Intervals {...defaultProps}/></AppProvider>);
   expect(screen.getByRole('table')).toBeInTheDocument()
   expect(screen.getAllByRole('row')).toHaveLength(2);
   expect(screen.getByRole('button', { name: 'Add Zone' })).toBeInTheDocument()
@@ -25,14 +26,14 @@ test('it should render default interface', () => {
 })
 
 test('it should render initialized interface when no intervals added', () => {
-  render(<Intervals {...defaultProps}/>);
+  render(<AppProvider><Intervals {...defaultProps}/></AppProvider>);
   expect(screen.getByText('No intervals set')).toBeInTheDocument()
   expect(screen.getByText('0:00')).toBeInTheDocument()
   expect(screen.getByRole('button', { name: 'Start!' })).toBeDisabled()
 })
 
 test('it should display the Add Zone modal when user clicks Add Zone', () => {
-  render(<Intervals {...defaultProps}/>);
+  render(<AppProvider><Intervals {...defaultProps}/></AppProvider>);
   userEvent.click(screen.getByRole('button', { name: 'Add Zone' }));
 
   // Header

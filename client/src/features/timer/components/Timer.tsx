@@ -10,6 +10,7 @@ import {
 import React, { useState, useEffect } from 'react';
 import { zoneColors, inactiveZoneColors, zoneColorSchemes } from 'shared';
 import { useRide } from 'providers/RideProvider';
+import { useIncrementRideCount } from 'features/rides/api/incrementRideCount';
 
 interface TimerProps {
   displayTimer: (b: boolean) => void;
@@ -22,6 +23,7 @@ const defaultProps = {
 
 export const Timer = ({ displayTimer }: TimerProps = defaultProps) => {
   const { ride } = useRide();
+  const { mutate: incrementRide} = useIncrementRideCount({ rideId: ride.id});
   let { intervals, timeInSeconds } = ride;
 
   // Global countdown states
@@ -44,6 +46,12 @@ export const Timer = ({ displayTimer }: TimerProps = defaultProps) => {
   const formattedZoneSeconds = zoneSeconds.toLocaleString('en-US', {
     minimumIntegerDigits: 2,
   })
+
+  useEffect(() => {
+    if (ride.id) {
+      incrementRide({ data: { rideId: ride.id }})
+    }
+  }, [incrementRide, ride.id])
 
   useEffect(() => {
     let timerCountdown = setInterval(() => {
