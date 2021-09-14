@@ -2,6 +2,8 @@
 
 Made for cycling performance enthusiasts, this app allows users to create and take Power Zone rides including ones curated from other users.
 
+![Home screen](/images/image1.png) ![Select ride](/images/image3.png) ![Timer](/images/image2.png)
+
 Deployment is automated when code is merged to master.
 
 ### Tech stack
@@ -50,19 +52,3 @@ Runs the Express app on port 3001 using Nodemon.
 #### `npm test`
 
 Runs the test suite.
-<br /><br />
-## API
-
-### GET `/api/rides`
-Parameters
-| Name  | Type | Description |
-| ------------- | ------------- | ------------- |
-| limit  | integer | The number of rides to return. |
-| timeInSeconds | integer | Filter for length of ride in seconds.  |
-| type  | string | Filters by ride type (pz, pze, pzm, ftp) |
-
-### POST `/api/rides/:rideId/ride-count`
-Increments ride count for the rideId
-
-### POST `/api/rides/:rideId/likes`
-Increments likes for the rideId
