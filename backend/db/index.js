@@ -6,10 +6,10 @@ const prodConfig = {
 }
 
 const devConfig = {
-  connectionString: 'postgres://postgres@localhost:5432/ppz'
+  connectionString: process.env.DATABASE_URL
 }
 
-const pool = process.env.DATABASE_URL
+const pool = process.env.NODE_ENV === 'production'
              ? new Pool(prodConfig)
              : new Pool(devConfig)
 

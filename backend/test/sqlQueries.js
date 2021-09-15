@@ -11,8 +11,11 @@ const getRides = `SELECT * FROM rides`;
 
 const deleteRide = `DELETE FROM rides WHERE title = $1`;
 
+const deleteUser = `DELETE FROM users WHERE email = $1`;
+
 module.exports = {
   insertRide,
   getRides,
-  deleteRide
+  deleteRide,
+  deleteUser
 }
