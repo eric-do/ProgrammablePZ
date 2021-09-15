@@ -1,19 +1,24 @@
 const AuthModel = require('../models/auth');
-const jwt = require('jsonwebtoken');
 
-const registerUser = async (req, res) => {
+const registerUser = async (req, res, next) => {
   const credentials = req.body;
 
   try {
     const user = await AuthModel.registerUser(credentials);
-    const token = jwt.sign(user, process.env.SECRET_TOKEN);
-    res.status(201).send({ jwt: token, user })
+
+    res.locals.user = user;
+    res.status(201);
+    next()
   } catch (err) {
-    console.log(err);
-    res.status(500).send();
+    next(err);
   }
 }
 
+const sendUser = (req, res, next) => {
+  res.send(res.locals.data);
+}
+
 module.exports = {
-  registerUser
+  registerUser,
+  sendUser
 };

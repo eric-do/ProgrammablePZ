@@ -26,4 +26,38 @@ describe('/auth', () => {
     expect(response.body).to.have.keys('jwt', 'user');
     expect(response.body.user).to.have.keys('id', 'email', 'username')
   })
+
+  it('should validate user with valid credentials', async () => {
+    const registerResponse = await request(app)
+      .post("/auth/register")
+      .send(testValidUser);
+
+    const { jwt } = registerResponse.body;
+
+    const validateResponse = await request(app)
+      .get("/auth/validate")
+      .set({
+        'Authorization': 'Bearer ' + jwt,
+        'Content-Type': 'application/json'
+      })
+
+    expect(validateResponse.status).to.eql(200);
+  })
+
+  it('should deny user with invalid credentials', async () => {
+    const registerResponse = await request(app)
+      .post("/auth/register")
+      .send(testValidUser);
+
+    const { jwt } = registerResponse.body;
+
+    const validateResponse = await request(app)
+      .get("/auth/validate")
+      .set({
+        'Authorization': 'Bearer ' + 'faketoken',
+        'Content-Type': 'application/json'
+      })
+
+    expect(validateResponse.status).to.eql(401);
+  })
 })

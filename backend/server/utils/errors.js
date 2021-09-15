@@ -19,7 +19,15 @@ class InternalServerError extends ServerError {
   }
 }
 
+class AuthorizationError extends ServerError {
+  constructor(error) {
+    super(error.message);
+    this.statusCode = 401;
+  }
+}
+
 module.exports = {
   BadRequestError,
-  InternalServerError
+  InternalServerError,
+  AuthorizationError
 }
