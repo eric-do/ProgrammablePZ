@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {
+  Box,
   Button,
   FormControl,
   FormLabel,
@@ -32,43 +33,45 @@ export const Register = () => {
   }
 
   return (
-    <form>
-      <Stack spacing={4}>
-        <FormControl id="username" isRequired>
-          <FormLabel>Username</FormLabel>
-          <Input
-            type="text"
-            name="username"
-            value={username}
-            onChange={handleChange}
-          />
-        </FormControl>
-        <FormControl id="email" isRequired>
-          <FormLabel>Email</FormLabel>
-          <Input
-            type="email"
-            name="email"
-            value={email}
-            onChange={handleChange}
-          />
-        </FormControl>
-        <FormControl id="password" isRequired>
-          <FormLabel>Password</FormLabel>
-          <Input
-            type="password"
-            name="password"
-            value={password}
-            onChange={handleChange}
-          />
-        </FormControl>
-      </Stack>
-      <Button
-        mt={10}
-        colorScheme="teal"
-        type="submit"
-      >
-        Submit
-      </Button>
-    </form>
+    <Box px={4}>
+      <form>
+        <Stack spacing={4}>
+          <FormControl id="username" isRequired>
+            <FormLabel>Username</FormLabel>
+            <Input
+              type="text"
+              name="username"
+              value={username}
+              onChange={handleChange}
+            />
+          </FormControl>
+          <FormControl id="email" isRequired>
+            <FormLabel>Email</FormLabel>
+            <Input
+              type="email"
+              name="email"
+              value={email}
+              onChange={handleChange}
+            />
+          </FormControl>
+          <FormControl id="password" isRequired>
+            <FormLabel>Password</FormLabel>
+            <Input
+              type="password"
+              name="password"
+              value={password}
+              onChange={handleChange}
+            />
+          </FormControl>
+        </Stack>
+        <Button
+          mt={10}
+          colorScheme="teal"
+          type="submit"
+        >
+          Submit
+        </Button>
+      </form>
+    </Box>
   )
 };

@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import {
+  Box,
   Button,
   FormControl,
   FormLabel,
   Input,
-  Stack
+  Stack,
+  Heading
 } from '@chakra-ui/react'
 
 interface LoginInput {
@@ -30,34 +32,39 @@ export const Login = () => {
   }
 
   return (
-    <form>
-      <Stack spacing={4}>
-        <FormControl id="username" isRequired>
-          <FormLabel>Username</FormLabel>
-          <Input
-            type="text"
-            name="username"
-            value={username}
-            onChange={handleChange}
-          />
-        </FormControl>
-        <FormControl id="password" isRequired>
-          <FormLabel>Password</FormLabel>
-          <Input
-            type="password"
-            name="password"
-            value={password}
-            onChange={handleChange}
-          />
-        </FormControl>
-      </Stack>
-      <Button
-        mt={10}
-        colorScheme="teal"
-        type="submit"
-      >
-        Submit
-      </Button>
-    </form>
+    <Box px={4}>
+      <Heading size="lg">
+        Login
+      </Heading>
+      <form>
+        <Stack spacing={4}>
+          <FormControl id="username" isRequired>
+            <FormLabel>Username</FormLabel>
+            <Input
+              type="text"
+              name="username"
+              value={username}
+              onChange={handleChange}
+            />
+          </FormControl>
+          <FormControl id="password" isRequired>
+            <FormLabel>Password</FormLabel>
+            <Input
+              type="password"
+              name="password"
+              value={password}
+              onChange={handleChange}
+            />
+          </FormControl>
+        </Stack>
+        <Button
+          mt={10}
+          colorScheme="teal"
+          type="submit"
+        >
+          Submit
+        </Button>
+      </form>
+    </Box>
   )
 };
