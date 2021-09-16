@@ -22,6 +22,19 @@ const queryClient = new QueryClient({
   }
 })
 
+test('it should render navigation and app drawer', () => {
+  render(<App />);
+  const hamburgerButton = screen.getByRole('button', { name: 'Toggle app drawer'});
+  expect(screen.getByRole('button', { name: 'Toggle app drawer'})).toBeInTheDocument();
+  userEvent.click(hamburgerButton);
+  expect(screen.getByRole('dialog')).toBeInTheDocument();
+  expect(screen.getByRole('button', { name: 'Login' })).toBeInTheDocument();
+  expect(screen.getByRole('button', { name: 'Sign up' })).toBeInTheDocument();
+  expect(screen.getByRole('link', { name: 'Create ride' })).toBeInTheDocument();
+  expect(screen.getByRole('link', { name: 'Popular rides' })).toBeInTheDocument();
+  expect(screen.getByRole('link', { name: 'Saved rides' })).toBeInTheDocument();
+})
+
 test('it should render default interface', () => {
   render(<App />);
   expect(screen.getByRole('table')).toBeInTheDocument()
