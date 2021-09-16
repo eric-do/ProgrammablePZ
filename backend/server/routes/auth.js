@@ -10,6 +10,13 @@ router.post(
   AuthController.sendUser
 );
 
+router.post(
+  '/login',
+  AuthController.getUserByLogin,
+  AuthMiddleware.generateToken,
+  AuthController.sendUser
+);
+
 router.get(
   '/validate',
   AuthMiddleware.validateToken,

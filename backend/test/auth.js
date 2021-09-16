@@ -27,7 +27,11 @@ describe('/auth', () => {
     expect(response.body.user).to.have.keys('id', 'email', 'username')
   })
 
-  it('should login user with valid credentials', async () => {
+  it('should login user with valid login credentials', async () => {
+    await request(app)
+      .post("/auth/register")
+      .send(testValidUser);
+
     const response = await request(app)
       .post("/auth/login")
       .send(testValidUser);
@@ -35,6 +39,21 @@ describe('/auth', () => {
     expect(response.status).to.eql(200);
     expect(response.body).to.have.keys('jwt', 'user');
     expect(response.body.user).to.have.keys('id', 'email', 'username')
+  })
+
+  it('should deny user with invalid login credentials', async () => {
+    await request(app)
+      .post("/auth/register")
+      .send(testValidUser);
+
+    const response = await request(app)
+      .post("/auth/login")
+      .send({
+        ...testValidUser,
+        password: 'invalid_password'
+      });
+
+    expect(response.status).to.eql(401);
   })
 
   it('should validate user with valid token', async () => {
