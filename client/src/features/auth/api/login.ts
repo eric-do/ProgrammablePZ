@@ -4,7 +4,7 @@ import { MutationConfig } from 'lib/react-query';
 import { LoginCredentials, UserResponse } from '../types';
 
 export const loginUser = (credentials: LoginCredentials): Promise<UserResponse> => {
-  return axios.post('/auth/signup', credentials);
+  return axios.post('/auth/login', credentials);
 }
 
 export interface UserLoginOptions {
