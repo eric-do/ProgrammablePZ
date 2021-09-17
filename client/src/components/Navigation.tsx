@@ -1,4 +1,6 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
+import { useAuth } from 'lib/auth';
 import { HamburgerIcon } from '@chakra-ui/icons'
 import { Link as RouterLink } from 'react-router-dom';
 import { ColorModeSwitcher } from 'ColorModeSwitcher';
@@ -40,7 +42,14 @@ const userLinks = [
 ]
 
 export const NavBar = () => {
+  const history = useHistory();
   const { isOpen, onToggle, onClose } = useDisclosure();
+  const { user, logout } = useAuth();
+
+  const handleLogout = async () => {
+    await logout();
+    history.push('/');
+  }
 
   return (
     <Box>
@@ -70,24 +79,32 @@ export const NavBar = () => {
           <DrawerCloseButton />
           <DrawerHeader>Programmable PZ</DrawerHeader>
           <DrawerBody>
-            <Flex mb={10} mt={3}>
-              <Link
-                as={RouterLink}
-                to='/login'
-                onClick={onClose}
-              >
-                <Button variant="outline" mr={3} onClick={onClose}>
-                  Login
-                </Button>
-              </Link>
-              <Link
-                as={RouterLink}
-                to='/register'
-                onClick={onClose}
-              >
-                <Button colorScheme="blue">Sign up</Button>
-              </Link>
-            </Flex>
+            { !user &&
+              <Flex mb={10} mt={3}>
+                <Link
+                  as={RouterLink}
+                  to='/login'
+                  onClick={onClose}
+                >
+                  <Button variant="outline" mr={3} onClick={onClose}>
+                    Login
+                  </Button>
+                </Link>
+                <Link
+                  as={RouterLink}
+                  to='/register'
+                  onClick={onClose}
+                >
+                  <Button colorScheme="blue">Sign up</Button>
+                </Link>
+              </Flex>
+            }
+            {
+              user &&
+              <Flex mb={10} mt={3}>
+                <Text>Logged in as: { user.username }</Text>
+              </Flex>
+            }
             <Stack spacing={4} mb={5}>
               {
                 siteLinks.map(link => (
@@ -125,6 +142,11 @@ export const NavBar = () => {
                 ))
               }
             </Stack>
+            <Link onClick={handleLogout}>
+              <Text fontSize="lg">
+                Log out
+              </Text>
+            </Link>
           </DrawerBody>
           <DrawerFooter>
           </DrawerFooter>

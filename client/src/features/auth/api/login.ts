@@ -1,18 +1,18 @@
 import { useMutation } from 'react-query';
 import { axios } from 'lib/axios';
 import { MutationConfig } from 'lib/react-query';
-import { LoginCredentials } from '../types';
+import { LoginCredentials, UserResponse } from '../types';
 
-export const loginUser = (credentials: LoginCredentials) => {
+export const loginUser = (credentials: LoginCredentials): Promise<UserResponse> => {
   return axios.post('/auth/signup', credentials);
 }
 
-interface UseRegisterOptions {
+export interface UserLoginOptions {
   credentials: LoginCredentials,
   config?: MutationConfig<typeof loginUser>
 };
 
-export const useRegisterUser = ({ config }: UseRegisterOptions) => {
+export const useLoginUser = ({ config }: UserLoginOptions) => {
   return useMutation({
     ...config,
     mutationFn: loginUser

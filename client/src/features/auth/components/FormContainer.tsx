@@ -1,7 +1,6 @@
 import React, { ReactNode } from 'react';
 import {
   Box,
-  Button,
   Heading,
 } from '@chakra-ui/react'
 
@@ -16,16 +15,7 @@ export const FormContainer = ({ title, children }: FormContainerProps) => {
       <Heading pb={6} size="lg">
         { title }
       </Heading>
-      <form>
-        { children }
-        <Button
-          mt={10}
-          colorScheme="teal"
-          type="submit"
-        >
-          Submit
-        </Button>
-      </form>
+      { children }
     </Box>
   )
 };

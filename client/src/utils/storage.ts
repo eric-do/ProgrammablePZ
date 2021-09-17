@@ -2,9 +2,8 @@ const storagePrefix = 'ppz_';
 
 const storage = {
   getToken: () => {
-    return JSON.parse(
-      window.localStorage.getItem(`${storagePrefix}token`) as string
-    );
+    return window.localStorage.getItem(`${storagePrefix}token`) as string
+
   },
   setToken: (token: string) => (
     window.localStorage.setItem(`${storagePrefix}token`, token)

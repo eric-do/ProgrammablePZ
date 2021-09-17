@@ -13,8 +13,8 @@ const generateToken = (req, res, next) => {
 }
 
 const validateToken = (req, res, next) => {
-  const  { authorization } = req.headers;
-
+  const { authorization } = req.headers;
+  console.log(authorization)
   try {
     const token = authorization && authorization.split(' ')[1];
 
