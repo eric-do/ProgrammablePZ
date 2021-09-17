@@ -3,7 +3,7 @@ import { Timer } from 'features/timer';
 import { render, screen } from 'test/test-utils';
 import { AppProvider } from 'providers/app';
 
-xit('should render with default props', () => {
+it('should render with default props', () => {
   const defaultProps = {
     workout: {
       timeInSeconds: 0,
@@ -17,7 +17,7 @@ xit('should render with default props', () => {
   expect(screen.getByRole('button', { name: 'Go back' })).toBeInTheDocument();
 })
 
-xit('should render zone chart', () => {
+it('should render zone chart', () => {
   const props = {
     workout: {
       timeInSeconds: 30,

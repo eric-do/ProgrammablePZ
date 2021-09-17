@@ -41,18 +41,21 @@ const logoutFn = async () => {
   window.location.assign(window.location.origin as unknown as string);
 }
 
-const LoaderComponent = () => (
-  <Flex justify="center" align="center">
-    <Spinner data-testid='spinner'/>
-  </Flex>
-)
+const LoaderComponent = () => {
+  return (
+    <Flex justify="center" align="center">
+      <Spinner data-testid='spinner'/>
+    </Flex>
+  )
+}
 
 const authConfig = {
   loadUser,
   loginFn,
   registerFn,
   logoutFn,
-  LoaderComponent
+  LoaderComponent,
+  waitInitial: false
 }
 
 export const { AuthProvider, useAuth } = initReactQueryAuth<

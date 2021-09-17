@@ -16,7 +16,7 @@ const defaultProps = {
   }
 }
 
-xtest('it should render default interface', () => {
+test('it should render default interface', () => {
   render(<AppProvider><Intervals {...defaultProps}/></AppProvider>);
   expect(screen.getByRole('table')).toBeInTheDocument()
   expect(screen.getAllByRole('row')).toHaveLength(2);
@@ -25,14 +25,14 @@ xtest('it should render default interface', () => {
   expect(screen.getByText('Total time')).toBeInTheDocument()
 })
 
-xtest('it should render initialized interface when no intervals added', () => {
+test('it should render initialized interface when no intervals added', () => {
   render(<AppProvider><Intervals {...defaultProps}/></AppProvider>);
   expect(screen.getByText('No intervals set')).toBeInTheDocument()
   expect(screen.getByText('0:00')).toBeInTheDocument()
   expect(screen.getByRole('button', { name: 'Start!' })).toBeDisabled()
 })
 
-xtest('it should display the Add Zone modal when user clicks Add Zone', () => {
+test('it should display the Add Zone modal when user clicks Add Zone', () => {
   render(<AppProvider><Intervals {...defaultProps}/></AppProvider>);
   userEvent.click(screen.getByRole('button', { name: 'Add Zone' }));
 
