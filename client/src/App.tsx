@@ -11,7 +11,7 @@ import { AppProvider } from "providers/app";
 import { NavBar } from "components/Navigation";
 import { ZoneTimer } from "features/timer";
 import { Rides } from "features/rides";
-import { Login, Register } from "features/auth";
+import { Login, Register } from "features/auth/routes";
 
 export const App = () => {
   return (

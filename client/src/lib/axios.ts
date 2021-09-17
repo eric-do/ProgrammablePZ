@@ -1,9 +1,21 @@
-import Axios from 'axios';
+import Axios, { AxiosRequestConfig } from 'axios';
 import { API_URL } from 'config';
+import storage from 'utils/storage';
 
 export const axios = Axios.create({
   baseURL: API_URL
 });
+
+const authRequestInterceptor = (config: AxiosRequestConfig) => {
+  const token = storage.getToken();
+  if (token) {
+    config.headers.authorization = `Bearer ${token}`;
+  }
+  config.headers.Accept = `application/json`;
+  return config;
+}
+
+axios.interceptors.response.use(authRequestInterceptor);
 
 axios.interceptors.response.use(
   response => response.data,
