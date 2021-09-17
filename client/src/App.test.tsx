@@ -30,7 +30,7 @@ describe('Navigation', () => {
     expect(screen.getByRole('button', { name: 'Toggle app drawer'})).toBeInTheDocument();
     userEvent.click(hamburgerButton);
     expect(screen.getByRole('dialog')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Login' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Log in' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Sign up' })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Create ride' })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Popular rides' })).toBeInTheDocument();
@@ -40,8 +40,49 @@ describe('Navigation', () => {
   test('user can navigate to login page', () => {
     renderWithRouter(<App />);
     userEvent.click(screen.getByRole('button', { name: 'Toggle app drawer'}));
-    userEvent.click(screen.getByRole('button', { name: 'Login' }))
-    expect(screen.getByRole('heading', { name: 'Login'})).toBeInTheDocument()
+    userEvent.click(screen.getByRole('button', { name: 'Log in' }))
+    expect(screen.getByRole('heading', { name: 'Log in' })).toBeInTheDocument()
+  })
+
+  test('user can navigate to registration page', () => {
+    renderWithRouter(<App />);
+    userEvent.click(screen.getByRole('button', { name: 'Toggle app drawer'}));
+    userEvent.click(screen.getByRole('button', { name: 'Sign up' }))
+    expect(screen.getByRole('heading', { name: 'Sign up' })).toBeInTheDocument()
+  })
+
+  test('user can navigate to intervals page', () => {
+    renderWithRouter(<App />);
+    userEvent.click(screen.getByRole('button', { name: 'Toggle app drawer'}));
+    userEvent.click(screen.getByRole('link', { name: 'Create ride' }))
+    expect(screen.getByRole('heading', { name: 'Zones' })).toBeInTheDocument()
+  })
+
+  test('user can navigate to intervals page', () => {
+    renderWithRouter(<App />);
+    userEvent.click(screen.getByRole('button', { name: 'Toggle app drawer'}));
+    userEvent.click(screen.getByRole('link', { name: 'Popular rides' }))
+    expect(screen.getByRole('heading', { name: 'Power Zone Rides' })).toBeInTheDocument()
+  })
+})
+
+describe('Auth', () => {
+  xtest('Successful registration takes user to homepage', async () => {
+    renderWithRouter(<App />);
+    userEvent.click(screen.getByRole('button', { name: 'Toggle app drawer'}));
+    userEvent.click(screen.getByRole('button', { name: 'Sign up' }))
+
+    const usernameInput = screen.getByLabelText('Username', {exact: false});
+    const emailInput = screen.getByLabelText('Email', {exact: false});
+    const passwordInput = screen.getByLabelText('Password', {exact: false});
+
+    fireEvent.change(usernameInput, { target: { value: 'test_user '}})
+    fireEvent.change(emailInput, { target: { value: 'user@email.com '}})
+    fireEvent.change(passwordInput, { target: { value: 'password123'}})
+    userEvent.click(screen.getByRole('button', { name: 'Submit'}));
+
+    await waitFor(() => screen.getByRole('heading', { name: 'Zones' }))
+    expect(screen.getByRole('heading', { name: 'Zones' })).toBeInTheDocument()
   })
 })
 

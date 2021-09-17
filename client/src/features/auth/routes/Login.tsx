@@ -8,7 +8,7 @@ export const Login = () => {
   const onSuccess = () => history.push('/');
 
   return (
-    <FormContainer title="Login">
+    <FormContainer title="Log in">
       <LoginForm onSuccess={onSuccess} />
     </FormContainer>
   )

@@ -87,7 +87,7 @@ export const NavBar = () => {
                   onClick={onClose}
                 >
                   <Button variant="outline" mr={3} onClick={onClose}>
-                    Login
+                    Log in
                   </Button>
                 </Link>
                 <Link
@@ -141,14 +141,14 @@ export const NavBar = () => {
                   </Link>
                 ))
               }
+              { user &&
+                <Link onClick={handleLogout}>
+                  <Text fontSize="lg">
+                    Log out
+                  </Text>
+                </Link>
+              }
             </Stack>
-            { user &&
-              <Link onClick={handleLogout}>
-                <Text fontSize="lg">
-                  Log out
-                </Text>
-              </Link>
-            }
           </DrawerBody>
           <DrawerFooter>
           </DrawerFooter>
