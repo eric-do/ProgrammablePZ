@@ -142,11 +142,13 @@ export const NavBar = () => {
                 ))
               }
             </Stack>
-            <Link onClick={handleLogout}>
-              <Text fontSize="lg">
-                Log out
-              </Text>
-            </Link>
+            { user &&
+              <Link onClick={handleLogout}>
+                <Text fontSize="lg">
+                  Log out
+                </Text>
+              </Link>
+            }
           </DrawerBody>
           <DrawerFooter>
           </DrawerFooter>

@@ -7,6 +7,7 @@ import { server } from 'test/server/server';
 import { createMemoryHistory } from 'history'
 import {
   render,
+  renderWithRouter,
   userEvent,
   fireEvent,
   waitFor
@@ -24,7 +25,7 @@ const queryClient = new QueryClient({
 
 describe('Navigation', () => {
   test('it should render navigation and app drawer', () => {
-    render(<App />);
+    renderWithRouter(<App />);
     const hamburgerButton = screen.getByRole('button', { name: 'Toggle app drawer'});
     expect(screen.getByRole('button', { name: 'Toggle app drawer'})).toBeInTheDocument();
     userEvent.click(hamburgerButton);
@@ -36,18 +37,18 @@ describe('Navigation', () => {
     expect(screen.getByRole('link', { name: 'Saved rides' })).toBeInTheDocument();
   })
 
-  xtest('user can navigate to login page', () => {
-    render(<App />);
+  test('user can navigate to login page', () => {
+    renderWithRouter(<App />);
     userEvent.click(screen.getByRole('button', { name: 'Toggle app drawer'}));
     userEvent.click(screen.getByRole('button', { name: 'Login' }))
-    expect(screen.getByRole('heading', { name: 'Login '})).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Login'})).toBeInTheDocument()
   })
 })
 
 
 describe('Create custom ride', () => {
   test('it should render default interface', () => {
-    render(<App />);
+    renderWithRouter(<App />);
     expect(screen.getByRole('table')).toBeInTheDocument()
     expect(screen.getAllByRole('row')).toHaveLength(2);
     expect(screen.getByRole('button', { name: 'Add Zone' })).toBeInTheDocument()
@@ -57,14 +58,14 @@ describe('Create custom ride', () => {
   })
 
   test('it should render initialized interface when no intervals added', () => {
-    render(<App />);
+    renderWithRouter(<App />);
     expect(screen.getByText('No intervals set')).toBeInTheDocument()
     expect(screen.getByText('0:00')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Start!' })).toBeDisabled()
   })
 
   test('it should display the Add Zone modal when user clicks Add Zone', () => {
-    render(<App />);
+    renderWithRouter(<App />);
     userEvent.click(screen.getByRole('button', { name: 'Add Zone' }));
 
     // Header
@@ -80,7 +81,7 @@ describe('Create custom ride', () => {
   })
 
   test('user can add interval to ride, and time is shown in minutes', () => {
-    render(<App />);
+    renderWithRouter(<App />);
     const modalButton = screen.getByRole('button', { name: 'Add Zone' });
     const startButton = screen.getByRole('button', { name: 'Start!' });
     expect(screen.getAllByRole('row')).toHaveLength(2);
@@ -104,7 +105,7 @@ describe('Create custom ride', () => {
   })
 
   test('it should reset table when user hits Reset button', () => {
-    render(<App />);
+    renderWithRouter(<App />);
     const modalButton = screen.getByRole('button', { name: 'Add Zone' });
     const resetButton = screen.getByRole('button', { name: 'Reset' });
 
