@@ -17,4 +17,10 @@ const testRide = {
   timeInSeconds: 180
 };
 
-module.exports = { testRide };
+const testValidUser = {
+  email: 'test@user.com',
+  password: 'password123',
+  username: 'test_user'
+}
+
+module.exports = { testRide, testValidUser };

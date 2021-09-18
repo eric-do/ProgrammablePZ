@@ -1,5 +1,14 @@
 import { Workout } from "types";
 
+export const authResponse = {
+  jwt: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImI5NmYwZGVmLTVhMWYtNGJhOC1hN2QxLWNmZGMyMTA5NjEyZCIsImVtYWlsIjoiZXJpY2RvLjYxN0BnbWFpbC5jb20iLCJ1c2VybmFtZSI6ImRvYm9pIiwiaWF0IjoxNjMxOTAzMzIwLCJleHAiOjE2MzE5MDY5MjB9.d7-4kATh1gQ4mdGDbbCt1ycp9y_wqCZFiTnZoIiC6aU',
+  user: {
+    username: 'test_user',
+    email: 'test@user.com',
+    id: 'abc123'
+  }
+}
+
 export const rides: Workout[] = [
   {
     id: 1,

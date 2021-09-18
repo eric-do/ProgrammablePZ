@@ -8,17 +8,24 @@ import {
   Route
 } from "react-router-dom";
 import { AppProvider } from "providers/app";
-import { ColorModeSwitcher } from "./ColorModeSwitcher";
+import { NavBar } from "components/Navigation";
 import { ZoneTimer } from "features/timer";
 import { Rides } from "features/rides";
+import { Login, Register } from "features/auth/routes";
 
 export const App = () => {
   return (
     <AppProvider>
       <Box textAlign="center" fontSize="xl">
         <Grid minH="100vh" p={3}>
-          <ColorModeSwitcher justifySelf="flex-end" />
+          <NavBar />
           <Switch>
+            <Route exact path="/login">
+              <Login />
+            </Route>
+            <Route exact path="/register">
+              <Register />
+            </Route>
             <Route exact path="/timer">
               <ZoneTimer />
             </Route>
