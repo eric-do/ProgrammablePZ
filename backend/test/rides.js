@@ -11,7 +11,7 @@ const {
   deleteRide
 } = require('./sqlQueries');
 
-describe("/api/rides", () => {
+describe("GET /api/rides", () => {
   it("Should respond to the GET method", async () => {
     const response = await request(app).get("/api/rides");
     expect(response.status).to.eql(200);
@@ -44,6 +44,20 @@ describe("/api/rides", () => {
     expect(response.status).to.eql(200);
     expect(response.body.length).to.eql(3);
   })
+})
+
+describe("POST /api/rides", () => {
+  it("should successfully add new ride", async () => {
+    const response = await request(app)
+                             .post("/api/rides")
+                             .send(testRide);
+    expect(response.status).to.eql(201);
+    expect(response.body).to.have.keys('ride');
+    expect(response.body.ride).to.have.keys(
+      'title', 'type', 'metadata',
+      'ratings', 'intervals', 'timeInSeconds', 'id'
+    );
+  });
 })
 
 describe("/api/rides/:id", () => {

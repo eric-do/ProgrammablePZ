@@ -2,10 +2,12 @@ const express = require('express');
 const router = express.Router();
 const {
   getRides,
+  addRide,
   getRideById,
   incrementRideCount,
   incrementRideLikes,
-  sendRides
+  sendRides,
+  sendCreatedRide
 } = require('../controllers/rides');
 const rideFormatter = require('../middleware/rideFormatter');
 
@@ -14,6 +16,13 @@ router.get(
   getRides,
   rideFormatter,
   sendRides
+);
+
+router.post(
+  '/',
+  addRide,
+  rideFormatter,
+  sendCreatedRide
 );
 
 router.get(

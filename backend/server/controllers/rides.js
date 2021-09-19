@@ -1,6 +1,6 @@
 const RideModel = require('../models/rides');
 const { formatRide } = require('../utils')
-const { InternalServerError } = require('../utils/errors');
+const { InternalServerError, BadRequestError } = require('../utils/errors');
 
 const getRides = async (req, res, next) => {
   try {
@@ -17,6 +17,15 @@ const getRides = async (req, res, next) => {
     next();
   } catch (err) {
     next(new InternalServerError(err));
+  }
+}
+
+const addRide = async (req, res, next) => {
+  try {
+    res.locals.data = await RideModel.addRide(req.body)
+    next();
+  } catch (err) {
+    next(new BadRequestError(err));
   }
 }
 
@@ -57,10 +66,17 @@ const sendRides = (req, res) => {
   res.status(200).send(res.locals.data);
 }
 
+const sendCreatedRide = (req, res) => {
+  const { data: ride } = res.locals
+  res.status(201).send({ ride });
+}
+
 module.exports = {
   getRides,
+  addRide,
   getRideById,
   incrementRideCount,
   incrementRideLikes,
-  sendRides
+  sendRides,
+  sendCreatedRide
 }

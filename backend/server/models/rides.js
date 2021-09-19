@@ -17,6 +17,34 @@ const getRides = async (
   return rides;
 }
 
+const addRide = async (ride) => {
+  const q = `
+    INSERT INTO rides (
+      type, title, timeInSeconds,
+      intervals, created_on
+    ) VALUES ($1, $2, $3, $4, NOW())
+    RETURNING
+      id,
+      type,
+      title,
+      created_on,
+      likes,
+      ride_count,
+      timeinseconds,
+      total_votes,
+      intervals
+  `
+
+  const rows = await query(q, [
+    ride.type,
+    ride.title,
+    ride.timeInSeconds,
+    JSON.stringify(ride.intervals)
+  ])
+
+  return rows[0];
+}
+
 const incrementRideCount = async (rideId) => {
   const q = `
     UPDATE rides
@@ -47,6 +75,7 @@ const getRideById = async (rideId) => {
 
 module.exports = {
   getRides,
+  addRide,
   getRideById,
   incrementRideCount,
   incrementRideLikes
