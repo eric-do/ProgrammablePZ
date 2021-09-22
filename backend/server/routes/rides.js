@@ -9,6 +9,7 @@ const {
   sendRides,
   sendCreatedRide
 } = require('../controllers/rides');
+const { validateToken } = require('../middleware/auth');
 const rideFormatter = require('../middleware/rideFormatter');
 
 router.get(
@@ -39,7 +40,8 @@ router.post(
 );
 
 router.post(
-  '/:id/likes',
+  '/like',
+  validateToken,
   incrementRideLikes,
   sendRides
 );

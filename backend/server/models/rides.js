@@ -1,4 +1,4 @@
-const { query } = require('../../db');
+const { query, getClient, releaseClient } = require('../../db');
 
 const getRides = async (
   limit = 10,
@@ -56,15 +56,35 @@ const incrementRideCount = async (rideId) => {
   return rows;
 }
 
-const incrementRideLikes = async (rideId) => {
-  const q = `
+const incrementRideLikes = async (rideId, userId) => {
+  const updateRide = `
     UPDATE rides
-      SET likes = likes + 1
+      SET likes = likes + 1,
+          total_votes = total_votes + 1
     WHERE id = $1
   `;
 
-  const rows = await query(q, [rideId]);
-  return rows;
+  const updateUserLikes = `
+    INSERT INTO user_likes (ride_id, user_id)
+    VALUES ($1, $2)
+  `
+  try {
+    const client = await getClient();
+
+    try {
+      await client.query('BEGIN');
+      await client.query(updateRide, [rideId]);
+      await client.query(updateUserLikes, [rideId, userId]);
+      await client.query('COMMIT')
+    } catch (err) {
+      await client.query('ROLLBACK');
+      throw 'Error adding new like';
+    } finally {
+      await client.release();
+    }
+  } catch (err) {
+    throw 'Error executing query';
+  }
 }
 
 const getRideById = async (rideId) => {

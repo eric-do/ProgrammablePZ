@@ -52,10 +52,11 @@ const incrementRideCount = async (req, res, next) => {
 }
 
 const incrementRideLikes = async (req, res, next) => {
-  const { id } = req.params;
+  const { rideId } = req.query;
+  const { id: userId } = res.locals.data.user;
 
   try {
-    res.locals.data = await RideModel.incrementRideLikes(id);
+    res.locals.data = await RideModel.incrementRideLikes(rideId, userId);
     next()
   } catch (err) {
     next(new InternalServerError(err));

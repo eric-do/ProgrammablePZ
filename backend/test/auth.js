@@ -5,7 +5,8 @@ const app = require('../server/app');
 const { query } = require('../db/index')
 const { testValidUser } = require('./data');
 const {
-  deleteUser
+  deleteTestUsers,
+  truncateRideLikes
 } = require('./sqlQueries');
 
 describe('/auth', () => {
@@ -13,8 +14,9 @@ describe('/auth', () => {
 
   })
 
-  afterEach(() => {
-    query(deleteUser, [testValidUser.email]);
+  afterEach(async () => {
+    await query(truncateRideLikes)
+    await query(deleteTestUsers);
   })
 
   it('should create new user with valid credentials', async () => {

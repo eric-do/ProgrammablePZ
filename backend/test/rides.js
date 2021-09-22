@@ -65,8 +65,9 @@ describe("/api/rides/:id", () => {
 
   });
 
-  afterEach(async () => {
-    await query(deleteRide, [testRide.title])
+  afterEach(() => {
+    return query(deleteRide, [testRide.title])
+      .catch(console.error)
   })
 
   it("Should respond to the GET method", async () => {
@@ -101,30 +102,5 @@ describe("/api/rides/:id", () => {
 
     const { body: newRide } = await request(app).get(`/api/rides/${id}`);
     expect(newRide.metadata.rideCount).to.eql(1)
-  });
-
-  it("Should increment ride likes", async () => {
-    const oldRows = await query(getRides);
-    const oldCount = oldRows.length;
-
-    const rows = await query(insertRide, [
-      testRide.type,
-      testRide.title,
-      testRide.metadata.rideCount,
-      testRide.ratings.likes,
-      testRide.ratings.total,
-      testRide.timeInSeconds,
-      JSON.stringify(testRide.intervals)
-    ]);
-
-    const id = rows[0].id;
-
-    const { body: oldRide } = await request(app).get(`/api/rides/${id}`);
-    expect(oldRide.ratings.likes).to.eql(0)
-
-    await request(app).post(`/api/rides/${id}/likes`);
-
-    const { body: newRide } = await request(app).get(`/api/rides/${id}`);
-    expect(newRide.ratings.likes).to.eql(1)
   });
 })

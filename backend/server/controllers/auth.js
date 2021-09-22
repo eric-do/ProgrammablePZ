@@ -20,7 +20,7 @@ const getUserByLogin = async (req, res, next) => {
   try {
     const { id, username, email} = await AuthModel.getUserByLogin(credentials);
 
-    if (!id) throw 'Invalid login';
+    if (!id) { throw new Error('Invalid login') }
 
     res.locals.user = { id, username, email };
     next();
