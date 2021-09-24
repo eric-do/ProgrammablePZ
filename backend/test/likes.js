@@ -33,6 +33,10 @@ describe('POST /api/ride/like', () => {
     const addRideResponse = await request(app)
       .post("/api/rides")
       .send(testRide)
+      .set({
+        'Authorization': 'Bearer ' + jwt,
+        'Content-Type': 'application/json'
+      });
 
     const { ride } = addRideResponse.body;
 

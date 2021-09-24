@@ -21,6 +21,7 @@ router.get(
 
 router.post(
   '/',
+  validateToken,
   addRide,
   rideFormatter,
   sendCreatedRide

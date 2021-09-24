@@ -4,11 +4,12 @@ let request = require('supertest');
 const app = require('../server/app');
 const user = require('./auth')
 const { query } = require('../db/index')
-const { testRide } = require('./data');
+const { testRide, testValidUser } = require('./data');
 const {
   getRides,
   insertRide,
-  deleteRide
+  deleteRide,
+  deleteTestUsers
 } = require('./sqlQueries');
 
 describe("GET /api/rides", () => {
@@ -47,16 +48,42 @@ describe("GET /api/rides", () => {
 })
 
 describe("POST /api/rides", () => {
-  it("should successfully add new ride", async () => {
+  afterEach(() => {
+    return Promise.all([
+      query(deleteTestUsers),
+      query(deleteRide, [testRide.title])
+    ])
+  })
+
+  it("should successfully add ride from authenticated user", async () => {
+    const { body } = await request(app)
+      .post("/auth/register")
+      .send(testValidUser);
+
+    const { jwt } = body;
+
     const response = await request(app)
-                             .post("/api/rides")
-                             .send(testRide);
+                            .post("/api/rides")
+                            .send(testRide)
+                            .set({
+                              'Authorization': 'Bearer ' + jwt,
+                              'Content-Type': 'application/json'
+                            });
+
     expect(response.status).to.eql(201);
     expect(response.body).to.have.keys('ride');
     expect(response.body.ride).to.have.keys(
       'title', 'type', 'metadata',
       'ratings', 'intervals', 'timeInSeconds', 'id'
     );
+  });
+
+  it("should fail adding ride from unauthenticated user", async () => {
+    const response = await request(app)
+                            .post("/api/rides")
+                            .send(testRide)
+
+    expect(response.status).to.eql(401);
   });
 })
 
