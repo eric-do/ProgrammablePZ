@@ -9,6 +9,7 @@ import {
 } from "react-router-dom";
 import { AppProvider } from "providers/app";
 import { NavBar } from "components/Navigation";
+import { PrivateRoute } from "features/auth/components/PrivateRoute";
 import { ZoneTimer } from "features/timer";
 import { Rides } from "features/rides";
 import { Login, Register } from "features/auth/routes";
@@ -32,6 +33,9 @@ export const App = () => {
             <Route exact path="/rides">
               <Rides />
             </Route>
+            <PrivateRoute path="/favorites">
+
+            </PrivateRoute>
             <Route exact path="/">
               <ZoneTimer />
             </Route>

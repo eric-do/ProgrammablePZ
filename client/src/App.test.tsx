@@ -64,6 +64,14 @@ describe('Navigation', () => {
     userEvent.click(screen.getByRole('link', { name: 'Popular rides' }))
     expect(screen.getByRole('heading', { name: 'Power Zone Rides' })).toBeInTheDocument()
   })
+
+  test('Unauthenticatd user gets redirected to login', async () => {
+    renderWithRouter(<App />);
+    userEvent.click(screen.getByRole('button', { name: 'Toggle app drawer'}));
+    userEvent.click(screen.getByRole('link', { name: 'Saved rides' }))
+    expect(screen.getByRole('heading', { name: 'Log in' })).toBeInTheDocument()
+
+  })
 })
 
 describe('Auth', () => {
