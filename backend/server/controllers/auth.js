@@ -10,6 +10,7 @@ const registerUser = async (req, res, next) => {
     res.status(201);
     next()
   } catch (err) {
+    console.log(err)
     next(err);
   }
 }

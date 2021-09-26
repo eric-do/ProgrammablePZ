@@ -95,12 +95,29 @@ describe('Rides', () => {
     });
 
     afterEach(() => {
-      return query(deleteRide, [testRide.title])
-        .catch(console.error)
+      return Promise.all([
+          query(deleteTestUsers),
+          query(deleteRide, [testRide.title])
+        ])
     })
 
     it("Should respond to the GET method", async () => {
-      const response = await request(app).get("/api/rides/11");
+      const { body } = await request(app)
+        .post("/auth/register")
+        .send(testValidUser);
+
+      const { jwt } = body;
+
+      const insertResponse = await request(app)
+                              .post("/api/rides")
+                              .send(testRide)
+                              .set({
+                                'Authorization': 'Bearer ' + jwt,
+                                'Content-Type': 'application/json'
+                              });
+
+      const { id } = insertResponse.body.ride;
+      const response = await request(app).get(`/api/rides/${id}`);
       expect(response.status).to.eql(200);
       expect(response.body).to.have.keys(
         'title', 'type', 'metadata',

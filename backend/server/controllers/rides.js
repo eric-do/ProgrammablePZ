@@ -21,8 +21,10 @@ const getRides = async (req, res, next) => {
 }
 
 const addRide = async (req, res, next) => {
+  const { id: userId } = res.locals.data.user;
+
   try {
-    res.locals.data = await RideModel.addRide(req.body)
+    res.locals.data = await RideModel.addRide(req.body, userId)
     next();
   } catch (err) {
     next(new BadRequestError(err));

@@ -17,12 +17,12 @@ const getRides = async (
   return rides;
 }
 
-const addRide = async (ride) => {
+const addRide = async (ride, userId) => {
   const q = `
     INSERT INTO rides (
       type, title, timeInSeconds,
-      intervals, created_on
-    ) VALUES ($1, $2, $3, $4, NOW())
+      intervals, creator_id
+    ) VALUES ($1, $2, $3, $4, $5)
     RETURNING
       id,
       type,
@@ -39,7 +39,8 @@ const addRide = async (ride) => {
     ride.type,
     ride.title,
     ride.timeInSeconds,
-    JSON.stringify(ride.intervals)
+    JSON.stringify(ride.intervals),
+    userId
   ])
 
   return rows[0];
