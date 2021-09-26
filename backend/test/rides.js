@@ -13,6 +13,23 @@ const {
 } = require('./sqlQueries');
 
 describe('Rides', () => {
+  let jwt;
+
+  before(async () => {
+    const { body } = await request(app)
+        .post("/auth/register")
+        .send(testValidUser);
+
+    jwt = body.jwt;
+  })
+
+  after(() => {
+    return query(deleteTestUsers)
+  })
+
+  afterEach(() => {
+    return query(deleteRide, [testRide.title]);
+  })
 
   describe("GET /api/rides", () => {
     it("Should respond to the GET method", async () => {
@@ -50,20 +67,8 @@ describe('Rides', () => {
   })
 
   describe("POST /api/rides", () => {
-    afterEach(() => {
-      return Promise.all([
-        query(deleteTestUsers),
-        query(deleteRide, [testRide.title])
-      ])
-    })
 
     it("should successfully add ride from authenticated user", async () => {
-      const { body } = await request(app)
-        .post("/auth/register")
-        .send(testValidUser);
-
-      const { jwt } = body;
-
       const response = await request(app)
                               .post("/api/rides")
                               .send(testRide)
@@ -90,24 +95,8 @@ describe('Rides', () => {
   })
 
   describe("GET /api/rides/:id", () => {
-    beforeEach(async () => {
-
-    });
-
-    afterEach(() => {
-      return Promise.all([
-          query(deleteTestUsers),
-          query(deleteRide, [testRide.title])
-        ])
-    })
 
     it("Should respond to the GET method", async () => {
-      const { body } = await request(app)
-        .post("/auth/register")
-        .send(testValidUser);
-
-      const { jwt } = body;
-
       const insertResponse = await request(app)
                               .post("/api/rides")
                               .send(testRide)

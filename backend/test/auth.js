@@ -6,16 +6,13 @@ const { query } = require('../db/index')
 const { testValidUser } = require('./data');
 const {
   deleteTestUsers,
-  truncateRideLikes
+  deleteRideLikes
 } = require('./sqlQueries');
 
 describe('Authentication', () => {
-  beforeEach(() => {
-
-  })
 
   afterEach(async () => {
-    await query(truncateRideLikes)
+    await query(deleteRideLikes)
     await query(deleteTestUsers);
   })
 

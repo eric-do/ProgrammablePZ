@@ -6,30 +6,35 @@ const { query } = require('../db/index')
 const { testValidUser, testRide } = require('./data');
 const {
   deleteTestUsers,
-  truncateRideLikes,
+  deleteRideLikes,
   deleteRide
 } = require('./sqlQueries');
 
 describe('Likes', () => {
-  describe('POST /api/ride/like', () => {
-    beforeEach(() => {
+  let jwt;
 
-    })
+  before(async () => {
+    const { body } = await request(app)
+        .post("/auth/register")
+        .send(testValidUser);
+
+    jwt = body.jwt;
+  })
+
+  after(() => {
+    return query(deleteTestUsers)
+  })
+
+  describe('POST /api/ride/like', () => {
 
     afterEach(() => {
       return Promise.all([
-        query(truncateRideLikes),
-        query(deleteTestUsers),
+        query(deleteRideLikes),
         query(deleteRide, [testRide.title])
       ])
     })
 
     it('should increment ride likes', async () => {
-      const registerResponse = await request(app)
-        .post("/auth/register")
-        .send(testValidUser);
-
-      const { jwt } = registerResponse.body;
 
       const addRideResponse = await request(app)
         .post("/api/rides")
