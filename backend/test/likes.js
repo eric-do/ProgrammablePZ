@@ -38,7 +38,7 @@ describe('Likes', () => {
 
       const addRideResponse = await request(app)
         .post("/api/rides")
-        .send(testRide)
+        .send({ ride: testRide })
         .set({
           'Authorization': 'Bearer ' + jwt,
           'Content-Type': 'application/json'

@@ -71,7 +71,7 @@ describe('Rides', () => {
     it("should successfully add ride from authenticated user", async () => {
       const response = await request(app)
                               .post("/api/rides")
-                              .send(testRide)
+                              .send({ ride: testRide })
                               .set({
                                 'Authorization': 'Bearer ' + jwt,
                                 'Content-Type': 'application/json'
@@ -88,7 +88,7 @@ describe('Rides', () => {
     it("should fail adding ride from unauthenticated user", async () => {
       const response = await request(app)
                               .post("/api/rides")
-                              .send(testRide)
+                              .send({ ride: testRide })
 
       expect(response.status).to.eql(401);
     });
@@ -99,7 +99,7 @@ describe('Rides', () => {
     it("Should respond to the GET method", async () => {
       const insertResponse = await request(app)
                               .post("/api/rides")
-                              .send(testRide)
+                              .send({ ride: testRide })
                               .set({
                                 'Authorization': 'Bearer ' + jwt,
                                 'Content-Type': 'application/json'

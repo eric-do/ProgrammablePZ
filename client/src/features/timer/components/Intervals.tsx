@@ -17,6 +17,7 @@ import { useDisclosure, Box } from "@chakra-ui/react"
 import { useRide } from 'providers/RideProvider';
 import { Interval } from 'types';
 import { ZoneModal } from './ZoneModal';
+import { SaveRideModal } from './SaveRideModal';
 import { ZoneGraph } from 'components';
 
 interface Props {
@@ -31,7 +32,16 @@ export const Intervals = ({
   startWorkout
 }: Props ) => {
   const { ride, setRide } = useRide();
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isOpenZone,
+    onOpen: onOpenZone,
+    onClose: onCloseZone
+  } = useDisclosure();
+  const {
+    isOpen: isOpenSave,
+    onOpen: onOpenSave,
+    onClose: onCloseSave
+  } = useDisclosure();
   const minutes = Math.floor(ride.timeInSeconds / 60)
   const seconds = ride.timeInSeconds % 60;
   const formattedSeconds = seconds.toLocaleString('en-US', {
@@ -119,9 +129,16 @@ export const Intervals = ({
         />
         <Button
           colorScheme="blue"
-          onClick={onOpen}
+          onClick={onOpenZone}
         >
           Add Zone
+        </Button>
+        <Button
+          colorScheme="red"
+          isDisabled={intervals.length === 0}
+          onClick={onOpenSave}
+        >
+          Save ride
         </Button>
         <ButtonGroup spacing={2}>
           <Button
@@ -142,9 +159,13 @@ export const Intervals = ({
           </Button>
         </ButtonGroup>
         <ZoneModal
-          isOpen={isOpen}
-          onClose={onClose}
+          isOpen={isOpenZone}
+          onClose={onCloseZone}
           addInterval={addInterval}
+        />
+        <SaveRideModal
+          isOpen={isOpenSave}
+          onClose={onCloseSave}
         />
 
       </Stack>
