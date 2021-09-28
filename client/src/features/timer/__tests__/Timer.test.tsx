@@ -1,7 +1,15 @@
 import React from 'react';
-import { Timer } from 'features/timer';
-import { render, screen } from 'test/test-utils';
+import { Timer, ZoneTimer } from 'features/timer';
+import {
+  render,
+  screen,
+  userEvent,
+  fireEvent,
+  waitForElementToBeRemoved,
+  waitFor
+} from 'test/test-utils';
 import { AppProvider } from 'providers/app';
+import { AuthProvider } from 'lib/auth';
 
 it('should render with default props', () => {
   const defaultProps = {

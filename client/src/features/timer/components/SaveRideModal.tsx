@@ -8,7 +8,8 @@ import {
   ModalBody,
   ModalCloseButton,
   ModalFooter,
-  Input
+  Input,
+  useToast
 } from "@chakra-ui/react"
 import { useRide } from 'providers/RideProvider';
 import { useCreateRide } from 'features/rides/api/createRide';
@@ -18,12 +19,12 @@ interface SaveRideModalProps {
   onClose: () => void;
 };
 
-
 export const SaveRideModal = ({ isOpen, onClose }: SaveRideModalProps) => {
   const { ride } = useRide();
+  const toast = useToast();
   const createRideMutation = useCreateRide({ ride });
   const [title, setTitle] = useState(`${new Date().toLocaleDateString('en-US')} ride`)
-
+  const mutateData = { data: { ride: { ...ride, title } }};
 
   const handleTitleChange = (event: React.FormEvent<HTMLInputElement>) => {
     const { value } = event.currentTarget;
@@ -32,19 +33,15 @@ export const SaveRideModal = ({ isOpen, onClose }: SaveRideModalProps) => {
   }
 
   const handleSubmit = () => {
-    console.log('creating ride');
-    createRideMutation.mutate({
-      data: {
-        ride: {
-          ...ride,
-          title
-        }
-      }
-    })
-  }
-
-  if (createRideMutation.isError && createRideMutation.error) {
-    console.log(createRideMutation.error.message)
+      createRideMutation.mutate(mutateData)
+      toast({
+        title: "Ride saved!",
+        description: "Find it in your Saved Rides.",
+        status: "success",
+        duration: 9000,
+        isClosable: true,
+      })
+      onClose()
   }
 
   return (

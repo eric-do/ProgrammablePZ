@@ -1,7 +1,7 @@
 import React from 'react';
-import { userEvent, render, screen, fireEvent } from 'test/test-utils';
+import { userEvent, render, screen, fireEvent, waitFor, act } from 'test/test-utils';
 import { AppProvider } from 'providers/app';
-import { Intervals } from 'features/timer';
+import { Intervals, ZoneTimer } from 'features/timer';
 import { Interval } from 'types';
 
 const defaultProps = {
@@ -48,3 +48,27 @@ test('it should display the Add Zone modal when user clicks Add Zone', () => {
   expect(screen.getByRole('button', { name: 'Add' })).toBeInTheDocument()
 })
 
+it('should create ride as logged in user', async () => {
+  render(
+    <AppProvider>
+      <ZoneTimer />
+    </AppProvider>
+  )
+
+  userEvent.click(screen.getByRole('button', { name: 'Add Zone' }));
+
+  const zoneDropdown = screen.getByTestId('zone-dropdown') as HTMLSelectElement;
+  const lengthDropdown = screen.getByTestId('length-dropdown') as HTMLSelectElement;
+
+  fireEvent.change(zoneDropdown, { target: { value: '1' }});
+  fireEvent.change(lengthDropdown, { target: { value: '60' }});
+  userEvent.click(screen.getByRole('button', { name: 'Add' }));
+
+  userEvent.click(screen.getByRole('button', { name: 'Save ride' }));
+
+  expect(screen.getByText('Name this ride')).toBeInTheDocument();
+  act(() => userEvent.click(screen.getByRole('button', { name: 'Save' })));
+  await waitFor(() => screen.getByText('Ride saved!'));
+  expect(screen.getByText('Ride saved!')).toBeInTheDocument();
+  expect(screen.getByText('Find it in your Saved Rides.')).toBeInTheDocument();
+})
