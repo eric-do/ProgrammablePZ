@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const { AuthorizationError } = require('../utils/errors');
+const { AuthenticationError } = require('../utils/errors');
 
 const generateToken = (req, res, next) => {
   const { user } = res.locals;
@@ -23,7 +23,7 @@ const validateToken = (req, res, next) => {
     res.locals.data = { jwt: token, user}
     next();
   } catch (err) {
-    next(new AuthorizationError(err));
+    next(new AuthenticationError(err));
   }
 }
 

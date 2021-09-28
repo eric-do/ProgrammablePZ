@@ -56,6 +56,7 @@ describe('Authentication', () => {
         });
 
       expect(response.status).to.eql(401);
+      expect(response.body.error).to.eql('Invalid username or password');
     })
   })
 

@@ -67,7 +67,7 @@ it('should create ride as logged in user', async () => {
   userEvent.click(screen.getByRole('button', { name: 'Save ride' }));
 
   expect(screen.getByText('Name this ride')).toBeInTheDocument();
-  act(() => userEvent.click(screen.getByRole('button', { name: 'Save' })));
+  userEvent.click(screen.getByRole('button', { name: 'Save' }));
   await waitFor(() => screen.getByText('Ride saved!'));
   expect(screen.getByText('Ride saved!')).toBeInTheDocument();
   expect(screen.getByText('Find it in your Saved Rides.')).toBeInTheDocument();
