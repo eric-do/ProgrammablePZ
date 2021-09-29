@@ -22,8 +22,12 @@ const defaultFilter =  {
   timeInSeconds:'all'
 }
 
-export const Rides = () => {
-  const [filters, setFilters] = useState<QueryOptions>(defaultFilter);
+interface RidesProps {
+  user?: string;
+}
+
+export const Rides = ({ user }: RidesProps) => {
+  const [filters, setFilters] = useState<QueryOptions>({ ...defaultFilter, user });
   const { type, timeInSeconds } = filters;
 
   const handleFilter = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -80,7 +84,7 @@ interface RideListProps {
   options: QueryOptions
 }
 
-const RideList = ({options}: RideListProps) => {
+export const RideList = ({options}: RideListProps) => {
   const { data: rides, isLoading, error } = useRides({ options });
   const history = useHistory();
   const { setRide } = useRide();

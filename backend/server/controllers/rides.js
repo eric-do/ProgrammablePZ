@@ -5,6 +5,7 @@ const { InternalServerError, BadRequestError } = require('../utils/errors');
 const getRides = async (req, res, next) => {
   try {
     let {
+      user,
       type,
       timeInSeconds,
       limit = 10
@@ -13,7 +14,11 @@ const getRides = async (req, res, next) => {
     type = type === 'all' ? null : type;
     timeInSeconds = timeInSeconds === 'all' ? null : timeInSeconds;
 
-    res.locals.data = await RideModel.getRides(limit, type, timeInSeconds);
+    if (user) {
+      res.locals.data = await RideModel.getRidesByUser(user, limit, type, timeInSeconds);
+    } else {
+      res.locals.data = await RideModel.getRides(limit, type, timeInSeconds);
+    }
     next();
   } catch (err) {
     next(new InternalServerError(err));

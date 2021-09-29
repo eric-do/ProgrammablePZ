@@ -64,6 +64,20 @@ describe('Rides', () => {
       expect(response.status).to.eql(200);
       expect(response.body.length).to.eql(3);
     })
+
+    it("Should respond with rides filtered by user", async () => {
+      await request(app)
+              .post("/api/rides")
+              .send({ ride: testRide })
+              .set({
+                'Authorization': 'Bearer ' + jwt,
+                'Content-Type': 'application/json'
+              });
+
+      const response = await request(app).get(`/api/rides?user=${testValidUser.username}`);
+      expect(response.status).to.eql(200);
+      expect(response.body.length).to.eql(1);
+    })
   })
 
   describe("POST /api/rides", () => {

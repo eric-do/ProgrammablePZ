@@ -5,6 +5,7 @@ import { QueryConfig, QueryOptions } from 'lib/react-query';
 
 export const getRides = (
   {
+    user,
     limit = 10,
     type,
     timeInSeconds
@@ -14,7 +15,8 @@ export const getRides = (
     params: {
       limit,
       type,
-      timeInSeconds
+      timeInSeconds,
+      user
     }
   });
 }

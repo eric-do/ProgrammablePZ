@@ -17,6 +17,39 @@ const getRides = async (
   return rides;
 }
 
+const getRidesByUser = async (
+  user,
+  limit = 10,
+  types,
+  lengths
+) => {
+  const q = `
+    SELECT
+      r.id,
+      r.creator_id,
+      r.title,
+      r.type,
+      r.likes,
+      r.dislikes,
+      r.total_votes,
+      r.ride_count,
+      r.intervals,
+      r.timeInSeconds,
+      r.created_on
+    FROM rides as r
+    INNER JOIN users as u
+      ON u.id = r.creator_id
+    WHERE u.username = $1
+      AND ($2::VARCHAR IS NULL OR r.type = $2)
+      AND ($3::INT IS NULL OR r.timeInSeconds = $3)
+    ORDER BY r.created_on DESC
+    LIMIT $4
+  `;
+
+  const rides = await query(q, [user, types, lengths, limit]);
+  return rides;
+}
+
 const addRide = async (ride, userId) => {
   const q = `
     INSERT INTO rides (
@@ -96,6 +129,7 @@ const getRideById = async (rideId) => {
 
 module.exports = {
   getRides,
+  getRidesByUser,
   addRide,
   getRideById,
   incrementRideCount,
