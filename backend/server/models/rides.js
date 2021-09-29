@@ -9,6 +9,7 @@ const getRides = async (
     SELECT * FROM rides
     WHERE ($1::VARCHAR IS NULL OR type = $1)
     AND ($2::INT IS NULL OR timeInSeconds = $2)
+    AND creator_id IS NULL
     ORDER BY created_on DESC
     LIMIT $3
   `;

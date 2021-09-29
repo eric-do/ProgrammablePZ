@@ -67,6 +67,15 @@ it('should create ride as logged in user', async () => {
   userEvent.click(screen.getByRole('button', { name: 'Save ride' }));
 
   expect(screen.getByText('Name this ride')).toBeInTheDocument();
+
+  const titleInput = screen.getByLabelText('Name');
+  const typeInput = screen.getByLabelText('Type');
+  const lengthInput = screen.getByLabelText('Length');
+
+  fireEvent.change(titleInput, { target: { value: 'Test ride' }});
+  fireEvent.change(typeInput, { target: { value: 'pzm' }});
+  fireEvent.change(lengthInput, { target: { value: '2700' }});
+
   userEvent.click(screen.getByRole('button', { name: 'Save' }));
   await waitFor(() => screen.getByText('Ride saved!'));
   expect(screen.getByText('Ride saved!')).toBeInTheDocument();
