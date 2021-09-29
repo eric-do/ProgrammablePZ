@@ -1,14 +1,15 @@
 require('dotenv').config()
+process.env.DATABASE_URL = 'postgres://postgres@localhost:5432/ppz'
+
 const { query } = require('./');
 const { rides } = require('./data');
 
 const bulkInsert = rides => {
   const q = `
     INSERT INTO rides (
-      type, title, ride_count,
-      likes, total_votes, timeInSeconds,
-      created_on, intervals
-    ) VALUES ($1, $2, $3, $4, $5, $6, NOW(), $7);
+      type, title, ride_count, likes,
+      total_votes, timeInSeconds, intervals
+    ) VALUES ($1, $2, $3, $4, $5, $6, $7);
   `
   const promises = rides.map(ride => (
     query(q, [
@@ -24,7 +25,7 @@ const bulkInsert = rides => {
 
   Promise.all(promises)
     .then(() => console.log('added'))
-    .catch(() => console.log('error'))
+    .catch((e) => console.log(e))
 }
 
 bulkInsert(rides);

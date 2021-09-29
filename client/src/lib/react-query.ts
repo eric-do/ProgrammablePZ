@@ -20,6 +20,7 @@ export interface QueryOptions {
   limit?: number;
   type?: string;
   timeInSeconds?: string;
+  user?: string;
 }
 
 export const queryClient = new QueryClient({ defaultOptions: queryConfig});

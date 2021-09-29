@@ -9,4 +9,7 @@ export const ridesHandlers = [
   rest.post(`${API_URL}/api/rides/:rideId/ride-count`, (req, res, ctx) => {
     return res(ctx.status(200))
   }),
+  rest.post(`${API_URL}/api/rides/`, (req, res, ctx) => {
+    return res(ctx.status(201))
+  }),
 ]

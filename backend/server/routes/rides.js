@@ -2,11 +2,14 @@ const express = require('express');
 const router = express.Router();
 const {
   getRides,
+  addRide,
   getRideById,
   incrementRideCount,
   incrementRideLikes,
-  sendRides
+  sendRides,
+  sendCreatedRide
 } = require('../controllers/rides');
+const { validateToken } = require('../middleware/auth');
 const rideFormatter = require('../middleware/rideFormatter');
 
 router.get(
@@ -14,6 +17,14 @@ router.get(
   getRides,
   rideFormatter,
   sendRides
+);
+
+router.post(
+  '/',
+  validateToken,
+  addRide,
+  rideFormatter,
+  sendCreatedRide
 );
 
 router.get(
@@ -30,7 +41,8 @@ router.post(
 );
 
 router.post(
-  '/:id/likes',
+  '/like',
+  validateToken,
   incrementRideLikes,
   sendRides
 );

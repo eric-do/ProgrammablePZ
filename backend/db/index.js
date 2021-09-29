@@ -1,4 +1,4 @@
-const { Pool } = require('pg');
+const { Pool, PoolClient } = require('pg');
 
 const prodConfig = {
   connectionString: process.env.DATABASE_URL,
@@ -18,4 +18,26 @@ module.exports = {
     const { rows } = await pool.query(text, params)
     return rows;
   },
+  getClient: async () => {
+    const client = await pool.connect();
+    return client;
+  },
+  releaseClient: async (client) => {
+    await client.release();
+  },
+  transaction: async (callback) => {
+    const client = await pool.connect();
+
+    try {
+      await client.query('BEGIN');
+      try {
+        await callback(client);
+        await client.query('COMMIT');
+      } catch (err) {
+        await client.query('ROLLBACK');
+      }
+    } finally {
+        client.release();
+    }
+  }
 }
