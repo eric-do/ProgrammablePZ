@@ -6,6 +6,7 @@ import {
   FormLabel,
   Input,
   Stack,
+  useToast
 } from '@chakra-ui/react'
 
 interface LoginInput {
@@ -23,6 +24,7 @@ interface LoginFormProps {
 }
 
 export const LoginForm = ({ onSuccess }: LoginFormProps ) => {
+  const toast = useToast();
   const [input, setInput] = useState<LoginInput>(defaultInput)
   const { login } = useAuth();
   const { username, password } = input;
@@ -37,8 +39,18 @@ export const LoginForm = ({ onSuccess }: LoginFormProps ) => {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    await login(input)
-    onSuccess();
+    try {
+      await login(input);
+      onSuccess();
+    } catch (err: any) {
+      toast({
+        title: "Login unsuccessful",
+        description: err.response.data.error,
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+      });
+    }
   }
 
   return (
