@@ -26,6 +26,19 @@ describe('Authentication', () => {
       expect(response.body).to.have.keys('jwt', 'user');
       expect(response.body.user).to.have.keys('id', 'email', 'username')
     })
+
+    it('should deny registration with an unavailable username', async () => {
+      await request(app)
+        .post("/auth/register")
+        .send(testValidUser);
+
+      const response = await request(app)
+        .post("/auth/register")
+        .send(testValidUser);
+
+      expect(response.status).to.eql(409);
+      expect(response.body.error).to.eql('Username or email are unavailable.');
+    })
   })
 
   describe('POST /auth/login', () => {
@@ -56,7 +69,7 @@ describe('Authentication', () => {
         });
 
       expect(response.status).to.eql(401);
-      expect(response.body.error).to.eql('Invalid username or password');
+      expect(response.body.error).to.eql('Invalid username or password.');
     })
   })
 

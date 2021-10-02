@@ -5,7 +5,8 @@ import {
   FormControl,
   FormLabel,
   Input,
-  Stack
+  Stack,
+  useToast
 } from '@chakra-ui/react'
 
 interface RegisterInput {
@@ -25,6 +26,7 @@ interface RegisterFormProps {
 }
 
 export const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
+  const toast = useToast();
   const [input, setInput] = useState<RegisterInput>(defaultInput)
   const { register } = useAuth();
   const { username, password, email } = input;
@@ -39,8 +41,18 @@ export const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    await register(input);
-    onSuccess();
+    try {
+      await register(input);
+      onSuccess();
+    } catch (err: any) {
+      toast({
+        title: "Registration unsuccessful",
+        description: err.response.data.error,
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+      })
+    }
   }
 
   return (

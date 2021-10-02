@@ -92,6 +92,32 @@ describe('Auth', () => {
     await waitFor(() => screen.getByRole('heading', { name: 'Zones' }))
     expect(screen.getByRole('heading', { name: 'Zones' })).toBeInTheDocument()
   })
+
+  xtest('login form displays error message for invalid login', async () => {
+    server.use(
+      rest.post(`${API_URL}/auth/login`, (req, res, ctx) => {
+        return res(
+          ctx.status(401),
+          ctx.json({
+            error: 'Invalid username or password'
+          })
+        )
+      }),
+    );
+
+    renderWithRouter(<App />);
+    userEvent.click(screen.getByRole('button', { name: 'Toggle app drawer'}));
+    userEvent.click(screen.getByRole('button', { name: 'Log in' }))
+
+    const usernameInput = screen.getByLabelText('Username', {exact: false});
+    const passwordInput = screen.getByLabelText('Password', {exact: false});
+    fireEvent.change(usernameInput, { target: { value: 'test_user '}})
+    fireEvent.change(passwordInput, { target: { value: 'password123'}})
+    userEvent.click(screen.getByRole('button', { name: 'Submit'}));
+
+    await waitFor(() => screen.getByRole('alert'))
+    expect(screen.getByText('Invalid username or password')).toBeInTheDocument();
+  })
 })
 
 

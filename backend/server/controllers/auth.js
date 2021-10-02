@@ -1,5 +1,5 @@
 const AuthModel = require('../models/auth');
-const { InvalidLoginError } = require('../utils/errors');
+const { InvalidLoginError, InvalidRegistrationError } = require('../utils/errors');
 
 const registerUser = async (req, res, next) => {
   const credentials = req.body;
@@ -10,8 +10,7 @@ const registerUser = async (req, res, next) => {
     res.status(201);
     next()
   } catch (err) {
-    console.log(err)
-    next(err);
+    next(new InvalidRegistrationError(err));
   }
 }
 

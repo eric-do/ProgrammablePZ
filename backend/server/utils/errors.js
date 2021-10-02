@@ -32,8 +32,17 @@ class InvalidLoginError extends ServerError {
   constructor(error) {
     super(error.message);
     this.statusCode = 401;
-    this.name="Authentication error";
-    this.message = "Invalid username or password";
+    this.name="Login error";
+    this.message = "Invalid username or password.";
+  }
+}
+
+class InvalidRegistrationError extends ServerError {
+  constructor(error) {
+    super(error.message);
+    this.statusCode = 409;
+    this.name = "Registration Error";
+    this.message = "Username or email are unavailable."
   }
 }
 
@@ -41,5 +50,6 @@ module.exports = {
   BadRequestError,
   InternalServerError,
   AuthenticationError,
-  InvalidLoginError
+  InvalidLoginError,
+  InvalidRegistrationError
 }
