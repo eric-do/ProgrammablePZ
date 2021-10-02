@@ -75,7 +75,7 @@ describe('Navigation', () => {
 })
 
 describe('Auth', () => {
-  xtest('Successful registration takes user to homepage', async () => {
+  test('Successful registration takes user to homepage', async () => {
     renderWithRouter(<App />);
     userEvent.click(screen.getByRole('button', { name: 'Toggle app drawer'}));
     userEvent.click(screen.getByRole('button', { name: 'Sign up' }))
@@ -87,7 +87,23 @@ describe('Auth', () => {
     fireEvent.change(usernameInput, { target: { value: 'test_user '}})
     fireEvent.change(emailInput, { target: { value: 'user@email.com '}})
     fireEvent.change(passwordInput, { target: { value: 'password123'}})
-    userEvent.click(screen.getByRole('button', { name: 'Submit'}));
+    fireEvent.submit(screen.getByTestId('registration-form'));
+
+    await waitFor(() => screen.getByRole('heading', { name: 'Zones' }))
+    expect(screen.getByRole('heading', { name: 'Zones' })).toBeInTheDocument()
+  })
+
+  test('Successful login takes user to homepage', async () => {
+    renderWithRouter(<App />);
+    userEvent.click(screen.getByRole('button', { name: 'Toggle app drawer'}));
+    userEvent.click(screen.getByRole('button', { name: 'Log in' }))
+
+    const usernameInput = screen.getByLabelText('Username', {exact: false});
+    const passwordInput = screen.getByLabelText('Password', {exact: false});
+
+    fireEvent.change(usernameInput, { target: { value: 'test_user '}})
+    fireEvent.change(passwordInput, { target: { value: 'password123'}})
+    fireEvent.submit(screen.getByTestId('login-form'));
 
     await waitFor(() => screen.getByRole('heading', { name: 'Zones' }))
     expect(screen.getByRole('heading', { name: 'Zones' })).toBeInTheDocument()

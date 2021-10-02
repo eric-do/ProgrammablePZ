@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Redirect } from 'react-router';
 import { useAuth } from 'lib/auth';
 import {
   Button,
@@ -26,7 +27,7 @@ interface LoginFormProps {
 export const LoginForm = ({ onSuccess }: LoginFormProps ) => {
   const toast = useToast();
   const [input, setInput] = useState<LoginInput>(defaultInput)
-  const { login } = useAuth();
+  const { login, user } = useAuth();
   const { username, password } = input;
 
   const handleChange = (event: React.FormEvent<HTMLInputElement>) => {
@@ -41,7 +42,6 @@ export const LoginForm = ({ onSuccess }: LoginFormProps ) => {
     event.preventDefault();
     try {
       await login(input);
-      onSuccess();
     } catch (err: any) {
       toast({
         title: "Login unsuccessful",
@@ -53,8 +53,15 @@ export const LoginForm = ({ onSuccess }: LoginFormProps ) => {
     }
   }
 
+  if (user) {
+    return <Redirect to="/" />
+  }
+
   return (
-    <form onSubmit={handleSubmit}>
+    <form
+      data-testid="login-form"
+      onSubmit={handleSubmit}
+    >
       <Stack spacing={4}>
         <FormControl id="username" isRequired>
           <FormLabel>Username</FormLabel>
