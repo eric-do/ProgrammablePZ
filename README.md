@@ -10,6 +10,7 @@ Deployment is automated when code is merged to master.
 - Frontend: React, Chakra UI
 - Backend: Node/Express
 - Database: Postgres
+- Cache: Redis
 
 ### Testing
 - Frontend: React Testing Library
@@ -24,7 +25,7 @@ Deployment is automated when code is merged to master.
 ## Scripts
 ### Frontend
 
-From the `client` directory, you can run:
+From the `client` directory:
 
 #### `npm start`
 
@@ -42,7 +43,7 @@ Builds the app for production to the `build` folder.<br /> <br />
 
 ### Backend
 
-From the `backend` directory, you can run:
+From the `backend` directory:
 
 #### `npm start`
 
