@@ -9,12 +9,24 @@ const {
   sendRides,
   sendCreatedRide
 } = require('../controllers/rides');
+const {
+  getCachedRides,
+  setCachedRides
+} = require('../cache/rides');
 const { validateToken } = require('../middleware/auth');
 const rideFormatter = require('../middleware/rideFormatter');
 
 router.get(
   '/',
+  getCachedRides,
+  rideFormatter,
+  sendRides
+);
+
+router.get(
+  '/',
   getRides,
+  setCachedRides,
   rideFormatter,
   sendRides
 );
