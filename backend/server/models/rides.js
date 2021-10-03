@@ -6,10 +6,12 @@ const getRides = async (
   lengths
 ) => {
   const q = `
-    SELECT * FROM rides
-    WHERE ($1::VARCHAR IS NULL OR type = $1)
-    AND ($2::INT IS NULL OR timeInSeconds = $2)
-    AND creator_id IS NULL
+    SELECT * FROM rides as r
+    LEFT JOIN users as u
+      ON u.id = r.creator_id
+    WHERE ($1::VARCHAR IS NULL OR r.type = $1)
+      AND ($2::INT IS NULL OR r.timeInSeconds = $2)
+      AND (r.creator_id IS NULL OR u.admin = True)
     ORDER BY created_on DESC
     LIMIT $3
   `;
