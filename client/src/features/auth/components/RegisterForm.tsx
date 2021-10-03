@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Redirect } from 'react-router';
 import { useAuth } from 'lib/auth';
 import {
   Button,
@@ -28,7 +29,7 @@ interface RegisterFormProps {
 export const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
   const toast = useToast();
   const [input, setInput] = useState<RegisterInput>(defaultInput)
-  const { register } = useAuth();
+  const { user, register } = useAuth();
   const { username, password, email } = input;
 
   const handleChange = (event: React.FormEvent<HTMLInputElement>) => {
@@ -43,7 +44,6 @@ export const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
     event.preventDefault();
     try {
       await register(input);
-      onSuccess();
     } catch (err: any) {
       toast({
         title: "Registration unsuccessful",
@@ -55,8 +55,15 @@ export const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
     }
   }
 
+  if (user) {
+    return <Redirect to="/" />
+  }
+
   return (
-    <form onSubmit={handleSubmit}>
+    <form
+      data-testid="registration-form"
+      onSubmit={handleSubmit}
+    >
       <Stack spacing={4}>
         <FormControl id="username" isRequired>
           <FormLabel>Username</FormLabel>

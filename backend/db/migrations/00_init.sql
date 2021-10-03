@@ -20,6 +20,7 @@ CREATE TABLE users (
 );
 
 CREATE INDEX users_username_idx ON users (username);
+CREATE INDEX users_admin_idx ON users (admin);
 
 CREATE TABLE rides (
   id INT GENERATED ALWAYS AS IDENTITY,
