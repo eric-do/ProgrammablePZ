@@ -47,8 +47,9 @@ export const SaveRideModal = ({ isOpen, onClose }: SaveRideModalProps) => {
     setTimeInSeconds(parseInt(value));
   }
 
-  const handleSubmit = () => {
-      createRideMutation.mutate(mutateData)
+  const handleSubmit = async () => {
+    try {
+      await createRideMutation.mutateAsync(mutateData)
       toast({
         title: "Ride saved!",
         description: "Find it in your Saved Rides.",
@@ -56,17 +57,34 @@ export const SaveRideModal = ({ isOpen, onClose }: SaveRideModalProps) => {
         duration: 9000,
         isClosable: true,
       })
+    } catch (err: any) {
+      toast({
+        title: "Authentication error",
+        description: err.response.data.error,
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+      })
+    } finally {
       onClose()
+    }
   }
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      data-testid="save-ride-modal"
+    >
       <ModalOverlay/>
       <ModalContent>
         <ModalHeader>Name this ride</ModalHeader>
         <ModalCloseButton></ModalCloseButton>
         <ModalBody>
-          <form onSubmit={handleSubmit}>
+          <form
+            data-testid="save-ride-form"
+            onSubmit={handleSubmit}
+          >
             <Stack spacing={4}>
               <FormControl id="ride-name-input">
                 <FormLabel>Name</FormLabel>

@@ -23,4 +23,4 @@ client/npm-debug.log*
 client/yarn-debug.log*
 client/yarn-error.log*
 client/.env*
-backend/.env
+backend/.env*
