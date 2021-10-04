@@ -1,7 +1,14 @@
 import React from 'react';
-import { userEvent, render, screen, fireEvent, waitFor, act } from 'test/test-utils';
+import {
+  userEvent,
+  render,
+  screen,
+  fireEvent,
+  waitFor
+} from 'test/test-utils';
 import { AppProvider } from 'providers/app';
 import { Intervals, ZoneTimer } from 'features/timer';
+import { SaveRideModal } from '../components/SaveRideModal';
 import { Interval } from 'types';
 
 const defaultProps = {
@@ -48,7 +55,7 @@ test('it should display the Add Zone modal when user clicks Add Zone', () => {
   expect(screen.getByRole('button', { name: 'Add' })).toBeInTheDocument()
 })
 
-it('should create ride as logged in user', async () => {
+it('should display Save Ride modal', async () => {
   render(
     <AppProvider>
       <ZoneTimer />
@@ -65,8 +72,20 @@ it('should create ride as logged in user', async () => {
   userEvent.click(screen.getByRole('button', { name: 'Add' }));
 
   userEvent.click(screen.getByRole('button', { name: 'Save ride' }));
-
   expect(screen.getByText('Name this ride')).toBeInTheDocument();
+
+  expect(screen.getByLabelText('Name')).toBeInTheDocument();
+  expect(screen.getByLabelText('Type')).toBeInTheDocument();
+  expect(screen.getByLabelText('Length')).toBeInTheDocument();
+})
+
+it('should create ride as logged in user', async () => {
+  const handleClose = jest.fn()
+  render(
+    <AppProvider>
+      <SaveRideModal isOpen={true} onClose={handleClose}/>
+    </AppProvider>
+  )
 
   const titleInput = screen.getByLabelText('Name');
   const typeInput = screen.getByLabelText('Type');
@@ -76,8 +95,9 @@ it('should create ride as logged in user', async () => {
   fireEvent.change(typeInput, { target: { value: 'pzm' }});
   fireEvent.change(lengthInput, { target: { value: '2700' }});
 
-  userEvent.click(screen.getByRole('button', { name: 'Save' }));
-  await waitFor(() => screen.getByText('Ride saved!'));
+  fireEvent.submit(screen.getByTestId('save-ride-form'));
+
+  await waitFor(() => expect(handleClose).toHaveBeenCalledTimes(1))
   expect(screen.getByText('Ride saved!')).toBeInTheDocument();
   expect(screen.getByText('Find it in your Saved Rides.')).toBeInTheDocument();
 })
