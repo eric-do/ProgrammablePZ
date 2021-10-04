@@ -39,6 +39,26 @@ test('it should render initialized interface when no intervals added', () => {
   expect(screen.getByRole('button', { name: 'Start!' })).toBeDisabled()
 })
 
+test('it should add and remove zone intervals', () => {
+  render(<AppProvider><Intervals {...defaultProps}/></AppProvider>);
+
+  userEvent.click(screen.getByRole('button', { name: 'Add Zone' }));
+
+  const zoneDropdown = screen.getByTestId('zone-dropdown') as HTMLSelectElement;
+  const lengthDropdown = screen.getByTestId('length-dropdown') as HTMLSelectElement;
+
+  fireEvent.change(zoneDropdown, { target: { value: '1' }});
+  fireEvent.change(lengthDropdown, { target: { value: '60' }});
+  userEvent.click(screen.getByRole('button', { name: 'Add' }));
+
+  expect(screen.getByRole('columnheader', { name: '1:00' })).toBeInTheDocument();
+  expect(screen.getByTestId('interval-chart-bar')).toBeInTheDocument();
+
+  userEvent.click(screen.getByTestId('interval-chart-bar'))
+  expect(screen.getByRole('columnheader', { name: '0:00' })).toBeInTheDocument();
+  expect(screen.queryByTestId('interval-chart-bar')).not.toBeInTheDocument();
+})
+
 test('it should display the Add Zone modal when user clicks Add Zone', () => {
   render(<AppProvider><Intervals {...defaultProps}/></AppProvider>);
   userEvent.click(screen.getByRole('button', { name: 'Add Zone' }));
