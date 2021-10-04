@@ -5,7 +5,8 @@ import {
   Progress,
   Stack,
   Box,
-  Button
+  Button,
+  Tooltip
 } from "@chakra-ui/react";
 import React, { useState, useEffect } from 'react';
 import { zoneColors, inactiveZoneColors, zoneColorSchemes } from 'shared';
@@ -127,14 +128,18 @@ export const Timer = ({ displayTimer }: TimerProps = defaultProps) => {
           >
             {
               intervals.map((interval, index) => (
-                <Box
+                <Tooltip
+                  label={`Zone ${interval.zone}`}
                   key={index}
-                  bg={index === zoneInterval
-                    ? zoneColors[interval.zone]
-                        : inactiveZoneColors[interval.zone]}
-                  h={`${(interval.zone) / 7 * 100}%`}
-                  w={`${((interval.length) / timeInSeconds) * 100}%`}
-                />
+                >
+                  <Box
+                    bg={index === zoneInterval
+                      ? zoneColors[interval.zone]
+                          : inactiveZoneColors[interval.zone]}
+                    h={`${(interval.zone) / 7 * 100}%`}
+                    w={`${((interval.length) / timeInSeconds) * 100}%`}
+                  />
+                </Tooltip>
               ))
             }
           </Stack>
