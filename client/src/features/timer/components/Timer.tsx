@@ -55,6 +55,10 @@ export const Timer = ({ displayTimer }: TimerProps = defaultProps) => {
   }, [incrementRide, ride.id])
 
   useEffect(() => {
+    if (!zoneMinutes && !zoneSeconds && !minutes && !seconds) {
+      return;
+    }
+
     let timerCountdown = setInterval(() => {
       if (seconds > 0) {
         setSeconds(seconds => seconds - 1)
@@ -71,7 +75,7 @@ export const Timer = ({ displayTimer }: TimerProps = defaultProps) => {
         setZoneSeconds(seconds => seconds - 1)
       }
       if (zoneSeconds === 0) {
-        if (zoneInterval < intervals.length - 1) {
+        if (zoneMinutes === 0 && zoneInterval < intervals.length - 1) {
           const nextInterval = zoneInterval + 1
           setZoneInterval(nextInterval)
           const tempSeconds = Math.floor(intervals[nextInterval].length % 60);
@@ -79,17 +83,19 @@ export const Timer = ({ displayTimer }: TimerProps = defaultProps) => {
           setZoneMinutes(tempSeconds === 0 ? tempMinutes - 1 : tempMinutes)
           setZoneSeconds(tempSeconds === 0 ? 59 : tempSeconds - 1)
           setZoneElapsedTime(0)
+        } else {
+          setZoneSeconds(59)
+          setZoneMinutes(minutes => minutes - 1)
         }
       }
       setElapsedTime(seconds => seconds + 1)
       setZoneElapsedTime(seconds => seconds + 1)
-
     }, 1000);
 
     return () => {
       clearInterval(timerCountdown);
     };
-  }, [intervals, minutes, seconds, zoneInterval, zoneSeconds])
+  }, [intervals, minutes, seconds, zoneInterval, zoneSeconds, zoneMinutes])
 
   return (
     <Box w='80%'>
