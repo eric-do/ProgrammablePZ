@@ -7,6 +7,7 @@ import { zoneColors  } from 'shared';
 interface ZoneGraphProps {
   intervals: Interval[];
   timeInSeconds: number;
+  removeInterval?: (idx: number) => void;
 };
 
 const defaultProps = {
@@ -14,7 +15,11 @@ const defaultProps = {
   timeInSeconds: 0
 }
 
-export const ZoneGraph = ({ intervals, timeInSeconds }: ZoneGraphProps = defaultProps) => (
+export const ZoneGraph = ({
+  intervals,
+  timeInSeconds,
+  removeInterval = () => {}
+}: ZoneGraphProps = defaultProps) => (
   <Stack
     direction="row"
     spacing={0.5}
@@ -37,6 +42,7 @@ export const ZoneGraph = ({ intervals, timeInSeconds }: ZoneGraphProps = default
             h={`${(interval.zone) / 7 * 100}%`}
             w={`${((interval.length) / timeInSeconds) * 100}%`}
             data-testid="interval-chart-bar"
+            onClick={() => removeInterval(index)}
           />
         </Tooltip>
       ))

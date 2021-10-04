@@ -60,6 +60,17 @@ export const Intervals = ({
     })
   }
 
+  const removeInterval = (idx: number) => {
+    const updatedIntervals = [...intervals];
+    updatedIntervals.splice(idx, 1);
+    const timeInSeconds = updatedIntervals.reduce((total, interval) => total + interval.length, 0)
+    setRide({
+      ...ride,
+      intervals: updatedIntervals,
+      timeInSeconds
+    })
+  }
+
   const resetIntervals = () => setRide({
     intervals: [],
     timeInSeconds: 0
@@ -126,6 +137,7 @@ export const Intervals = ({
         <ZoneGraph
           intervals={intervals}
           timeInSeconds={timeInSeconds}
+          removeInterval={removeInterval}
         />
         <Button
           colorScheme="blue"
