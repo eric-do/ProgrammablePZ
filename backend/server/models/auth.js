@@ -15,7 +15,7 @@ const registerUser = async ({ email, username, password  }) => {
 const getUserByLogin = async ({ username, password }) => {
   const q = `
     SELECT * FROM users
-    WHERE username = $1
+    WHERE LOWER(username) = $1
     AND password = crypt($2, password)
   `;
 
