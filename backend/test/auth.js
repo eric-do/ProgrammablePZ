@@ -56,6 +56,23 @@ describe('Authentication', () => {
       expect(response.body.user).to.have.keys('id', 'email', 'username')
     })
 
+    it('should allow case insensitive login', async () => {
+      await request(app)
+        .post("/auth/register")
+        .send({
+          ...testValidUser,
+          username: 'Test_User'
+        });
+
+      const response = await request(app)
+      .post("/auth/login")
+      .send(testValidUser);
+
+      expect(response.status).to.eql(200);
+      expect(response.body).to.have.keys('jwt', 'user');
+      expect(response.body.user).to.have.keys('id', 'email', 'username')
+    })
+
     it('should deny user with invalid login credentials', async () => {
       await request(app)
         .post("/auth/register")

@@ -15,7 +15,12 @@ const registerUser = async (req, res, next) => {
 }
 
 const getUserByLogin = async (req, res, next) => {
-  const credentials = req.body;
+  const { username, password } = req.body;
+
+  const credentials = {
+    username: username.toLowerCase(),
+    password
+  }
 
   try {
     const { id, username, email} = await AuthModel.getUserByLogin(credentials);
