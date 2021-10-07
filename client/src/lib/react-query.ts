@@ -11,7 +11,7 @@ import { PromiseValue } from 'type-fest';
 const queryConfig: DefaultOptions = {
   queries: {
     useErrorBoundary: false,
-    refetchOnWindowFocus: false,
+    refetchOnWindowFocus: true,
     retry: false
   }
 };
