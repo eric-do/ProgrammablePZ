@@ -15,7 +15,7 @@ import { QueryOptions } from 'lib/react-query';
 import { useRide } from 'providers/RideProvider';
 import { Workout } from 'types';
 import { ZoneGraph } from 'components';
-import { useRides } from '../api/index';
+import { useInfiniteRides } from '../api/index';
 
 const defaultFilter =  {
   type: 'all',
@@ -85,7 +85,12 @@ interface RideListProps {
 }
 
 export const RideList = ({options}: RideListProps) => {
-  const { data: rides, isLoading, error } = useRides({ options });
+  const { data, isLoading, error } = useInfiniteRides({
+    options: {
+      ...options,
+      cursor: 1
+    }
+  });
   const history = useHistory();
   const { setRide } = useRide();
 
@@ -106,41 +111,47 @@ export const RideList = ({options}: RideListProps) => {
           <Spinner data-testid='spinner'/>
         </Flex>
       }
-      { rides &&
+      { data &&
         <Stack
           direction="column"
           spacing={4}
         >
           {
-            rides.map((ride, index) => (
-              <Box
-                onClick={() => handleSetRide(ride)}
-                key={ride.id || index}
-                data-testid="ride-description-card"
-                cursor="pointer"
-              >
-                <Text fontSize={{base: 'md', lg: 'lg'}}>
-                  {ride.title}
-                </Text>
-                <ZoneGraph
-                  intervals={ride.intervals}
-                  timeInSeconds={ride.timeInSeconds}
-                />
-                <Flex direction="row">
-                  <Text fontSize={'sm'}>
-                    {ride.ratings?.likes || 0} 👍
-                  </Text>
-                  <Spacer />
-                  <Text fontSize={'sm'}>
-                    {ride.metadata?.rideCount || 0} 🚴
-                  </Text>
-                </Flex>
-              </Box>
+            data.pages.map((rides, i) => (
+              <React.Fragment key={i}>
+                {
+                  rides.map((ride, index) => (
+                    <Box
+                      onClick={() => handleSetRide(ride)}
+                      key={ride.id || index}
+                      data-testid="ride-description-card"
+                      cursor="pointer"
+                    >
+                      <Text fontSize={{base: 'md', lg: 'lg'}}>
+                        {ride.title}
+                      </Text>
+                      <ZoneGraph
+                        intervals={ride.intervals}
+                        timeInSeconds={ride.timeInSeconds}
+                      />
+                      <Flex direction="row">
+                        <Text fontSize={'sm'}>
+                          {ride.ratings?.likes || 0} 👍
+                        </Text>
+                        <Spacer />
+                        <Text fontSize={'sm'}>
+                          {ride.metadata?.rideCount || 0} 🚴
+                        </Text>
+                      </Flex>
+                    </Box>
+                  ))
+                }
+              </React.Fragment >
             ))
           }
         </Stack>
       }
-      { rides?.length === 0 &&
+      { data?.pages[0].length === 0 &&
         <Text>
           No rides found.
         </Text>

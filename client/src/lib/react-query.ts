@@ -3,7 +3,8 @@ import {
   QueryClient,
   UseQueryOptions,
   UseMutationOptions,
-  DefaultOptions
+  DefaultOptions,
+  UseInfiniteQueryOptions
 } from 'react-query';
 import { PromiseValue } from 'type-fest';
 
@@ -23,9 +24,20 @@ export interface QueryOptions {
   user?: string;
 }
 
+export interface InfiniteQueryOptions {
+  cursor: number;
+  type?: string;
+  timeInSeconds?: string;
+  user?: string;
+}
+
 export const queryClient = new QueryClient({ defaultOptions: queryConfig});
 
 export type QueryConfig<FetcherFnType extends (...args: any) => any> = UseQueryOptions<
+  PromiseValue<ReturnType<FetcherFnType>>
+>
+
+export type InfiniteQueryConfig<FetcherFnType extends (...args: any) => any> = UseInfiniteQueryOptions<
   PromiseValue<ReturnType<FetcherFnType>>
 >
 
