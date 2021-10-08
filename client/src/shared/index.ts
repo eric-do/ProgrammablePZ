@@ -11,13 +11,13 @@ export const zoneColorSchemes: ColorDict = {
 }
 
 export const zoneColors: ColorDict = {
-  1: 'blue.200',
-  2: 'green.200',
-  3: 'yellow.200',
-  4: 'orange.200',
-  5: 'red.100',
-  6: 'red.200',
-  7: 'red.400'
+  1: 'blue.300',
+  2: 'green.300',
+  3: 'yellow.300',
+  4: 'orange.300',
+  5: 'red.200',
+  6: 'red.300',
+  7: 'red.500'
 }
 
 export const inactiveZoneColors: ColorDict = {
