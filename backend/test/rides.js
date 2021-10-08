@@ -23,6 +23,16 @@ describe('Rides', () => {
     jwt = body.jwt;
   })
 
+  const postRide = async ride => {
+    return await request(app)
+      .post("/api/rides")
+      .send({ ride })
+      .set({
+        'Authorization': 'Bearer ' + jwt,
+        'Content-Type': 'application/json'
+      });
+  }
+
   after(() => {
     return query(deleteTestUsers)
   })
@@ -33,6 +43,8 @@ describe('Rides', () => {
 
   describe("GET /api/rides", () => {
     it("Should respond to the GET method", async () => {
+      await postRide(testRide)
+
       const response = await request(app).get("/api/rides");
       expect(response.status).to.eql(200);
       expect(response.body).to.be.an.instanceOf(Array)
@@ -43,6 +55,16 @@ describe('Rides', () => {
     });
 
     it("Should respond with rides filtered by ride type", async () => {
+      await postRide({
+        ...testRide,
+        type: 'pz'
+       });
+
+      await postRide({
+      ...testRide,
+      type: 'pze'
+      })
+
       const response = await request(app).get("/api/rides?type=pz");
       const validateType = ride => ride.type === 'pz'
 
@@ -51,6 +73,16 @@ describe('Rides', () => {
     })
 
     it("Should respond with rides filtered by ride length", async () => {
+      await postRide({
+        ...testRide,
+        timeInSeconds: 2700
+       });
+
+      await postRide({
+      ...testRide,
+      timeInSeconds: 1800
+      });
+
       const response = await request(app).get("/api/rides?timeInSeconds=2700");
       const validateLength = ride => ride.timeInSeconds === 2700;
 
@@ -59,20 +91,17 @@ describe('Rides', () => {
     })
 
     it("Should respond with the correct number of rides using limit", async () => {
-      const response = await request(app).get("/api/rides?limit=3");
+      for (let i = 0; i < 5; i++) {
+        await postRide(testRide);
+      }
 
+      const response = await request(app).get("/api/rides?limit=3");
       expect(response.status).to.eql(200);
       expect(response.body.length).to.eql(3);
     })
 
     it("Should respond with rides filtered by user", async () => {
-      await request(app)
-              .post("/api/rides")
-              .send({ ride: testRide })
-              .set({
-                'Authorization': 'Bearer ' + jwt,
-                'Content-Type': 'application/json'
-              });
+      await postRide(testRide);
 
       const response = await request(app).get(`/api/rides?user=${testValidUser.username}`);
       expect(response.status).to.eql(200);
@@ -83,13 +112,7 @@ describe('Rides', () => {
   describe("POST /api/rides", () => {
 
     it("should successfully add ride from authenticated user", async () => {
-      const response = await request(app)
-                              .post("/api/rides")
-                              .send({ ride: testRide })
-                              .set({
-                                'Authorization': 'Bearer ' + jwt,
-                                'Content-Type': 'application/json'
-                              });
+      const response = await postRide(testRide);
 
       expect(response.status).to.eql(201);
       expect(response.body).to.have.keys('ride');
@@ -111,13 +134,7 @@ describe('Rides', () => {
   describe("GET /api/rides/:id", () => {
 
     it("Should respond to the GET method", async () => {
-      const insertResponse = await request(app)
-                              .post("/api/rides")
-                              .send({ ride: testRide })
-                              .set({
-                                'Authorization': 'Bearer ' + jwt,
-                                'Content-Type': 'application/json'
-                              });
+      const insertResponse = await postRide(testRide);
 
       const { id } = insertResponse.body.ride;
       const response = await request(app).get(`/api/rides/${id}`);
