@@ -16,7 +16,7 @@ CREATE TABLE users (
   email TEXT NOT NULL UNIQUE,
   username TEXT NOT NULL UNIQUE,
   password TEXT NOT NULL,
-  admin BOOLEAN DEFAULT TRUE
+  admin BOOLEAN DEFAULT FALSE
 );
 
 CREATE INDEX users_username_idx ON users (username);

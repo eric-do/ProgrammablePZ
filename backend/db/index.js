@@ -9,8 +9,14 @@ const devConfig = {
   connectionString: process.env.DATABASE_URL
 }
 
+const testConfig = {
+  connectionString: process.env.TEST_DATABASE_URL
+}
+
 const pool = process.env.NODE_ENV === 'production'
              ? new Pool(prodConfig)
+             : process.env.NODE_ENV === 'test'
+             ? new Pool(testConfig)
              : new Pool(devConfig)
 
 module.exports = {
