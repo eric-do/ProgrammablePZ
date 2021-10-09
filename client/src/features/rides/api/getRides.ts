@@ -51,7 +51,7 @@ export const getRidesInfinite = ({
   page
 }: InfiniteQueryOptions): Promise<Ride[]> => {
   const offset = (page - 1) * limit;
-  console.log(offset)
+
   return axios.get('/api/rides', {
     params: {
       user,
