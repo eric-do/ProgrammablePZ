@@ -1,22 +1,35 @@
 const { query, getClient, releaseClient } = require('../../db');
 
 const getRides = async (
-  limit = 10,
   types,
-  lengths
+  lengths,
+  limit = 10,
+  offset
 ) => {
   const q = `
-    SELECT * FROM rides as r
+    SELECT
+      r.id,
+      r.creator_id,
+      r.title,
+      r.type,
+      r.likes,
+      r.dislikes,
+      r.total_votes,
+      r.ride_count,
+      r.intervals,
+      r.timeInSeconds,
+      r.created_on
+    FROM rides as r
     LEFT JOIN users as u
       ON u.id = r.creator_id
     WHERE ($1::VARCHAR IS NULL OR r.type = $1)
       AND ($2::INT IS NULL OR r.timeInSeconds = $2)
       AND (r.creator_id IS NULL OR u.admin = True)
     ORDER BY created_on DESC
-    LIMIT $3
+    LIMIT $3 OFFSET $4
   `;
 
-  const rides = await query(q, [types, lengths, limit]);
+  const rides = await query(q, [types, lengths, limit, offset]);
   return rides;
 }
 

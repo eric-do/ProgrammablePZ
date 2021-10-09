@@ -25,7 +25,8 @@ export interface QueryOptions {
 }
 
 export interface InfiniteQueryOptions {
-  cursor: number;
+  page: number;
+  limit: number;
   type?: string;
   timeInSeconds?: string;
   user?: string;

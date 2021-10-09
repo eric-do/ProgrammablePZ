@@ -9,6 +9,7 @@ import {
   Spacer,
   Spinner
 } from "@chakra-ui/react";
+import InfiniteScroll from 'react-infinite-scroll-component';
 import { useHistory } from 'react-router-dom';
 import { ErrorBoundary } from 'react-error-boundary';
 import { QueryOptions } from 'lib/react-query';
@@ -85,10 +86,16 @@ interface RideListProps {
 }
 
 export const RideList = ({options}: RideListProps) => {
-  const { data, isLoading, error } = useInfiniteRides({
+  const {
+    data,
+    fetchNextPage,
+    isLoading,
+    error
+  } = useInfiniteRides({
     options: {
       ...options,
-      cursor: 1
+      page: 1,
+      limit: 10
     }
   });
   const history = useHistory();
@@ -116,39 +123,51 @@ export const RideList = ({options}: RideListProps) => {
           direction="column"
           spacing={4}
         >
-          {
-            data.pages.map((rides, i) => (
-              <React.Fragment key={i}>
-                {
-                  rides.map((ride, index) => (
-                    <Box
-                      onClick={() => handleSetRide(ride)}
-                      key={ride.id || index}
-                      data-testid="ride-description-card"
-                      cursor="pointer"
-                    >
-                      <Text fontSize={{base: 'md', lg: 'lg'}}>
-                        {ride.title}
-                      </Text>
-                      <ZoneGraph
-                        intervals={ride.intervals}
-                        timeInSeconds={ride.timeInSeconds}
-                      />
-                      <Flex direction="row">
-                        <Text fontSize={'sm'}>
-                          {ride.ratings?.likes || 0} 👍
+          <InfiniteScroll
+            dataLength={data.pages.length}
+            next={fetchNextPage}
+            hasMore={data.pages[data.pages.length - 1].length > 0}
+            loader={<h4>Loading...</h4>}
+            endMessage={
+              <p style={{ textAlign: 'center' }}>
+                <b>Yay! You have seen it all</b>
+              </p>
+            }
+          >
+            {
+              data.pages.map((rides, i) => (
+                <React.Fragment key={i}>
+                  {
+                    rides.map((ride, index) => (
+                      <Box
+                        onClick={() => handleSetRide(ride)}
+                        key={ride.id || index}
+                        data-testid="ride-description-card"
+                        cursor="pointer"
+                      >
+                        <Text fontSize={{base: 'md', lg: 'lg'}}>
+                          {ride.title}
                         </Text>
-                        <Spacer />
-                        <Text fontSize={'sm'}>
-                          {ride.metadata?.rideCount || 0} 🚴
-                        </Text>
-                      </Flex>
-                    </Box>
-                  ))
-                }
-              </React.Fragment >
-            ))
-          }
+                        <ZoneGraph
+                          intervals={ride.intervals}
+                          timeInSeconds={ride.timeInSeconds}
+                        />
+                        <Flex direction="row">
+                          <Text fontSize={'sm'}>
+                            {ride.ratings?.likes || 0} 👍
+                          </Text>
+                          <Spacer />
+                          <Text fontSize={'sm'}>
+                            {ride.metadata?.rideCount || 0} 🚴
+                          </Text>
+                        </Flex>
+                      </Box>
+                    ))
+                  }
+                </React.Fragment >
+              ))
+            }
+          </InfiniteScroll>
         </Stack>
       }
       { data?.pages[0].length === 0 &&
