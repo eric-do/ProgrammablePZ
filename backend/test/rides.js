@@ -23,6 +23,22 @@ describe('Rides', () => {
     jwt = body.jwt;
   })
 
+  const insertRideToDB = async ride => {
+    const {
+      type,
+      title,
+      timeInSeconds,
+      intervals
+    } = testRide;
+
+    return await query(insertRide, [
+      type,
+      title,
+      timeInSeconds,
+      JSON.stringify(intervals)
+    ]);
+  }
+
   const postRide = async ride => {
     return await request(app)
       .post("/api/rides")
@@ -43,9 +59,11 @@ describe('Rides', () => {
 
   describe("GET /api/rides", () => {
     it("Should respond to the GET method", async () => {
-      await postRide(testRide)
-
+      await insertRideToDB(testRide)
+      const rows = await query('SELECT creator_id, title FROM rides')
+      // console.log(rows)
       const response = await request(app).get("/api/rides");
+      // console.log(response.body)
       expect(response.status).to.eql(200);
       expect(response.body).to.be.an.instanceOf(Array)
       expect(response.body[0]).to.have.keys(
@@ -55,12 +73,12 @@ describe('Rides', () => {
     });
 
     it("Should respond with rides filtered by ride type", async () => {
-      await postRide({
+      await insertRideToDB({
         ...testRide,
         type: 'pz'
        });
 
-      await postRide({
+      await insertRideToDB({
       ...testRide,
       type: 'pze'
       })
@@ -73,12 +91,12 @@ describe('Rides', () => {
     })
 
     it("Should respond with rides filtered by ride length", async () => {
-      await postRide({
+      await insertRideToDB({
         ...testRide,
         timeInSeconds: 2700
        });
 
-      await postRide({
+      await insertRideToDB({
       ...testRide,
       timeInSeconds: 1800
       });
@@ -92,7 +110,7 @@ describe('Rides', () => {
 
     it("Should respond with the correct number of rides using limit", async () => {
       for (let i = 0; i < 5; i++) {
-        await postRide(testRide);
+        await insertRideToDB(testRide);
       }
 
       const response = await request(app).get("/api/rides?limit=3");
@@ -134,9 +152,7 @@ describe('Rides', () => {
   describe("GET /api/rides/:id", () => {
 
     it("Should respond to the GET method", async () => {
-      const insertResponse = await postRide(testRide);
-
-      const { id } = insertResponse.body.ride;
+      const [ { id } ] = await insertRideToDB(testRide);
       const response = await request(app).get(`/api/rides/${id}`);
       expect(response.status).to.eql(200);
       expect(response.body).to.have.keys(
@@ -146,20 +162,7 @@ describe('Rides', () => {
     });
 
     it("Should increment ride count", async () => {
-      const oldRows = await query(getRides);
-      const oldCount = oldRows.length;
-
-      const rows = await query(insertRide, [
-        testRide.type,
-        testRide.title,
-        testRide.metadata.rideCount,
-        testRide.ratings.likes,
-        testRide.ratings.total,
-        testRide.timeInSeconds,
-        JSON.stringify(testRide.intervals)
-      ]);
-
-      const id = rows[0].id;
+      const [ { id } ] = await insertRideToDB(testRide);
 
       const { body: oldRide } = await request(app).get(`/api/rides/${id}`);
       expect(oldRide.metadata.rideCount).to.eql(0)

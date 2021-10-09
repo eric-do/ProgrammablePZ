@@ -1,9 +1,7 @@
 const insertRide = `
       INSERT INTO rides (
-        type, title, ride_count,
-        likes, total_votes, timeInSeconds,
-        created_on, intervals
-      ) VALUES ($1, $2, $3, $4, $5, $6, NOW(), $7)
+        type, title, timeInSeconds, intervals
+      ) VALUES ($1, $2, $3, $4)
       RETURNING id;
     `
 
