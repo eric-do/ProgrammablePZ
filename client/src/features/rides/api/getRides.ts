@@ -45,17 +45,20 @@ export const useRides = ({ options = defaultOptions, config }: UseRidesOptions) 
 
 export const getRidesInfinite = ({
   user,
-  cursor,
   type,
-  timeInSeconds
+  timeInSeconds,
+  limit = 5,
+  page
 }: InfiniteQueryOptions): Promise<Ride[]> => {
-  console.log(cursor)
+  const offset = (page - 1) * limit;
+  console.log(offset)
   return axios.get('/api/rides', {
     params: {
       user,
-      cursor,
       type,
       timeInSeconds,
+      limit,
+      offset
     }
   });
 }
@@ -66,21 +69,25 @@ type UseInfiniteRidesOptions = {
 };
 
 const defaultInfiniteOptions = {
-  cursor: 1
+  page: 1,
+  limit: 5
 }
 
 export const useInfiniteRides = ({
   options = defaultInfiniteOptions,
   config }: UseInfiniteRidesOptions) => {
 
-  const queryFn = ({ pageParam = 1 }) => getRidesInfinite({ ...options, cursor: pageParam});
+  const queryFn = ({ pageParam = 1 }) => getRidesInfinite({
+    ...options,
+    page: pageParam
+  });
 
   return useInfiniteQuery(
     ['rides', options],
     queryFn,
     { ...config,
       queryFn,
-      getNextPageParam: (lastPage, allPages) => allPages.length + 1,
+      getNextPageParam: (lastPage, allPages) => allPages.length + 1
     }
   );
 }

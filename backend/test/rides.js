@@ -61,9 +61,7 @@ describe('Rides', () => {
     it("Should respond to the GET method", async () => {
       await insertRideToDB(testRide)
       const rows = await query('SELECT creator_id, title FROM rides')
-      // console.log(rows)
       const response = await request(app).get("/api/rides");
-      // console.log(response.body)
       expect(response.status).to.eql(200);
       expect(response.body).to.be.an.instanceOf(Array)
       expect(response.body[0]).to.have.keys(
@@ -71,6 +69,18 @@ describe('Rides', () => {
         'ratings', 'intervals', 'timeInSeconds', 'id'
       );
     });
+
+    it("Should handle pagination using sort", async () => {
+      const [{ id: firstId }] = await insertRideToDB(testRide)
+      const [{ id: secondId }] = await insertRideToDB(testRide)
+      const [{ id: thirdId }] = await insertRideToDB(testRide)
+
+      const firstResponse = await request(app).get(`/api/rides`);
+      const secondResponse = await request(app).get(`/api/rides?limit=1&offset=2`);
+
+      expect(firstResponse.body[0].id).to.eql(thirdId)
+      expect(secondResponse.body[0].id).to.eql(firstId)
+    })
 
     it("Should respond with rides filtered by ride type", async () => {
       await insertRideToDB({

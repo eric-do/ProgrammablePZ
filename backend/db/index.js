@@ -13,8 +13,6 @@ const testConfig = {
   connectionString: process.env.TEST_DATABASE_URL
 }
 
-console.log('ENVIRONMENT', process.env.NODE_ENV)
-
 const pool = process.env.NODE_ENV === 'production'
              ? new Pool(prodConfig)
              : process.env.NODE_ENV === 'test'

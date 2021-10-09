@@ -8,7 +8,8 @@ const getRides = async (req, res, next) => {
       user,
       type,
       timeInSeconds,
-      limit = 10
+      limit = 10,
+      offset = 0,
     } = req.query;
 
     type = type === 'all' ? null : type;
@@ -17,7 +18,7 @@ const getRides = async (req, res, next) => {
     if (user) {
       res.locals.data = await RideModel.getRidesByUser(user, limit, type, timeInSeconds);
     } else {
-      res.locals.data = await RideModel.getRides(limit, type, timeInSeconds);
+      res.locals.data = await RideModel.getRides(type, timeInSeconds, limit, offset);
     }
     next();
   } catch (err) {
