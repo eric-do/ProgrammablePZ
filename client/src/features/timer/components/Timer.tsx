@@ -1,17 +1,20 @@
 
 import {
-  Heading,
-  Text,
-  Progress,
-  Stack,
   Box,
   Button,
-  Tooltip
+  Heading,
+  Progress,
+  Stack,
+  Text,
+  Tooltip,
+  useDisclosure,
+  useToast
 } from "@chakra-ui/react";
 import React, { useState, useEffect } from 'react';
 import { zoneColors, inactiveZoneColors, zoneColorSchemes } from 'shared';
 import { useRide } from 'providers/RideProvider';
 import { useIncrementRideCount } from 'features/rides/api/incrementRideCount';
+import { FinishRideModal } from './FinishRideModal';
 
 interface TimerProps {
   displayTimer: (b: boolean) => void;
@@ -23,6 +26,12 @@ const defaultProps = {
 
 
 export const Timer = ({ displayTimer }: TimerProps = defaultProps) => {
+  const {
+    isOpen: isOpenFinishRide,
+    onOpen: onOpenFinishRide,
+    onClose: onCloseFinishRide
+  } = useDisclosure();
+  const toast = useToast();
   const { ride } = useRide();
   const { mutate: incrementRide} = useIncrementRideCount({ rideId: ride.id});
   let { intervals, timeInSeconds } = ride;
@@ -56,6 +65,16 @@ export const Timer = ({ displayTimer }: TimerProps = defaultProps) => {
 
   useEffect(() => {
     if (!zoneMinutes && !zoneSeconds && !minutes && !seconds) {
+      if (ride.id) {
+        onOpenFinishRide();
+      } else {
+        toast({
+          title: "Ride complete!",
+          status: "success",
+          duration: 9000,
+          isClosable: true,
+        })
+      }
       return;
     }
 
@@ -109,9 +128,11 @@ export const Timer = ({ displayTimer }: TimerProps = defaultProps) => {
           data-testid="zone-timer"
         >
           <Progress
-            colorScheme={intervals[zoneInterval]?.length - zoneElapsedTime < 5
-                         ? "red"
-                         : zoneColorSchemes[intervals[zoneInterval]?.zone]}
+            colorScheme={
+              intervals[zoneInterval]?.length - zoneElapsedTime < 5
+              ? "red"
+              : zoneColorSchemes[intervals[zoneInterval]?.zone]
+            }
             hasStripe
             size="lg"
             value={(zoneElapsedTime / zoneTimeInSeconds) * 100}
@@ -165,6 +186,7 @@ export const Timer = ({ displayTimer }: TimerProps = defaultProps) => {
           Go back
         </Button>
       </Stack>
+      <FinishRideModal isOpen={true} onClose={onCloseFinishRide} />
     </Box>
   )
 };
