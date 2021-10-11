@@ -65,15 +65,18 @@ export const Timer = ({ displayTimer }: TimerProps = defaultProps) => {
 
   useEffect(() => {
     if (!zoneMinutes && !zoneSeconds && !minutes && !seconds) {
+      setZoneElapsedTime(zoneTimeInSeconds);
       if (ride.id) {
         onOpenFinishRide();
       } else {
-        toast({
+        if (!ride.id) {
+          toast({
           title: "Ride complete!",
           status: "success",
           duration: 9000,
           isClosable: true,
-        })
+          })
+        }
       }
       return;
     }
@@ -114,7 +117,13 @@ export const Timer = ({ displayTimer }: TimerProps = defaultProps) => {
     return () => {
       clearInterval(timerCountdown);
     };
-  }, [intervals, minutes, seconds, zoneInterval, zoneSeconds, zoneMinutes])
+  }, [
+    intervals, minutes, seconds, zoneInterval, zoneTimeInSeconds,
+    zoneSeconds, zoneMinutes, ride.id, toast, onOpenFinishRide
+  ])
+
+  console.log(zoneElapsedTime, zoneTimeInSeconds);
+  console.log((zoneElapsedTime / zoneTimeInSeconds) * 100)
 
   return (
     <Box w='80%'>
@@ -186,7 +195,7 @@ export const Timer = ({ displayTimer }: TimerProps = defaultProps) => {
           Go back
         </Button>
       </Stack>
-      <FinishRideModal isOpen={true} onClose={onCloseFinishRide} />
+      <FinishRideModal isOpen={isOpenFinishRide} onClose={onCloseFinishRide} />
     </Box>
   )
 };

@@ -58,12 +58,10 @@ const getRideRatings = async (req, res, next) => {
   const { id } = req.params;
   try {
     const ratings = await RideModel.getRideRatings(id)
-    console.log(ratings)
     res.locals.data = { id, ratings };
     next();
   } catch (err) {
-    console.log(err);
-    res.status(500).send(err)
+    next(new InternalServerError(err));
   }
 
 }

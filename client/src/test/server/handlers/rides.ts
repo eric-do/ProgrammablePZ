@@ -12,4 +12,7 @@ export const ridesHandlers = [
   rest.post(`${API_URL}/api/rides/`, (req, res, ctx) => {
     return res(ctx.status(201))
   }),
+  rest.post(`${API_URL}/api/rides/:rideId/ratings`, (req, res, ctx) => {
+    return res(ctx.status(201))
+  }),
 ]
