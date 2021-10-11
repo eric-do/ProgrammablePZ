@@ -9,6 +9,8 @@ class BadRequestError extends ServerError {
   constructor(error) {
     super(error.message);
     this.statusCode = 400;
+    this.name = "Bad Request Error";
+    this.message = "One or more inputs are invalid."
   }
 }
 

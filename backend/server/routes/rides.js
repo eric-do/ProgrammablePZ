@@ -1,8 +1,11 @@
 const express = require('express');
 const router = express.Router();
+const responseHandler = require('../middleware/responseHandler');
 const {
   getRides,
   addRide,
+  addRideRating,
+  getRideRatings,
   getRideById,
   incrementRideCount,
   incrementRideLikes,
@@ -45,6 +48,19 @@ router.get(
   rideFormatter,
   sendRides
 );
+
+router.post(
+  '/:id/ratings',
+  validateToken,
+  addRideRating,
+  responseHandler
+)
+
+router.get(
+  '/:id/ratings',
+  getRideRatings,
+  responseHandler
+)
 
 router.post(
   '/:id/ride-count',

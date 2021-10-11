@@ -95,6 +95,28 @@ const addRide = async (ride, userId) => {
   return rows[0];
 }
 
+const addRideRating = async (rideId, userId, ratings) => {
+  const q = `
+  INSERT INTO ride_ratings (ride_id, user_id, rating, difficulty)
+  VALUES ($1, $2, $3, $4)
+  `;
+
+  return await query(q, [rideId, userId, ratings.rating, ratings.difficulty])
+}
+
+const getRideRatings = async (rideId) => {
+  const q = `
+    SELECT
+      ROUND(AVG(rating), 1)::float as rating,
+      ROUND(AVG(difficulty), 1)::float as difficulty
+    FROM ride_ratings
+    WHERE ride_id = $1
+  `;
+
+  const results = await query(q, [rideId]);
+  return results[0];
+}
+
 const incrementRideCount = async (rideId) => {
   const q = `
     UPDATE rides
@@ -147,6 +169,8 @@ module.exports = {
   getRides,
   getRidesByUser,
   addRide,
+  addRideRating,
+  getRideRatings,
   getRideById,
   incrementRideCount,
   incrementRideLikes
