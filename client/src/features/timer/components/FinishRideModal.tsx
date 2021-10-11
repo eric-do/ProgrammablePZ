@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import {
   Button,
-  FormControl,
-  FormLabel,
   Flex,
   Heading,
   Modal,
@@ -17,6 +15,7 @@ import {
   Text
 } from "@chakra-ui/react"
 import { useRide } from 'providers/RideProvider';
+import { useRateRide } from 'features/rides/api/rateRide';
 
 interface FinishRideModalProps {
   isOpen: boolean;
@@ -25,9 +24,24 @@ interface FinishRideModalProps {
 
 export const FinishRideModal = ({ isOpen, onClose }: FinishRideModalProps) => {
   const { ride } = useRide();
-  const [ratingScore, setRatingScore] = useState<Number | null>(null)
-  const [difficultyScore, setDifficultyScore] = useState<Number | null>(null)
-  const ratings = [1, 2, 3, 4, 5]
+  const [ratingScore, setRatingScore] = useState<number | null>(null);
+  const [difficultyScore, setDifficultyScore] = useState<number | null>(null);
+  const options = {
+    rideId: ride.id,
+    ratings: {
+      rating: ratingScore,
+      difficulty: difficultyScore
+    }
+  };
+
+  const { mutate: rateRide } = useRateRide(options)
+
+  const ratings = [1, 2, 3, 4, 5];
+
+  const handleSubmitAndClose = () => {
+    rateRide(options);
+    onClose();
+  }
 
   return (
     <Modal
@@ -88,7 +102,7 @@ export const FinishRideModal = ({ isOpen, onClose }: FinishRideModalProps) => {
           </form>
         </ModalBody>
         <ModalFooter>
-          <Button colorScheme="blue" onClick={onClose}>
+          <Button colorScheme="blue" onClick={handleSubmitAndClose}>
             Save
           </Button>
         </ModalFooter>
