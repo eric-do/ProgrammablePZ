@@ -49,6 +49,16 @@ describe('Rides', () => {
       });
   }
 
+  const postRideRating = async (rideId, ratings) => {
+    return await request(app)
+    .post(`/api/rides/${rideId}/ratings`)
+    .send(ratings)
+    .set({
+      'Authorization': 'Bearer ' + jwt,
+      'Content-Type': 'application/json'
+    });
+  }
+
   after(() => {
     return query(deleteTestUsers)
   })
@@ -183,5 +193,59 @@ describe('Rides', () => {
       expect(newRide.metadata.rideCount).to.eql(1)
     });
   })
+
+  describe("POST /api/rides/:id/ratings", async () => {
+    it("Should add rating to ride", async () => {
+      const [ { id } ] = await insertRideToDB(testRide);
+      const response = await postRideRating(id, {
+        rating: 5,
+        difficulty: 5
+      })
+
+      expect(response.status).to.eql(201);
+    })
+
+    it("Should add allow for incomplete ratings", async () => {
+      const [ { id } ] = await insertRideToDB(testRide);
+      const response = await postRideRating(id, {
+        rating: 5,
+      })
+
+      expect(response.status).to.eql(201);
+    })
+
+    it("Should not add rating outside of range", async () => {
+      const [ { id } ] = await insertRideToDB(testRide);
+      const response = await postRideRating(id, {
+        rating: 6,
+        difficulty: 5
+      })
+
+      expect(response.status).to.eql(400);
+    })
+  })
+
+  describe("GET /api/rides/:id/ratings", async () => {
+    it("Should respond with average ride ratings", async () => {
+      const [ { id } ] = await insertRideToDB(testRide);
+      await postRideRating(id, {
+        rating: 5,
+        difficulty: 5
+      });
+      await postRideRating(id, {
+        rating: 4,
+        difficulty: 4
+      });
+
+      const response = await request(app).get(`/api/rides/${id}/ratings`);
+      expect(response.status).to.eql(200);
+      expect(response.body).to.have.keys('id', 'ratings');
+      expect(response.body.ratings).to.have.keys('rating', 'difficulty');
+
+      const { rating, difficulty } = response.body.ratings;
+      expect(rating).to.eql(4.5)
+      expect(difficulty).to.eql(4.5)
+    })
+  });
 })
 
