@@ -1,6 +1,8 @@
 const RideModel = require('../models/rides');
 const { formatRide } = require('../utils')
-const { InternalServerError, BadRequestError } = require('../utils/errors');
+const {
+  InternalServerError,
+  BadRequestError } = require('../utils/errors');
 
 const getRides = async (req, res, next) => {
   try {
@@ -35,6 +37,35 @@ const addRide = async (req, res, next) => {
   } catch (err) {
     next(new BadRequestError(err));
   }
+}
+
+const addRideRating = async (req, res, next) => {
+  const { id: userId } = res.locals.data.user;
+  const { id: rideId } = req.params;
+  const { rating, difficulty } = req.body;
+
+  try {
+    await RideModel.addRideRating(rideId, userId, { rating, difficulty })
+    res.status(201);
+    res.locals.data = "Rating successfully added to ride."
+    next();
+  } catch (err) {
+    next(new BadRequestError(err));
+  }
+}
+
+const getRideRatings = async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const ratings = await RideModel.getRideRatings(id)
+    console.log(ratings)
+    res.locals.data = { id, ratings };
+    next();
+  } catch (err) {
+    console.log(err);
+    res.status(500).send(err)
+  }
+
 }
 
 const getRideById = async (req, res, next) => {
@@ -83,6 +114,8 @@ const sendCreatedRide = (req, res) => {
 module.exports = {
   getRides,
   addRide,
+  addRideRating,
+  getRideRatings,
   getRideById,
   incrementRideCount,
   incrementRideLikes,

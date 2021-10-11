@@ -50,6 +50,18 @@ CREATE TABLE user_likes (
 
 CREATE INDEX userrlikes_userid_idx ON user_likes (user_id);
 
+CREATE TABLE ride_ratings (
+  id INT GENERATED ALWAYS AS IDENTITY,
+  user_id uuid REFERENCES users (id) ON DELETE CASCADE,
+  ride_id INT REFERENCES rides (id) ON DELETE CASCADE,
+  rating SMALLINT,
+  difficulty SMALLINT,
+  CHECK (rating BETWEEN 1 AND 5),
+  CHECK (difficulty BETWEEN 1 AND 5)
+);
+
+CREATE INDEX rideratings_rideid_idx ON ride_ratings (ride_id);
+
 INSERT INTO ride_types (type, name) VALUES ('pz', 'Power Zone');
 INSERT INTO ride_types (type, name) VALUES ('pze', 'Power Zone Endurance');
 INSERT INTO ride_types (type, name) VALUES ('pzm', 'Power Zone Max');
