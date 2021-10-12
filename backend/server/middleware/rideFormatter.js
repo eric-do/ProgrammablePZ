@@ -28,8 +28,11 @@ const formatRide = ride => {
 }
 
 module.exports = (req, res, next) => {
-  res.locals.data = Array.isArray(res.locals.data)
-                    ? res.locals.data.map(formatRide)
-                    : formatRide(res.locals.data)
+  if (Array.isArray(res.locals.data)) {
+    res.locals.data = res.locals.data.map(formatRide);
+  } else {
+    res.locals.data = { ride: formatRide(res.locals.data) };
+  }
+
   next();
 }

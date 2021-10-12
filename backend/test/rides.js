@@ -175,7 +175,8 @@ describe('Rides', () => {
       const [ { id } ] = await insertRideToDB(testRide);
       const response = await request(app).get(`/api/rides/${id}`);
       expect(response.status).to.eql(200);
-      expect(response.body).to.have.keys(
+      expect(response.body).to.have.keys('ride');
+      expect(response.body.ride).to.have.keys(
         'title', 'type', 'metadata',
         'ratings', 'intervals', 'timeInSeconds', 'id'
       );
@@ -184,12 +185,12 @@ describe('Rides', () => {
     it("Should increment ride count", async () => {
       const [ { id } ] = await insertRideToDB(testRide);
 
-      const { body: oldRide } = await request(app).get(`/api/rides/${id}`);
+      const { body: { ride: oldRide } } = await request(app).get(`/api/rides/${id}`);
       expect(oldRide.metadata.rideCount).to.eql(0)
 
       await request(app).post(`/api/rides/${id}/ride-count`);
 
-      const { body: newRide } = await request(app).get(`/api/rides/${id}`);
+      const { body: { ride: newRide } } = await request(app).get(`/api/rides/${id}`);
       expect(newRide.metadata.rideCount).to.eql(1)
     });
   })

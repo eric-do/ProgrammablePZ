@@ -57,7 +57,7 @@ describe('Likes', () => {
       const updatedRideResponse = await request(app)
         .get(`/api/rides/${ride.id}`)
 
-      const updatedRide = updatedRideResponse.body;
+      const updatedRide = updatedRideResponse.body.ride;
 
       expect(addLikeResponse.status).to.eql(200);
       expect(updatedRide.ratings.likes).to.eql(1)
