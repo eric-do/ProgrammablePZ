@@ -24,7 +24,7 @@ it('should render default UI', () => {
     <FinishRideModal {...defaultProps} onClose={mockCloseFn} />
   </QueryClientProvider>);
 
-  expect(screen.getByRole('heading', { name: 'Great ride!' })).toBeInTheDocument();
+  expect(screen.getByRole('heading', { name: 'Thanks for your feedback!' })).toBeInTheDocument();
   expect(screen.getByRole('heading', { name: 'Difficulty' })).toBeInTheDocument();
   expect(screen.getByRole('heading', { name: 'Rating' })).toBeInTheDocument();
   expect(screen.getByTestId('ratings-buttons')).toBeInTheDocument();
