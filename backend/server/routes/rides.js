@@ -31,7 +31,7 @@ router.get(
   getRides,
   setCachedRides,
   rideFormatter,
-  sendRides
+  responseHandler
 );
 
 router.post(
@@ -39,14 +39,14 @@ router.post(
   validateToken,
   addRide,
   rideFormatter,
-  sendCreatedRide
+  responseHandler
 );
 
 router.get(
   '/:id',
   getRideById,
   rideFormatter,
-  sendRides
+  responseHandler
 );
 
 router.post(
@@ -65,14 +65,14 @@ router.get(
 router.post(
   '/:id/ride-count',
   incrementRideCount,
-  sendRides
+  responseHandler
 );
 
 router.post(
   '/like',
   validateToken,
   incrementRideLikes,
-  sendRides
+  responseHandler
 );
 
 module.exports = router;
