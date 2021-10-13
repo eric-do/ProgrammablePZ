@@ -6,6 +6,8 @@ const formatRide = ride => {
     created_on,
     likes,
     ride_count,
+    rating,
+    difficulty,
     timeinseconds,
     total_votes,
     intervals
@@ -19,6 +21,8 @@ const formatRide = ride => {
       rideCount: ride_count
     },
     ratings: {
+      rating,
+      difficulty,
       likes,
       total: total_votes
     },

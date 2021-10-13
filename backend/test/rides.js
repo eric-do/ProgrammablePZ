@@ -78,6 +78,9 @@ describe('Rides', () => {
         'title', 'type', 'metadata',
         'ratings', 'intervals', 'timeInSeconds', 'id'
       );
+      expect(response.body[0].ratings).to.have.keys(
+        'rating', 'difficulty', 'likes', 'total'
+      );
     });
 
     it("Should handle pagination using sort", async () => {
@@ -179,6 +182,9 @@ describe('Rides', () => {
       expect(response.body.ride).to.have.keys(
         'title', 'type', 'metadata',
         'ratings', 'intervals', 'timeInSeconds', 'id'
+      );
+      expect(response.body.ride.ratings).to.have.keys(
+        'rating', 'difficulty', 'likes', 'total'
       );
     });
 
