@@ -140,14 +140,15 @@ export const RideList = ({options}: RideListProps) => {
                   {
                     rides.map((ride, index) => (
                       <Box
+                        mb={4}
                         onClick={() => handleSetRide(ride)}
                         key={ride.id || index}
                         data-testid="ride-description-card"
                         cursor="pointer"
                       >
-                        <Text fontSize={{base: 'md', lg: 'lg'}}>
+                        <Heading fontSize={{base: 'sm', lg: 'md'}}>
                           {ride.title}
-                        </Text>
+                        </Heading>
                         <ZoneGraph
                           intervals={ride.intervals}
                           timeInSeconds={ride.timeInSeconds}
