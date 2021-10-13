@@ -79,7 +79,7 @@ export const Timer = ({ displayTimer }: TimerProps = defaultProps) => {
   }, [incrementRide, ride.id])
 
   useEffect(() => {
-    if (!zoneMinutes && !zoneSeconds && !minutes && !seconds) {
+    if (elapsedTime === timeInSeconds) {
       setZoneElapsedTime(zoneTimeInSeconds);
       toast({
         title: "Ride complete!",
@@ -128,7 +128,7 @@ export const Timer = ({ displayTimer }: TimerProps = defaultProps) => {
     };
   }, [
     intervals, minutes, seconds, zoneInterval, zoneTimeInSeconds,
-    zoneSeconds, zoneMinutes, ride.id, toast, onOpenFinishRide
+    zoneSeconds, zoneMinutes, toast, elapsedTime, timeInSeconds
   ])
 
   return (
@@ -175,7 +175,7 @@ export const Timer = ({ displayTimer }: TimerProps = defaultProps) => {
                   key={index}
                 >
                   <Box
-                    bg={index === zoneInterval
+                    bg={index <= zoneInterval
                       ? zoneColors[interval.zone]
                           : inactiveZoneColors[interval.zone]}
                     h={`${(interval.zone) / 7 * 100}%`}
