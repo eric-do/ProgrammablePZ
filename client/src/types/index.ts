@@ -13,6 +13,8 @@ export interface Workout {
     rideCount: number
   };
   ratings?: {
+    rating: number;
+    difficulty: number;
     likes: number;
     total: number;
   },
