@@ -1,6 +1,6 @@
 # Programmable Power Zones
 ![Home screen](https://raw.githubusercontent.com/eric-do/ProgrammablePZ/master/.github/images/image1.png) ![Select ride](https://raw.githubusercontent.com/eric-do/ProgrammablePZ/master/.github/images/image3.png) ![Timer](https://raw.githubusercontent.com/eric-do/ProgrammablePZ/master/.github/images/image2.png)
-https://raw.githubusercontent.com/eric-do/ProgrammablePZ/master/.github/images/image1.png
+
 ## 🚴‍♂️ About
 Made for cycling enthusiasts, this app allows users to create, browse, and take programmed indoor rides, including ones made by other users.
 
