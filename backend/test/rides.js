@@ -69,8 +69,15 @@ describe('Rides', () => {
 
   describe("GET /api/rides", () => {
     it("Should respond to the GET method", async () => {
-      await insertRideToDB(testRide)
-      const rows = await query('SELECT creator_id, title FROM rides')
+      const [ { id } ] = await insertRideToDB(testRide);
+      await postRideRating(id, {
+        rating: 5,
+        difficulty: 2
+      })
+      await postRideRating(id, {
+        rating: 2,
+        difficulty: 2
+      })
       const response = await request(app).get("/api/rides");
       expect(response.status).to.eql(200);
       expect(response.body).to.be.an.instanceOf(Array)
@@ -78,6 +85,12 @@ describe('Rides', () => {
         'title', 'type', 'metadata',
         'ratings', 'intervals', 'timeInSeconds', 'id'
       );
+      expect(response.body[0].ratings).to.have.keys(
+        'rating', 'difficulty', 'likes', 'total'
+      );
+
+      expect(response.body[0].ratings.rating).to.eql(3.5)
+      expect(response.body[0].ratings.difficulty).to.eql(2.0)
     });
 
     it("Should handle pagination using sort", async () => {
@@ -175,21 +188,25 @@ describe('Rides', () => {
       const [ { id } ] = await insertRideToDB(testRide);
       const response = await request(app).get(`/api/rides/${id}`);
       expect(response.status).to.eql(200);
-      expect(response.body).to.have.keys(
+      expect(response.body).to.have.keys('ride');
+      expect(response.body.ride).to.have.keys(
         'title', 'type', 'metadata',
         'ratings', 'intervals', 'timeInSeconds', 'id'
+      );
+      expect(response.body.ride.ratings).to.have.keys(
+        'rating', 'difficulty', 'likes', 'total'
       );
     });
 
     it("Should increment ride count", async () => {
       const [ { id } ] = await insertRideToDB(testRide);
 
-      const { body: oldRide } = await request(app).get(`/api/rides/${id}`);
+      const { body: { ride: oldRide } } = await request(app).get(`/api/rides/${id}`);
       expect(oldRide.metadata.rideCount).to.eql(0)
 
       await request(app).post(`/api/rides/${id}/ride-count`);
 
-      const { body: newRide } = await request(app).get(`/api/rides/${id}`);
+      const { body: { ride: newRide } } = await request(app).get(`/api/rides/${id}`);
       expect(newRide.metadata.rideCount).to.eql(1)
     });
   })

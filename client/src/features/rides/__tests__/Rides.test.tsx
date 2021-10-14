@@ -46,6 +46,10 @@ test('it renders appropriate UI based on fetch status', async () => {
   expect(screen.getByTestId('spinner')).toBeInTheDocument();
   await waitFor(() => screen.getByText(rides[0].title as string))
   expect(screen.queryAllByTestId('ride-description-card')).toHaveLength(rides.length)
+  expect(screen.queryAllByTestId('ride-heading').length).toBeGreaterThan(0)
+  expect(screen.queryAllByTestId('interval-zone-chart').length).toBeGreaterThan(0)
+  expect(screen.queryAllByTestId('ride-rating').length).toBeGreaterThan(0)
+  expect(screen.queryAllByTestId('ride-count').length).toBeGreaterThan(0)
 })
 
 test('it renders updated list when type selected from dropdown', async () => {

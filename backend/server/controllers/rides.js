@@ -22,6 +22,7 @@ const getRides = async (req, res, next) => {
     } else {
       res.locals.data = await RideModel.getRides(type, timeInSeconds, limit, offset);
     }
+    res.status(200);
     next();
   } catch (err) {
     next(new InternalServerError(err));
@@ -33,6 +34,7 @@ const addRide = async (req, res, next) => {
   const { ride } = req.body;
   try {
     res.locals.data = await RideModel.addRide(ride, userId)
+    res.status(201);
     next();
   } catch (err) {
     next(new BadRequestError(err));
@@ -100,15 +102,6 @@ const incrementRideLikes = async (req, res, next) => {
   }
 }
 
-const sendRides = (req, res) => {
-  res.status(200).send(res.locals.data);
-}
-
-const sendCreatedRide = (req, res) => {
-  const { data: ride } = res.locals
-  res.status(201).send({ ride });
-}
-
 module.exports = {
   getRides,
   addRide,
@@ -116,7 +109,5 @@ module.exports = {
   getRideRatings,
   getRideById,
   incrementRideCount,
-  incrementRideLikes,
-  sendRides,
-  sendCreatedRide
+  incrementRideLikes
 }

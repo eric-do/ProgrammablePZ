@@ -13,6 +13,8 @@ const getRides = async (
       r.title,
       r.type,
       r.likes,
+      rr.rating,
+      rr.difficulty,
       r.dislikes,
       r.total_votes,
       r.ride_count,
@@ -20,6 +22,15 @@ const getRides = async (
       r.timeInSeconds,
       r.created_on
     FROM rides as r
+    LEFT JOIN (
+      SELECT
+        ride_id AS id,
+        ROUND(AVG(rating), 1)::float as rating,
+        ROUND(AVG(difficulty), 1)::float as difficulty
+      FROM ride_ratings
+      GROUP BY ride_id
+    ) AS rr
+      ON rr.id = r.id
     LEFT JOIN users as u
       ON u.id = r.creator_id
     WHERE ($1::VARCHAR IS NULL OR r.type = $1)
@@ -46,6 +57,8 @@ const getRidesByUser = async (
       r.title,
       r.type,
       r.likes,
+      rr.rating,
+      rr.difficulty,
       r.dislikes,
       r.total_votes,
       r.ride_count,
@@ -53,6 +66,15 @@ const getRidesByUser = async (
       r.timeInSeconds,
       r.created_on
     FROM rides as r
+    LEFT JOIN (
+      SELECT
+        ride_id AS id,
+        ROUND(AVG(rating), 1)::float as rating,
+        ROUND(AVG(difficulty), 1)::float as difficulty
+      FROM ride_ratings
+      GROUP BY ride_id
+    ) AS rr
+      ON rr.id = r.id
     INNER JOIN users as u
       ON u.id = r.creator_id
     WHERE u.username = $1
@@ -160,7 +182,32 @@ const incrementRideLikes = async (rideId, userId) => {
 }
 
 const getRideById = async (rideId) => {
-  const q = `SELECT * FROM rides WHERE id = $1`;
+  const q = `
+    SELECT
+      r.id,
+      r.creator_id,
+      r.title,
+      r.type,
+      r.likes,
+      rr.rating,
+      rr.difficulty,
+      r.dislikes,
+      r.total_votes,
+      r.ride_count,
+      r.intervals,
+      r.timeInSeconds,
+      r.created_on
+    FROM rides as r
+    LEFT JOIN (
+      SELECT
+        ride_id AS id,
+        ROUND(AVG(rating), 1)::float as rating,
+        ROUND(AVG(difficulty), 1)::float as difficulty
+      FROM ride_ratings
+      GROUP BY ride_id
+    ) AS rr
+      ON rr.id = r.id
+    WHERE r.id = $1`;
   const rides = await query(q, [rideId]);
   return rides[0];
 }

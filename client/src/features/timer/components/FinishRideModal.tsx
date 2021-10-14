@@ -11,8 +11,7 @@ import {
   ModalCloseButton,
   ModalFooter,
   Spacer,
-  Stack,
-  Text
+  Stack
 } from "@chakra-ui/react"
 import { useRide } from 'providers/RideProvider';
 import { useRateRide } from 'features/rides/api/rateRide';
@@ -51,12 +50,12 @@ export const FinishRideModal = ({ isOpen, onClose }: FinishRideModalProps) => {
     >
       <ModalOverlay/>
       <ModalContent>
-        <ModalHeader role="heading">Great ride!</ModalHeader>
+        <ModalHeader role="heading">Thanks for your feedback!</ModalHeader>
         <ModalCloseButton></ModalCloseButton>
         <ModalBody>
           <form data-testid="finish-ride-form">
             <Stack spacing={4}>
-              <Text>Help us categorize this workout.</Text>
+              {/* <Text>Help us categorize this workout.</Text> */}
               <Heading as="h2" size="sm">Rating</Heading>
               <Flex pl={7} pr={7} data-testid="ratings-buttons">
                 {

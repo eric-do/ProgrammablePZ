@@ -11,6 +11,7 @@ import {
   useToast
 } from "@chakra-ui/react";
 import React, { useState, useEffect } from 'react';
+import { useAuth } from "lib/auth";
 import { zoneColors, inactiveZoneColors, zoneColorSchemes } from 'shared';
 import { useRide } from 'providers/RideProvider';
 import { useIncrementRideCount } from 'features/rides/api/incrementRideCount';
@@ -26,6 +27,7 @@ const defaultProps = {
 
 
 export const Timer = ({ displayTimer }: TimerProps = defaultProps) => {
+  const { user } = useAuth();
   const {
     isOpen: isOpenFinishRide,
     onOpen: onOpenFinishRide,
@@ -57,6 +59,19 @@ export const Timer = ({ displayTimer }: TimerProps = defaultProps) => {
     minimumIntegerDigits: 2,
   })
 
+  const toggleFinishRideModal = () => {
+    if (user) {
+      onOpenFinishRide();
+    } else {
+      toast({
+        title: "You must be logged to do that",
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+      })
+    }
+  }
+
   useEffect(() => {
     if (ride.id) {
       incrementRide({ data: { rideId: ride.id }})
@@ -64,20 +79,14 @@ export const Timer = ({ displayTimer }: TimerProps = defaultProps) => {
   }, [incrementRide, ride.id])
 
   useEffect(() => {
-    if (!zoneMinutes && !zoneSeconds && !minutes && !seconds) {
+    if (elapsedTime === timeInSeconds) {
       setZoneElapsedTime(zoneTimeInSeconds);
-      if (ride.id) {
-        onOpenFinishRide();
-      } else {
-        if (!ride.id) {
-          toast({
-          title: "Ride complete!",
-          status: "success",
-          duration: 9000,
-          isClosable: true,
-          })
-        }
-      }
+      toast({
+        title: "Ride complete!",
+        status: "success",
+        duration: 9000,
+        isClosable: true,
+      })
       return;
     }
 
@@ -119,11 +128,8 @@ export const Timer = ({ displayTimer }: TimerProps = defaultProps) => {
     };
   }, [
     intervals, minutes, seconds, zoneInterval, zoneTimeInSeconds,
-    zoneSeconds, zoneMinutes, ride.id, toast, onOpenFinishRide
+    zoneSeconds, zoneMinutes, toast, elapsedTime, timeInSeconds
   ])
-
-  console.log(zoneElapsedTime, zoneTimeInSeconds);
-  console.log((zoneElapsedTime / zoneTimeInSeconds) * 100)
 
   return (
     <Box w='80%'>
@@ -169,7 +175,7 @@ export const Timer = ({ displayTimer }: TimerProps = defaultProps) => {
                   key={index}
                 >
                   <Box
-                    bg={index === zoneInterval
+                    bg={index <= zoneInterval
                       ? zoneColors[interval.zone]
                           : inactiveZoneColors[interval.zone]}
                     h={`${(interval.zone) / 7 * 100}%`}
@@ -194,6 +200,15 @@ export const Timer = ({ displayTimer }: TimerProps = defaultProps) => {
         >
           Go back
         </Button>
+        {
+          ride.id &&
+          <Button
+            colorScheme="blue"
+            onClick={toggleFinishRideModal}
+          >
+            Rate ride
+          </Button>
+        }
       </Stack>
       <FinishRideModal isOpen={isOpenFinishRide} onClose={onCloseFinishRide} />
     </Box>

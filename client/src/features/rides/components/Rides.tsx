@@ -140,24 +140,28 @@ export const RideList = ({options}: RideListProps) => {
                   {
                     rides.map((ride, index) => (
                       <Box
+                        mb={4}
                         onClick={() => handleSetRide(ride)}
                         key={ride.id || index}
                         data-testid="ride-description-card"
                         cursor="pointer"
                       >
-                        <Text fontSize={{base: 'md', lg: 'lg'}}>
+                        <Heading
+                          data-testid="ride-heading"
+                          fontSize={{base: 'sm', lg: 'md'}}
+                        >
                           {ride.title}
-                        </Text>
+                        </Heading>
                         <ZoneGraph
                           intervals={ride.intervals}
                           timeInSeconds={ride.timeInSeconds}
                         />
                         <Flex direction="row">
-                          <Text fontSize={'sm'}>
-                            {ride.ratings?.likes || 0} 👍
+                          <Text data-testid="ride-rating" fontSize={'sm'}>
+                            {`Rating: ${ride.ratings?.rating || 5.0} / 5`}
                           </Text>
                           <Spacer />
-                          <Text fontSize={'sm'}>
+                          <Text data-testid="ride-count" fontSize={'sm'}>
                             {ride.metadata?.rideCount || 0} 🚴
                           </Text>
                         </Flex>

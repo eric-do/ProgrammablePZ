@@ -19,7 +19,9 @@ export const rides: Workout[] = [
     },
     ratings: {
       likes: 100,
-      total: 105
+      total: 105,
+      rating: 4.5,
+      difficulty: 4
     },
     intervals: [
       {
@@ -162,7 +164,9 @@ export const rides: Workout[] = [
     },
     ratings: {
       likes: 130,
-      total: 140
+      total: 140,
+      rating: 3.5,
+      difficulty: 2
     },
     intervals: [
       {
@@ -261,7 +265,9 @@ export const rides: Workout[] = [
     },
     ratings: {
       likes: 600,
-      total: 640
+      total: 640,
+      rating: 4.5,
+      difficulty: 4
     },
     intervals: [
       {
@@ -308,7 +314,9 @@ export const rides: Workout[] = [
     },
     ratings: {
       likes: 300,
-      total: 350
+      total: 350,
+      rating: 4.5,
+      difficulty: 4
     },
     intervals: [
       {
@@ -375,7 +383,9 @@ export const rides: Workout[] = [
     },
     ratings: {
       likes: 400,
-      total: 407
+      total: 407,
+      rating: 4.5,
+      difficulty: 4
     },
     intervals: [
       {
