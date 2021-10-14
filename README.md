@@ -1,13 +1,26 @@
 # Programmable Power Zones
+![Home screen](https://raw.githubusercontent.com/eric-do/ProgrammablePZ/master/.github/images/image1.png) ![Select ride](https://raw.githubusercontent.com/eric-do/ProgrammablePZ/master/.github/images/image3.png) ![Timer](https://raw.githubusercontent.com/eric-do/ProgrammablePZ/master/.github/images/image2.png)
+https://raw.githubusercontent.com/eric-do/ProgrammablePZ/master/.github/images/image1.png
+## 🚴‍♂️ About
+Made for cycling enthusiasts, this app allows users to create, browse, and take programmed indoor rides, including ones made by other users.
 
-Made for cycling performance enthusiasts, this app allows users to create and take Power Zone rides including ones curated from other users.
+This web app uses authentication, and user logins are made secure with salted and encrypted passwords using pgcrypto.
 
-![Home screen](/images/image1.png) ![Select ride](/images/image3.png) ![Timer](/images/image2.png)
+Primary functionality of the application, i.e. taking rides, is open to all users. Login is only required for creating, saving, and rating rides.
+</br></br>
 
-Deployment is automated when code is merged to master.
+## 🚀  Deployment
 
-### Tech stack
-- Frontend: React, Chakra UI
+The front-end of the application is deployed to Netlify for its fast CDN. The back-end (Node, Express, Redis, Postgres) is deployed to Heroku.
+
+[![Netlify Status](https://api.netlify.com/api/v1/badges/057160b9-be9b-4559-9341-ce3bc74b77ab/deploy-status)](https://app.netlify.com/sites/ppz/deploys)
+
+Live deployment: https://ppz.netlify.app/
+</br></br>
+
+## 💻 Tech stack
+### Application
+- Frontend: React, React Hooks, Chakra UI
 - Backend: Node/Express
 - Database: Postgres
 - Cache: Redis
@@ -22,39 +35,7 @@ Deployment is automated when code is merged to master.
 
 <br/>
 
-## Scripts
-### Frontend
-
-From the `client` directory:
-
-#### `npm start`
-
-Runs the app in the development mode.<br /> Open
-[http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-
-#### `npm test`
-
-Launches the test runner in the interactive watch mode.<br />
-
-#### `npm run build`
-
-Builds the app for production to the `build` folder.<br /> <br />
-
-### Backend
-
-From the `backend` directory:
-
-#### `npm start`
-
-Runs the Express app on port 3001 using Nodemon.
-
-
-#### `npm test`
-
-Runs the test suite.
-
-## Local development
+## 👨🏻‍💻 Local development
 ### Backend
 #### Package installation
 From `/backend` run `npm install`
@@ -77,3 +58,8 @@ From `/client` run `npm test`
 
 #### Local testing
 From `/client` run `npm start`
+<br/><br/>
+## 🕵🏻 Challenges
+### Query optimization
+The ride list contains information such as total rides and average rating. With a small number of rides it's no problem, but as the application scales, calculating those expressions becomes expensive. Since users view rides far more frequently than they take or rate them, I added indexed expressions to the PSQL schema. I also denormalized by adding `average_rating` and `ride_count` to the `rides` table, which is calculated and updated on each write operation, rather than on read.
+<br/><br/>
