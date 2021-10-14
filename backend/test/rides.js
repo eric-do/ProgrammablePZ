@@ -69,8 +69,15 @@ describe('Rides', () => {
 
   describe("GET /api/rides", () => {
     it("Should respond to the GET method", async () => {
-      await insertRideToDB(testRide)
-      const rows = await query('SELECT creator_id, title FROM rides')
+      const [ { id } ] = await insertRideToDB(testRide);
+      await postRideRating(id, {
+        rating: 5,
+        difficulty: 2
+      })
+      await postRideRating(id, {
+        rating: 2,
+        difficulty: 2
+      })
       const response = await request(app).get("/api/rides");
       expect(response.status).to.eql(200);
       expect(response.body).to.be.an.instanceOf(Array)
@@ -81,6 +88,9 @@ describe('Rides', () => {
       expect(response.body[0].ratings).to.have.keys(
         'rating', 'difficulty', 'likes', 'total'
       );
+
+      expect(response.body[0].ratings.rating).to.eql(3.5)
+      expect(response.body[0].ratings.difficulty).to.eql(2.0)
     });
 
     it("Should handle pagination using sort", async () => {
