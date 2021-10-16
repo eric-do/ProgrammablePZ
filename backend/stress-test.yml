@@ -1,0 +1,15 @@
+config:
+  target: http://127.0.0.1:3001/api/rides/
+  phases:
+    - duration: 60
+      arrivalRate: 5
+      name: Warm up
+    - duration: 120
+      arrivalRate: 5
+      rampTo: 50
+      name: Ramp up load
+scenarios:
+  - name: "Get ride list"
+    flow:
+      - get:
+          url: "/"
