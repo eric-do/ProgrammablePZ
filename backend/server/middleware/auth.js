@@ -6,7 +6,7 @@ const generateToken = (req, res, next) => {
   const token = jwt.sign(
     user,
     process.env.SECRET_TOKEN,
-    { expiresIn: '1h' }
+    { expiresIn: '2 days' }
   )
   res.locals.data = { jwt: token, user }
   next();
