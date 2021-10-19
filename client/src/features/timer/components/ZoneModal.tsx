@@ -1,6 +1,8 @@
 import React from 'react';
 import {
   Button,
+  Flex,
+  FormLabel,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -9,7 +11,10 @@ import {
   ModalCloseButton,
   ModalFooter,
   FormControl,
-  Select,
+  Slider,
+  SliderTrack,
+  SliderFilledTrack,
+  SliderThumb,
   Stack
 } from "@chakra-ui/react"
 import { Interval } from 'types';
@@ -20,28 +25,22 @@ interface ZoneModalProps {
   addInterval: (i: Interval) => void;
 };
 
-const defaultInterval = {
-  zone: 1,
-  length: 30
-}
-
 export const ZoneModal = ({ isOpen, onClose, addInterval }: ZoneModalProps) => {
-  const [interval, setInterval] = React.useState<Interval>(defaultInterval)
+  const [minutes, setMinutes] = React.useState<number>(7);
+  const [zone, setZone] = React.useState<number>(3);
+  const timeInSeconds = minutes * 60;
 
-  const handleInterval = (e: React.ChangeEvent<HTMLSelectElement>): void => {
-    const { name, value } = e.currentTarget
-    setInterval({
-      ...interval,
-      [name]: parseInt(value)
-    })
-  }
+  const handleMinuteSlider = (minutes: number) => setMinutes(minutes);
+  const handleZoneSlider = (minutes: number) => setZone(minutes);
 
   const handleCloseAndSave = () => {
-    addInterval(interval)
+    addInterval({
+      zone,
+      length: timeInSeconds
+    })
     onClose()
   }
 
-  const { zone, length } = interval;
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay/>
@@ -50,43 +49,45 @@ export const ZoneModal = ({ isOpen, onClose, addInterval }: ZoneModalProps) => {
         <ModalCloseButton></ModalCloseButton>
         <ModalBody>
           <form>
-            <Stack direction="column" spacing={4}>
-              <FormControl isRequired={true}>
-                <Select
-                  name="zone"
+            <Stack direction="column" spacing={4} px={2}>
+              <FormControl>
+                <FormLabel htmlFor="zone-slider">Zone</FormLabel>
+                <Flex align="center" justify="center">
+                <Slider
+                  data-testid="zone-slider"
+                  aria-labelledby="Zone"
+                  flex="1"
+                  focusThumbOnChange={false}
                   value={zone}
-                  onChange={handleInterval}
-                  data-testid="zone-dropdown"
+                  min={1}
+                  max={7}
+                  onChange={handleZoneSlider}
                 >
-                  <option value={1}>Zone 1</option>
-                  <option value={2}>Zone 2</option>
-                  <option value={3}>Zone 3</option>
-                  <option value={4}>Zone 4</option>
-                  <option value={5}>Zone 5</option>
-                  <option value={6}>Zone 6</option>
-                  <option value={7}>Zone 7</option>
-                </Select>
+                  <SliderTrack>
+                    <SliderFilledTrack />
+                  </SliderTrack>
+                  <SliderThumb bg="blue.200" color="gray.800" fontSize="sm" boxSize="32px" children={zone} />
+                </Slider>
+                </Flex>
               </FormControl>
-
-              <FormControl isRequired={true}>
-                <Select
-                  name="length"
-                  value={length}
-                  onChange={handleInterval}
-                  data-testid="length-dropdown"
+              <FormControl>
+                <FormLabel htmlFor="time-slider">Minutes</FormLabel>
+                <Flex>
+                <Slider
+                  data-testid="time-slider"
+                  flex="1"
+                  focusThumbOnChange={false}
+                  value={minutes}
+                  min={1}
+                  max={30}
+                  onChange={handleMinuteSlider}
                 >
-                  <option value={30}>30 seconds</option>
-                  <option value={60}>1 minute</option>
-                  <option value={120}>2 minutes</option>
-                  <option value={180}>3 minutes</option>
-                  <option value={240}>4 minutes</option>
-                  <option value={300}>5 minutes</option>
-                  <option value={360}>6 minutes</option>
-                  <option value={420}>7 minutes</option>
-                  <option value={480}>8 minutes</option>
-                  <option value={540}>9 minutes</option>
-                  <option value={600}>10 minutes</option>
-                </Select>
+                  <SliderTrack>
+                    <SliderFilledTrack />
+                  </SliderTrack>
+                  <SliderThumb bg="blue.200" color="gray.800" fontSize="sm" boxSize="32px" children={minutes} />
+                </Slider>
+                </Flex>
               </FormControl>
             </Stack>
           </form>
