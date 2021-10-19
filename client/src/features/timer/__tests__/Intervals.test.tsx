@@ -43,15 +43,9 @@ test('it should add and remove zone intervals', () => {
   render(<AppProvider><Intervals {...defaultProps}/></AppProvider>);
 
   userEvent.click(screen.getByRole('button', { name: 'Add Zone' }));
-
-  const zoneDropdown = screen.getByTestId('zone-dropdown') as HTMLSelectElement;
-  const lengthDropdown = screen.getByTestId('length-dropdown') as HTMLSelectElement;
-
-  fireEvent.change(zoneDropdown, { target: { value: '1' }});
-  fireEvent.change(lengthDropdown, { target: { value: '60' }});
   userEvent.click(screen.getByRole('button', { name: 'Add' }));
 
-  expect(screen.getByRole('columnheader', { name: '1:00' })).toBeInTheDocument();
+  expect(screen.getByRole('columnheader', { name: '7:00' })).toBeInTheDocument();
   expect(screen.getByTestId('interval-chart-bar')).toBeInTheDocument();
 
   userEvent.click(screen.getByTestId('interval-chart-bar'))
@@ -66,9 +60,9 @@ test('it should display the Add Zone modal when user clicks Add Zone', () => {
   // Header
   expect(screen.getByText('Add Power Zone')).toBeInTheDocument();
 
-  // Dropdowns
-  expect(screen.getByText('Zone 1')).toBeInTheDocument();
-  expect(screen.getByText('30 seconds')).toBeInTheDocument();
+  // Sliders
+  expect(screen.getByTestId('zone-slider')).toBeInTheDocument();
+  expect(screen.getByTestId('time-slider')).toBeInTheDocument();
 
   // Buttons
   expect(screen.getByRole('button', { name: 'Close' })).toBeInTheDocument()
@@ -83,17 +77,10 @@ it('should display Save Ride modal', async () => {
   )
 
   userEvent.click(screen.getByRole('button', { name: 'Add Zone' }));
-
-  const zoneDropdown = screen.getByTestId('zone-dropdown') as HTMLSelectElement;
-  const lengthDropdown = screen.getByTestId('length-dropdown') as HTMLSelectElement;
-
-  fireEvent.change(zoneDropdown, { target: { value: '1' }});
-  fireEvent.change(lengthDropdown, { target: { value: '60' }});
   userEvent.click(screen.getByRole('button', { name: 'Add' }));
-
   userEvent.click(screen.getByRole('button', { name: 'Save ride' }));
-  expect(screen.getByText('Name this ride')).toBeInTheDocument();
 
+  expect(screen.getByText('Name this ride')).toBeInTheDocument();
   expect(screen.getByLabelText('Name')).toBeInTheDocument();
   expect(screen.getByLabelText('Type')).toBeInTheDocument();
   expect(screen.getByLabelText('Length')).toBeInTheDocument();

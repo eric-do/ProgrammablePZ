@@ -10,13 +10,7 @@ import {
   ModalBody,
   ModalCloseButton,
   ModalFooter,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
   FormControl,
-  Select,
   Slider,
   SliderTrack,
   SliderFilledTrack,
@@ -32,8 +26,8 @@ interface ZoneModalProps {
 };
 
 export const ZoneModal = ({ isOpen, onClose, addInterval }: ZoneModalProps) => {
-  const [minutes, setMinutes] = React.useState<number>(1);
-  const [zone, setZone] = React.useState<number>(1);
+  const [minutes, setMinutes] = React.useState<number>(7);
+  const [zone, setZone] = React.useState<number>(3);
   const timeInSeconds = minutes * 60;
 
   const handleMinuteSlider = (minutes: number) => setMinutes(minutes);
@@ -60,7 +54,8 @@ export const ZoneModal = ({ isOpen, onClose, addInterval }: ZoneModalProps) => {
                 <FormLabel htmlFor="zone-slider">Zone</FormLabel>
                 <Flex align="center" justify="center">
                 <Slider
-                  id="zone-slider"
+                  data-testid="zone-slider"
+                  aria-labelledby="Zone"
                   flex="1"
                   focusThumbOnChange={false}
                   value={zone}
@@ -79,7 +74,7 @@ export const ZoneModal = ({ isOpen, onClose, addInterval }: ZoneModalProps) => {
                 <FormLabel htmlFor="time-slider">Minutes</FormLabel>
                 <Flex>
                 <Slider
-                  id="time-slider"
+                  data-testid="time-slider"
                   flex="1"
                   focusThumbOnChange={false}
                   value={minutes}

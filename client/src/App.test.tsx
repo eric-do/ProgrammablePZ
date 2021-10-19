@@ -159,17 +159,7 @@ describe('Create custom ride', () => {
   test('it should display the Add Zone modal when user clicks Add Zone', () => {
     renderWithRouter(<App />);
     userEvent.click(screen.getByRole('button', { name: 'Add Zone' }));
-
-    // Header
     expect(screen.getByText('Add Power Zone')).toBeInTheDocument();
-
-    // Dropdowns
-    expect(screen.getByText('Zone 1')).toBeInTheDocument();
-    expect(screen.getByText('30 seconds')).toBeInTheDocument();
-
-    // Buttons
-    expect(screen.getByRole('button', { name: 'Close' })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Add' })).toBeInTheDocument()
   })
 
   test('it can create and start ride', () => {
@@ -179,62 +169,28 @@ describe('Create custom ride', () => {
     expect(screen.getAllByRole('row')).toHaveLength(2);
     userEvent.click(modalButton);
 
-    const zoneDropdown = screen.getByTestId('zone-dropdown') as HTMLSelectElement;
-    const lengthDropdown = screen.getByTestId('length-dropdown') as HTMLSelectElement;
-    const addButton = screen.getByRole('button', { name: 'Add' });
-
-    fireEvent.change(zoneDropdown, { target: { value: '1' }});
-    fireEvent.change(lengthDropdown, { target: { value: '60' }});
-    userEvent.click(addButton);
+    userEvent.click(screen.getByRole('button', { name: 'Add' }));
 
     expect(screen.getAllByRole('row')).toHaveLength(3);
-    expect(screen.getAllByText('1:00')).toHaveLength(2);
+    expect(screen.getAllByText('7:00')).toHaveLength(2);
     expect(screen.getByTestId('interval-zone-chart')).toBeInTheDocument();
     expect(screen.getAllByTestId('interval-chart-bar')).toHaveLength(1);
 
     userEvent.click(startButton);
-    expect(screen.getByRole('heading', { name: 'Zone 1' })).toBeInTheDocument();
-  })
-
-  test('it can create and save ride', () => {
-    renderWithRouter(<App />);
-    const modalButton = screen.getByRole('button', { name: 'Add Zone' });
-    const saveButton = screen.getByRole('button', { name: 'Save ride' });
-
-    userEvent.click(modalButton);
-
-    const zoneDropdown = screen.getByTestId('zone-dropdown') as HTMLSelectElement;
-    const lengthDropdown = screen.getByTestId('length-dropdown') as HTMLSelectElement;
-    const addButton = screen.getByRole('button', { name: 'Add' });
-
-    fireEvent.change(zoneDropdown, { target: { value: '1' }});
-    fireEvent.change(lengthDropdown, { target: { value: '60' }});
-    userEvent.click(addButton);
-
-    userEvent.click(saveButton);
-    expect(screen.getByText('Name this ride')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Zone 3' })).toBeInTheDocument();
   })
 
   test('it should reset table when user hits Reset button', () => {
     renderWithRouter(<App />);
-    const modalButton = screen.getByRole('button', { name: 'Add Zone' });
-    const resetButton = screen.getByRole('button', { name: 'Reset' });
 
     expect(screen.getAllByRole('row')).toHaveLength(2);
-    userEvent.click(modalButton);
-
-    const zoneDropdown = screen.getByTestId('zone-dropdown') as HTMLSelectElement;
-    const lengthDropdown = screen.getByTestId('length-dropdown') as HTMLSelectElement;
-    const addButton = screen.getByRole('button', { name: 'Add' });
-
-    fireEvent.change(zoneDropdown, { target: { value: 1 }});
-    fireEvent.change(lengthDropdown, { target: { value: 60 }});
-    userEvent.click(addButton);
+    userEvent.click(screen.getByRole('button', { name: 'Add Zone' }));
+    userEvent.click(screen.getByRole('button', { name: 'Add' }));
 
     expect(screen.getAllByRole('row')).toHaveLength(3);
     expect(screen.getAllByTestId('interval-chart-bar')).toHaveLength(1);
 
-    userEvent.click(resetButton);
+    userEvent.click(screen.getByRole('button', { name: 'Reset' }));
     expect(screen.getAllByRole('row')).toHaveLength(2);
     expect(screen.queryByTestId('interval-chart-bar')).toBeNull()
   })
