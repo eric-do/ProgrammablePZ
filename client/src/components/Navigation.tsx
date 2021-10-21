@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useAuth } from 'lib/auth';
-import { HamburgerIcon } from '@chakra-ui/icons'
+import { BellIcon, HamburgerIcon } from '@chakra-ui/icons'
 import { Link as RouterLink } from 'react-router-dom';
 import { ColorModeSwitcher } from 'ColorModeSwitcher';
 import {
@@ -22,6 +22,7 @@ import {
   Stack,
   Text
 } from '@chakra-ui/react';
+import { useSound } from 'providers/SoundProvider';
 
 const siteLinks = [
   {
@@ -45,10 +46,19 @@ export const NavBar = () => {
   const history = useHistory();
   const { isOpen, onToggle, onClose } = useDisclosure();
   const { user, logout } = useAuth();
+  const { active, toggle, sounds } = useSound();
 
   const handleLogout = async () => {
     await logout();
     history.push('/');
+  }
+
+  const handleBellClick = () => {
+    if (!active) {
+      sounds.bell.play();
+    }
+
+    toggle();
   }
 
   return (
@@ -65,6 +75,12 @@ export const NavBar = () => {
           onClick={onToggle}
         />
         <Flex justify="flex-end" w='100%'>
+          <BellIcon
+            data-testid="sound-button"
+            alignSelf="center"
+            onClick={handleBellClick}
+            color={active ? "yellow.400" : "white"}
+          />
           <ColorModeSwitcher justifySelf="flex-end" />
         </Flex>
       </Flex>
