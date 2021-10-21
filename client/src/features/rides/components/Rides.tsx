@@ -145,6 +145,8 @@ export const RideList = ({options}: RideListProps) => {
                         key={ride.id || index}
                         data-testid="ride-description-card"
                         cursor="pointer"
+                        borderBottom="1px"
+                        borderBottomColor="dimgray"
                       >
                         <Heading
                           data-testid="ride-heading"
@@ -157,13 +159,28 @@ export const RideList = ({options}: RideListProps) => {
                           timeInSeconds={ride.timeInSeconds}
                         />
                         <Flex direction="row">
-                          <Text data-testid="ride-rating" fontSize={'sm'}>
-                            {`Rating: ${ride.ratings?.rating || 5.0} / 5`}
+                          <Flex direction="row" w="30%">
+                            <Text data-testid="ride-rating" fontSize={'sm'} >
+                              {`Rating: ${ride.ratings?.rating || 5.0} / 5`}
+                            </Text>
+                          </Flex>
+                          <Spacer />
+                          <Text
+                            data-testid="ride-length"
+                            fontSize={'sm'}
+                            w="30%"
+                          >
+                            {`${Math.floor(ride.timeInSeconds / 60)} minutes`}
                           </Text>
                           <Spacer />
-                          <Text data-testid="ride-count" fontSize={'sm'}>
-                            {ride.metadata?.rideCount || 0} 🚴
-                          </Text>
+                          <Flex direction="row" w="30%" justifyContent="end">
+                            <Text
+                              data-testid="ride-count"
+                              fontSize={'sm'}
+                            >
+                              {ride.metadata?.rideCount || 0} 🚴
+                            </Text>
+                          </Flex>
                         </Flex>
                       </Box>
                     ))
