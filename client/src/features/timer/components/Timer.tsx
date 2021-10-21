@@ -14,6 +14,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from "lib/auth";
 import { zoneColors, inactiveZoneColors, zoneColorSchemes } from 'shared';
 import { useRide } from 'providers/RideProvider';
+import { useSound } from "providers/SoundProvider";
 import { useIncrementRideCount } from 'features/rides/api/incrementRideCount';
 import { FinishRideModal } from './FinishRideModal';
 
@@ -25,7 +26,6 @@ const defaultProps = {
   displayTimer: () => {}
 }
 
-
 export const Timer = ({ displayTimer }: TimerProps = defaultProps) => {
   const { user } = useAuth();
   const {
@@ -34,6 +34,7 @@ export const Timer = ({ displayTimer }: TimerProps = defaultProps) => {
     onClose: onCloseFinishRide
   } = useDisclosure();
   const toast = useToast();
+  const { active: soundActive, sounds: { bell } } = useSound();
   const { ride } = useRide();
   const { mutate: incrementRide} = useIncrementRideCount({ rideId: ride.id});
   let { intervals, timeInSeconds } = ride;
@@ -106,6 +107,7 @@ export const Timer = ({ displayTimer }: TimerProps = defaultProps) => {
         setZoneSeconds(seconds => seconds - 1)
       }
       if (zoneSeconds === 0) {
+        if (soundActive) bell.play();
         if (zoneMinutes === 0 && zoneInterval < intervals.length - 1) {
           const nextInterval = zoneInterval + 1
           setZoneInterval(nextInterval)
@@ -128,7 +130,7 @@ export const Timer = ({ displayTimer }: TimerProps = defaultProps) => {
     };
   }, [
     intervals, minutes, seconds, zoneInterval, zoneTimeInSeconds,
-    zoneSeconds, zoneMinutes, toast, elapsedTime, timeInSeconds
+    zoneSeconds, zoneMinutes, toast, elapsedTime, timeInSeconds, bell, soundActive
   ])
 
   return (

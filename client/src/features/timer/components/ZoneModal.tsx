@@ -79,7 +79,7 @@ export const ZoneModal = ({ isOpen, onClose, addInterval }: ZoneModalProps) => {
                   focusThumbOnChange={false}
                   value={minutes}
                   min={1}
-                  max={30}
+                  max={15}
                   onChange={handleMinuteSlider}
                 >
                   <SliderTrack>
