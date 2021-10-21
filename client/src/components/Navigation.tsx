@@ -76,6 +76,7 @@ export const NavBar = () => {
         />
         <Flex justify="flex-end" w='100%'>
           <BellIcon
+            data-testid="sound-button"
             alignSelf="center"
             onClick={handleBellClick}
             color={active ? "yellow.400" : "white"}

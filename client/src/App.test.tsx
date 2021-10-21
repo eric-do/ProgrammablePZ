@@ -35,6 +35,7 @@ describe('Navigation', () => {
     expect(screen.getByRole('link', { name: 'Create ride' })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Popular rides' })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Saved rides' })).toBeInTheDocument();
+    expect(screen.getByTestId('sound-button')).toBeInTheDocument();
   })
 
   test('user can navigate to login page', () => {
