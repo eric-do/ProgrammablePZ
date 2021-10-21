@@ -139,19 +139,6 @@ export const Intervals = ({
           timeInSeconds={timeInSeconds}
           removeInterval={removeInterval}
         />
-        <Button
-          colorScheme="blue"
-          onClick={onOpenZone}
-        >
-          Add Zone
-        </Button>
-        <Button
-          colorScheme="red"
-          isDisabled={intervals.length === 0}
-          onClick={onOpenSave}
-        >
-          Save ride
-        </Button>
         <ButtonGroup spacing={2}>
           <Button
             isFullWidth
@@ -163,13 +150,28 @@ export const Intervals = ({
           </Button>
           <Button
             isFullWidth
-            colorScheme="green"
-            isDisabled={intervals.length === 0}
-            onClick={startWorkout}
+            colorScheme="blue"
+            onClick={onOpenZone}
           >
-            Start!
+            Add Zone
           </Button>
         </ButtonGroup>
+        <Button
+          isFullWidth
+          colorScheme="green"
+          isDisabled={intervals.length === 0}
+          onClick={startWorkout}
+        >
+          Start!
+        </Button>
+        <Button
+          colorScheme="red"
+          isFullWidth
+          isDisabled={intervals.length === 0}
+          onClick={onOpenSave}
+        >
+          Save ride
+        </Button>
         <ZoneModal
           isOpen={isOpenZone}
           onClose={onCloseZone}
