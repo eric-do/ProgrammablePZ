@@ -20,7 +20,8 @@ import {
   DrawerOverlay,
   Link,
   Stack,
-  Text
+  Text,
+  useToast
 } from '@chakra-ui/react';
 import { useSound } from 'providers/SoundProvider';
 
@@ -45,6 +46,7 @@ const userLinks = [
 export const NavBar = () => {
   const history = useHistory();
   const { isOpen, onToggle, onClose } = useDisclosure();
+  const toast = useToast();
   const { user, logout } = useAuth();
   const { active, toggle, sounds } = useSound();
 
@@ -56,6 +58,13 @@ export const NavBar = () => {
   const handleBellClick = () => {
     if (!active) {
       sounds.bell.play();
+      toast({
+        title: "Not recommended with music",
+        description: "Sounds from the app may pause audio",
+        status: "warning",
+        duration: 9000,
+        isClosable: true,
+      })
     }
 
     toggle();

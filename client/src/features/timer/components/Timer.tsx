@@ -107,8 +107,8 @@ export const Timer = ({ displayTimer }: TimerProps = defaultProps) => {
         setZoneSeconds(seconds => seconds - 1)
       }
       if (zoneSeconds === 0) {
-        if (soundActive) bell.play();
         if (zoneMinutes === 0 && zoneInterval < intervals.length - 1) {
+          if (soundActive) bell.play();
           const nextInterval = zoneInterval + 1
           setZoneInterval(nextInterval)
           const tempSeconds = Math.floor(intervals[nextInterval].length % 60);
