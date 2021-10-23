@@ -18,8 +18,8 @@ const handleUserResponse = async (data: UserResponse) => {
 
 const loadUser = async () => {
   if (storage.getToken()) {
-    const data = await AuthAPI.validateUser();
-    return data;
+    const { user } = await AuthAPI.validateUser();
+    return user;
   }
   return null;
 }

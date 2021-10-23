@@ -1,9 +1,9 @@
 import { useQuery } from 'react-query';
 import { axios } from 'lib/axios';
 import { QueryConfig } from 'lib/react-query';
-import { AuthUser } from '../types';
+import { UserResponse } from '../types';
 
-export const validateUser = (): Promise<AuthUser> => {
+export const validateUser = (): Promise<UserResponse> => {
   return axios.get('/auth/validate');
 }
 
