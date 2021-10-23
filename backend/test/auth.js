@@ -106,6 +106,15 @@ describe('Authentication', () => {
         })
 
       expect(validateResponse.status).to.eql(200);
+      expect(validateResponse.body).to.have.keys('jwt', 'user');
+      expect(validateResponse.body.jwt).to.be.a('string')
+      expect(validateResponse.body.user).to.have.keys(
+        'id',
+        'username',
+        'email',
+        'iat',
+        'exp'
+      );
     })
 
     it('should deny user with invalid token', async () => {
