@@ -21,7 +21,8 @@ import {
   Link,
   Stack,
   Text,
-  useToast
+  useToast,
+  Heading
 } from '@chakra-ui/react';
 import { useSound } from 'providers/SoundProvider';
 
@@ -37,6 +38,10 @@ const siteLinks = [
 ]
 
 const userLinks = [
+  {
+    title: 'Profile',
+    url: '/profile'
+  },
   {
     title: 'Saved rides',
     url: '/favorites'
@@ -126,8 +131,8 @@ export const NavBar = () => {
             }
             {
               user &&
-              <Flex mb={10} mt={3}>
-                <Text>Logged in as: { user.username }</Text>
+              <Flex mb={5}>
+                <Heading as="h2" size="lg">{ user.username }</Heading>
               </Flex>
             }
             <Stack spacing={4} mb={5}>
