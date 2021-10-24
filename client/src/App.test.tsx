@@ -97,7 +97,7 @@ describe('Navigation', () => {
   })
 })
 
-describe('Auth', () => {
+xdescribe('Auth', () => {
   test('Successful registration takes user to homepage', async () => {
     renderWithRouter(<App />);
     userEvent.click(screen.getByRole('button', { name: 'Toggle app drawer'}));
