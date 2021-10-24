@@ -11,6 +11,7 @@ import { AppProvider } from "providers/app";
 import { NavBar } from "components/Navigation";
 import { PrivateRoute } from "features/auth/components/PrivateRoute";
 import { ZoneTimer } from "features/timer";
+import { Profile } from "features/profile";
 import { Rides, UserRides } from "features/rides";
 import { Login, Register } from "features/auth/routes";
 
@@ -33,6 +34,9 @@ export const App = () => {
             <Route exact path="/rides">
               <Rides />
             </Route>
+            <PrivateRoute path="/profile">
+              <Profile />
+            </PrivateRoute>
             <PrivateRoute path="/favorites">
               <UserRides />
             </PrivateRoute>

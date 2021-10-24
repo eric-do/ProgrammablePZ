@@ -22,6 +22,7 @@ export interface QueryOptions {
   type?: string;
   timeInSeconds?: string;
   user?: string;
+  sort?: string;
 }
 
 export interface InfiniteQueryOptions {
