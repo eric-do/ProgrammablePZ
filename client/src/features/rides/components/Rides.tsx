@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
 import {
-  Box,
   Select,
   Text,
   Stack,
   Heading,
   Flex,
-  Spacer,
   Spinner
 } from "@chakra-ui/react";
 import InfiniteScroll from 'react-infinite-scroll-component';
@@ -15,8 +13,8 @@ import { ErrorBoundary } from 'react-error-boundary';
 import { QueryOptions } from 'lib/react-query';
 import { useRide } from 'providers/RideProvider';
 import { Workout } from 'types';
-import { ZoneGraph } from 'components';
 import { useInfiniteRides } from '../api/index';
+import { RideCard } from './RideCard';
 
 const defaultFilter =  {
   type: 'all',
@@ -140,50 +138,11 @@ export const RideList = ({options}: RideListProps) => {
                   <React.Fragment key={i}>
                     {
                       rides.map((ride, index) => (
-                        <Box
-                          mb={4}
-                          onClick={() => handleSetRide(ride)}
+                        <RideCard
+                          ride={ride}
                           key={ride.id || index}
-                          data-testid="ride-description-card"
-                          cursor="pointer"
-                          borderBottom="1px"
-                          borderBottomColor="dimgray"
-                        >
-                          <Heading
-                            data-testid="ride-heading"
-                            fontSize={{base: 'sm', lg: 'md'}}
-                          >
-                            {ride.title}
-                          </Heading>
-                          <ZoneGraph
-                            intervals={ride.intervals}
-                            timeInSeconds={ride.timeInSeconds}
-                          />
-                          <Flex direction="row">
-                            <Flex direction="row" w="30%">
-                              <Text data-testid="ride-rating" fontSize={'sm'} >
-                                {`Rating: ${ride.ratings?.rating || 5.0} / 5`}
-                              </Text>
-                            </Flex>
-                            <Spacer />
-                            <Text
-                              data-testid="ride-length"
-                              fontSize={'sm'}
-                              w="30%"
-                            >
-                              {`${Math.floor(ride.timeInSeconds / 60)} minutes`}
-                            </Text>
-                            <Spacer />
-                            <Flex direction="row" w="30%" justifyContent="end">
-                              <Text
-                                data-testid="ride-count"
-                                fontSize={'sm'}
-                              >
-                                {ride.metadata?.rideCount || 0} 🚴
-                              </Text>
-                            </Flex>
-                          </Flex>
-                        </Box>
+                          onClick={handleSetRide}
+                        />
                       ))
                     }
                   </React.Fragment >
