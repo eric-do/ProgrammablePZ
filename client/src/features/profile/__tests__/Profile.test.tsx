@@ -41,3 +41,17 @@ test('it should render recent ride list', async () => {
   await screen.findAllByTestId('ride-description-card');
   expect(screen.getAllByTestId('ride-description-card')).toHaveLength(rides.length)
 })
+
+test('it should display error message if query was unsuccessful', async () => {
+  server.use(
+    rest.get(`${API_URL}/api/user/:id/rides`, (req, res, ctx) => {
+      return res.once(ctx.status(500))
+    }),
+  )
+  render(
+    <AppProvider>
+      <Profile/>
+    </AppProvider>
+  );
+  await screen.findByText('Something went wrong.');
+})
