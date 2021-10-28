@@ -44,7 +44,7 @@ const getRides = async (
   return rides;
 }
 
-const getRidesByUser = async (
+const getRidesCreatedByUser = async (
   user,
   types,
   lengths,
@@ -87,6 +87,31 @@ const getRidesByUser = async (
 
   const rides = await query(q, [user, types, lengths, limit, offset]);
   return rides;
+}
+
+const getRidesTakenByUser = async (userId, limit, offset) => {
+  const q = `
+    SELECT
+      r.id,
+      r.creator_id,
+      r.title,
+      r.type,
+      r.likes,
+      rr.rating,
+      rr.difficulty,
+      r.dislikes,
+      r.total_votes,
+      r.ride_count,
+      r.intervals,
+      r.timeInSeconds,
+      r.created_on
+    FROM user_rides as u
+    INNER JOIN rides as r
+      ON u.ride_id = r.id
+    WHERE u.user_id = ?
+    LIMIT ?
+    OFFSET ?
+  `
 }
 
 const addRide = async (ride, userId) => {
@@ -215,7 +240,7 @@ const getRideById = async (rideId) => {
 
 module.exports = {
   getRides,
-  getRidesByUser,
+  getRidesCreatedByUser,
   addRide,
   addRideRating,
   getRideRatings,
