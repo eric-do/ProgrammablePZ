@@ -158,6 +158,22 @@ describe('Rides', () => {
       expect(response.status).to.eql(200);
       expect(response.body.length).to.eql(1);
     })
+
+    it("Should respond with rides filtered by user and offset for pagination", async () => {
+      for (let i = 0; i < 6; i++) {
+        await postRide(testRide);
+      }
+
+      const response1 = await request(app).get(`/api/rides?user=${testValidUser.username}&limit=3&offset=0`);
+      const response2 = await request(app).get(`/api/rides?user=${testValidUser.username}&limit=3&offset=3`);
+      const ids = [...response1.body, ...response2.body].map(ride => ride.id);
+      const uniqueIds = new Set([...ids]);
+      expect(response1.status).to.eql(200);
+      expect(response1.body.length).to.eql(3);
+      expect(response2.status).to.eql(200);
+      expect(response2.body.length).to.eql(3);
+      expect(ids.length).to.eql(uniqueIds.size);
+    })
   })
 
   describe("POST /api/rides", () => {
