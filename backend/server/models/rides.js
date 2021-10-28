@@ -46,9 +46,10 @@ const getRides = async (
 
 const getRidesByUser = async (
   user,
-  limit = 10,
   types,
-  lengths
+  lengths,
+  limit = 10,
+  offset
 ) => {
   const q = `
     SELECT
@@ -81,10 +82,10 @@ const getRidesByUser = async (
       AND ($2::VARCHAR IS NULL OR r.type = $2)
       AND ($3::INT IS NULL OR r.timeInSeconds = $3)
     ORDER BY r.created_on DESC
-    LIMIT $4
+    LIMIT $4 OFFSET $5
   `;
 
-  const rides = await query(q, [user, types, lengths, limit]);
+  const rides = await query(q, [user, types, lengths, limit, offset]);
   return rides;
 }
 
