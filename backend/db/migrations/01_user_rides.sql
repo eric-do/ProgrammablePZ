@@ -7,3 +7,5 @@ CREATE TABLE user_rides (
 );
 
 CREATE INDEX user_rides_userid_index ON user_rides (user_id);
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON user_rides TO postgres;

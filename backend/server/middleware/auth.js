@@ -14,6 +14,7 @@ const generateToken = (req, res, next) => {
 
 const validateToken = (req, res, next) => {
   const { authorization } = req.headers;
+
   try {
     const token = authorization && authorization.split(' ')[1];
 
