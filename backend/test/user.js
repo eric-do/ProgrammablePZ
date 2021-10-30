@@ -12,7 +12,7 @@ const {
 } = require('./sqlQueries');
 
 describe('User rides', () => {
-  let jwt, user, ride;
+  let jwt, userId, ride;
   beforeEach(async () => {
     let { body: { jwt, user} } = await request(app)
     .post("/auth/register")
@@ -27,6 +27,7 @@ describe('User rides', () => {
     });
 
     ride = response.body.ride
+    userId = user.id
   })
 
   afterEach(async () => {
@@ -34,11 +35,10 @@ describe('User rides', () => {
     return query(deleteRide, [testRide.title]);
   })
 
-  describe('POST /api/user/rides', () => {
+  describe('POST /api/users/:id/rides_taken', () => {
     it(`should add ride to user's taken rides`, async () => {
-      console.log(ride.id)
-      const response = await request(app)
-        .post(`/api/user/rides`)
+      const postResponse = await request(app)
+        .post(`/api/users/${userId}/rides_taken`)
         .send({
           rideId: ride.id
         })
@@ -46,7 +46,18 @@ describe('User rides', () => {
           'Authorization': 'Bearer ' + jwt,
           'Content-Type': 'application/json'
         });
-      expect(response.status).to.eql(201);
+
+      expect(postResponse.status).to.eql(201);
+
+      const getResponse = await request(app)
+        .get(`/api/users/${userId}/rides_taken`);
+
+      expect(getResponse.status).to.eql(200);
+      expect(getResponse.body.length).to.eql(1)
+      expect(getResponse.body[0]).to.have.keys(
+        'title', 'type', 'metadata',
+        'ratings', 'intervals', 'timeInSeconds', 'id'
+      );
     })
   })
 })
