@@ -2,6 +2,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useAuth } from 'lib/auth';
 import { BellIcon, HamburgerIcon } from '@chakra-ui/icons'
+import { FaBicycle, FaRegUser, FaRegStar, FaFire, FaSignOutAlt } from 'react-icons/fa'
 import { Link as RouterLink } from 'react-router-dom';
 import { ColorModeSwitcher } from 'ColorModeSwitcher';
 import {
@@ -18,6 +19,7 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
+  Icon,
   Link,
   Stack,
   Text,
@@ -28,23 +30,24 @@ import { useSound } from 'providers/SoundProvider';
 
 const siteLinks = [
   {
+    title: 'Profile',
+    url: '/profile',
+    icon: FaRegUser
+  },
+  {
     title: 'Create ride',
-    url: '/timer'
+    url: '/timer',
+    icon: FaBicycle
   },
   {
     title: 'Popular rides',
-    url: '/rides'
-  },
-]
-
-const userLinks = [
-  {
-    title: 'Profile',
-    url: '/profile'
+    url: '/rides',
+    icon: FaFire
   },
   {
     title: 'Saved rides',
-    url: '/favorites'
+    url: '/favorites',
+    icon: FaRegStar
   }
 ]
 
@@ -107,7 +110,7 @@ export const NavBar = () => {
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
-          <DrawerHeader>Programmable PZ</DrawerHeader>
+          <DrawerHeader borderBottomWidth="1px">Programmable PZ</DrawerHeader>
           <DrawerBody>
             { !user &&
               <Flex mb={10} mt={3}>
@@ -131,8 +134,8 @@ export const NavBar = () => {
             }
             {
               user &&
-              <Flex mb={5}>
-                <Heading as="h2" size="lg">{ user.username }</Heading>
+              <Flex mb={5} pt={3}>
+                <Heading as="h2" size="md">{ user.username }</Heading>
               </Flex>
             }
             <Stack spacing={4} mb={5}>
@@ -144,38 +147,27 @@ export const NavBar = () => {
                     to={link.url}
                     onClick={onClose}
                   >
-                    <Text
-                      fontSize="lg"
-                    >
-                      { link.title}
-                    </Text>
+                    <Flex direction="row" align="center">
+                      <Icon as={link.icon} />
+                      <Text
+                        pl={3}
+                        fontSize="lg"
+                      >
+                        { link.title}
+                      </Text>
+                    </Flex>
                   </Link>
                 ))
               }
-            </Stack>
-            <Divider />
-            <Stack spacing={4} mt={5}>
-              {
-                userLinks.map(link => (
-                  <Link
-                    key={link.url}
-                    as={RouterLink}
-                    to={link.url}
-                    onClick={onClose}
-                  >
-                    <Text
-                      fontSize="lg"
-                    >
-                      { link.title}
-                    </Text>
-                  </Link>
-                ))
-              }
+              <Divider />
               { user &&
                 <Link onClick={handleLogout}>
-                  <Text fontSize="lg">
-                    Log out
-                  </Text>
+                  <Flex direction="row" align="center">
+                    <Icon as={FaSignOutAlt} />
+                    <Text fontSize="lg" pl={3}>
+                      Log out
+                    </Text>
+                  </Flex>
                 </Link>
               }
             </Stack>
