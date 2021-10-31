@@ -32,22 +32,26 @@ const siteLinks = [
   {
     title: 'Profile',
     url: '/profile',
-    icon: FaRegUser
+    icon: FaRegUser,
+    color: 'blue.400'
   },
   {
     title: 'Create ride',
     url: '/timer',
-    icon: FaBicycle
+    icon: FaBicycle,
+    color: 'green.400'
   },
   {
     title: 'Popular rides',
     url: '/rides',
-    icon: FaFire
+    icon: FaFire,
+    color: 'orange'
   },
   {
     title: 'Saved rides',
     url: '/favorites',
-    icon: FaRegStar
+    icon: FaRegStar,
+    color: 'yellow'
   }
 ]
 

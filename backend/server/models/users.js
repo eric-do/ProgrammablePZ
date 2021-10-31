@@ -12,7 +12,7 @@ const addTakenRide = async (userId, rideId) => {
 const getUserRidesTaken = async (userId) => {
   const q = `
     SELECT
-      r.id,
+      u.id,
       r.creator_id,
       r.title,
       r.type,
