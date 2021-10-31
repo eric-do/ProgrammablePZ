@@ -18,7 +18,7 @@ const getRides = async (req, res, next) => {
     timeInSeconds = timeInSeconds === 'all' ? null : timeInSeconds;
 
     if (user) {
-      res.locals.data = await RideModel.getRidesByUser(user, type, timeInSeconds, limit, offset);
+      res.locals.data = await RideModel.getRidesCreatedByUser(user, type, timeInSeconds, limit, offset);
     } else {
       res.locals.data = await RideModel.getRides(type, timeInSeconds, limit, offset);
     }

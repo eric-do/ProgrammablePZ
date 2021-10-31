@@ -16,6 +16,7 @@ import { zoneColors, inactiveZoneColors, zoneColorSchemes } from 'shared';
 import { useRide } from 'providers/RideProvider';
 import { useSound } from "providers/SoundProvider";
 import { useIncrementRideCount } from 'features/rides/api/incrementRideCount';
+import { useRidesTakenByUser } from "features/rides/api";
 import { FinishRideModal } from './FinishRideModal';
 
 interface TimerProps {
@@ -36,7 +37,13 @@ export const Timer = ({ displayTimer }: TimerProps = defaultProps) => {
   const toast = useToast();
   const { active: soundActive, sounds: { bell } } = useSound();
   const { ride } = useRide();
-  const { mutate: incrementRide} = useIncrementRideCount({ rideId: ride.id});
+  const { mutate: incrementRide} = useIncrementRideCount({
+    rideId: ride.id
+  });
+  const { mutate: addUserRide } = useRidesTakenByUser({
+    rideId: ride.id,
+    userId: user?.id
+  })
   let { intervals, timeInSeconds } = ride;
 
   // Global countdown states
@@ -77,7 +84,13 @@ export const Timer = ({ displayTimer }: TimerProps = defaultProps) => {
     if (ride.id) {
       incrementRide({ data: { rideId: ride.id }})
     }
-  }, [incrementRide, ride.id])
+    if (user && ride) {
+      addUserRide({ data: {
+        rideId: ride.id,
+        userId: user.id
+      }})
+    }
+  }, [addUserRide, incrementRide, ride, user])
 
   useEffect(() => {
     if (elapsedTime === timeInSeconds) {
