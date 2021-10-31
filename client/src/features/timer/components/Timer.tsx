@@ -85,7 +85,6 @@ export const Timer = ({ displayTimer }: TimerProps = defaultProps) => {
       incrementRide({ data: { rideId: ride.id }})
     }
     if (user && ride) {
-      console.log(user, ride)
       addUserRide({ data: {
         rideId: ride.id,
         userId: user.id

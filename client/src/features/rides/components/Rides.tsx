@@ -122,7 +122,7 @@ export const RideList = ({options}: RideListProps) => {
             dataLength={data.pages.length}
             next={fetchNextPage}
             hasMore={data.pages[data.pages.length - 1].length > 0}
-            loader={<h4>Loading...</h4>}
+            loader={<span></span>}
             endMessage={
               <p style={{ textAlign: 'center' }}>
                 <b>Yay! You have seen it all</b>
