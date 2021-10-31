@@ -55,3 +55,17 @@ test('it should display error message if query was unsuccessful', async () => {
   );
   await screen.findByText('Something went wrong.');
 })
+
+test('it should display message if no rides have been taken', async () => {
+  server.use(
+    rest.get(`${API_URL}/api/users/:id/rides_taken`, (req, res, ctx) => {
+      return res.once((ctx.json([])))
+    }),
+  )
+  render(
+    <AppProvider>
+      <Profile/>
+    </AppProvider>
+  );
+  await screen.findByText('No rides taken. Only saved rides or popular rides are displayed.');
+})

@@ -31,13 +31,16 @@ export const Profile = () => {
       <Heading size="lg" pb={3}>Recent rides</Heading>
       <Stack direction="column" spacing={4} data-testid="recent-rides">
         {
-          rides?.map((ride, idx) => (
+          rides?.map((ride) => (
             <RideCard
-              key={idx}
+              key={ride.id}
               ride={ride}
               onClick={handleSetRide}
             />
           ))
+        }
+        {
+          rides?.length === 0 && <Text>No rides taken. Only saved rides or popular rides are displayed.</Text>
         }
         {
           error && <Text>Something went wrong.</Text>
