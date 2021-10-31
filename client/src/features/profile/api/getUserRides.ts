@@ -7,11 +7,11 @@ import {
 } from 'lib/react-query';
 
 export const getUserRides = ({
-  user,
+  userId,
   limit = 3,
   sort = 'recent'
 }: QueryOptions): Promise<Ride[]> => {
-  return axios.get(`/api/user/${user}/rides`, {
+  return axios.get(`/api/users/${userId}/rides_taken`, {
     params: {
       limit,
       sort
