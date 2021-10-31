@@ -1,6 +1,7 @@
 const express = require('express')
 const cors = require('cors')
 const app = express()
+const morgan = require('morgan');
 const ridesRouter = require('./routes/rides');
 const authRouter = require('./routes/auth');
 const userRouter = require('./routes/users');
@@ -10,6 +11,9 @@ const errorHandler = require('./middleware/errorHandler')
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
+app.use(morgan('dev', {
+  skip: (req, res) => process.env.NODE_ENV === 'test'
+}));
 
 // Routes
 app.use('/auth', authRouter);

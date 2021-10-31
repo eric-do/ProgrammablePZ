@@ -12,16 +12,16 @@ export const Profile = () => {
   const { user } = useAuth();
   const { data: rides, error } = useUserRides({
     options: {
-      user: user?.username
+      userId: user?.id
     }
   })
 
   return (
     <Stack>
-      <Heading size="lg">Recent rides</Heading>
+      <Heading size="lg" pb={3}>Recent rides</Heading>
       <Stack direction="column" spacing={4} data-testid="recent-rides">
         {
-          rides?.map(ride => <RideCard key={ride.id} ride={ride} onClick={() => {}} />)
+          rides?.map((ride, idx) => <RideCard key={idx} ride={ride} onClick={() => {}} />)
         }
         {
           error && <Text>Something went wrong.</Text>

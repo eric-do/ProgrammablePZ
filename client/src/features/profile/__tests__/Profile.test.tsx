@@ -27,7 +27,7 @@ test('it should render initial UI', () => {
 
 test('it should render recent ride list', async () => {
   server.use(
-    rest.get(`${API_URL}/api/user/:id/rides`, (req, res, ctx) => {
+    rest.get(`${API_URL}/api/users/:id/rides_taken`, (req, res, ctx) => {
       return res.once(ctx.json(rides))
     }),
   )
@@ -44,7 +44,7 @@ test('it should render recent ride list', async () => {
 
 test('it should display error message if query was unsuccessful', async () => {
   server.use(
-    rest.get(`${API_URL}/api/user/:id/rides`, (req, res, ctx) => {
+    rest.get(`${API_URL}/api/users/:id/rides_taken`, (req, res, ctx) => {
       return res.once(ctx.status(500))
     }),
   )

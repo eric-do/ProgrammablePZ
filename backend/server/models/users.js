@@ -31,6 +31,7 @@ const getUserRidesTaken = async (userId) => {
     LEFT JOIN ride_ratings as rr
     on r.id = rr.ride_id
     WHERE u.user_id = $1
+    ORDER BY u.ridden_at DESC
   `
 
   const rides = await query(q, [userId])
