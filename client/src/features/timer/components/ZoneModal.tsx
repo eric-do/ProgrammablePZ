@@ -15,9 +15,11 @@ import {
   SliderTrack,
   SliderFilledTrack,
   SliderThumb,
-  Stack
+  Stack,
+  Text
 } from "@chakra-ui/react"
 import { Interval } from 'types';
+import { zoneColors } from 'shared'
 
 interface ZoneModalProps {
   isOpen: boolean;
@@ -51,7 +53,13 @@ export const ZoneModal = ({ isOpen, onClose, addInterval }: ZoneModalProps) => {
           <form>
             <Stack direction="column" spacing={4} px={2}>
               <FormControl>
-                <FormLabel htmlFor="zone-slider">Zone</FormLabel>
+                <FormLabel htmlFor="zone-slider">
+                  <Flex align="center">
+                    <Text>Zone</Text>
+                    <Text>:</Text>
+                    <Text fontSize="xl" pl={3} >{ zone }</Text>
+                  </Flex>
+                </FormLabel>
                 <Flex align="center" justify="center">
                 <Slider
                   data-testid="zone-slider"
@@ -64,14 +72,20 @@ export const ZoneModal = ({ isOpen, onClose, addInterval }: ZoneModalProps) => {
                   onChange={handleZoneSlider}
                 >
                   <SliderTrack>
-                    <SliderFilledTrack />
+                    <SliderFilledTrack bg={zoneColors[zone]}/>
                   </SliderTrack>
-                  <SliderThumb bg="blue.200" color="gray.800" fontSize="sm" boxSize="32px" children={zone} />
+                  <SliderThumb bg={zoneColors[zone]} color="gray.800" fontSize="sm" boxSize="32px" children={zone} />
                 </Slider>
                 </Flex>
               </FormControl>
               <FormControl>
-                <FormLabel htmlFor="time-slider">Minutes</FormLabel>
+                <FormLabel htmlFor="time-slider">
+                  <Flex align="center">
+                    <Text>Minutes</Text>
+                    <Text>:</Text>
+                    <Text fontSize="xl" pl={3} >{ minutes }</Text>
+                  </Flex>
+                </FormLabel>
                 <Flex>
                 <Slider
                   data-testid="time-slider"
