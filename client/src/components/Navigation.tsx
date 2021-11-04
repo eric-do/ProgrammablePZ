@@ -152,7 +152,10 @@ export const NavBar = () => {
                     onClick={onClose}
                   >
                     <Flex direction="row" align="center">
-                      <Icon as={link.icon} />
+                      <Icon
+                        as={link.icon}
+                        color={link.color}
+                      />
                       <Text
                         pl={3}
                         fontSize="lg"
