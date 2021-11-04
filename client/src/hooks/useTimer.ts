@@ -12,7 +12,6 @@ export const useTimer = (timeInSeconds: number) => {
   useEffect(() => {
     let timerCountdown = setInterval(() => {
       if (seconds > 0) {
-        console.log(seconds)
         decrementSeconds();
       }
       if (seconds === 0) {
