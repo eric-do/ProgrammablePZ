@@ -10,7 +10,8 @@ import {
   useDisclosure,
   useToast
 } from "@chakra-ui/react";
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { useTimer } from "hooks";
 import { useAuth } from "lib/auth";
 import { zoneColors, inactiveZoneColors, zoneColorSchemes } from 'shared';
 import { useRide } from 'providers/RideProvider';
@@ -37,6 +38,10 @@ export const Timer = ({ displayTimer }: TimerProps = defaultProps) => {
   const toast = useToast();
   const { active: soundActive, sounds: { bell } } = useSound();
   const { ride } = useRide();
+  let { intervals, timeInSeconds } = ride;
+  const { minutes, seconds, elapsedTime } = useTimer(timeInSeconds)
+
+  // Ride incrementing logic
   const { mutate: incrementRide} = useIncrementRideCount({
     rideId: ride.id
   });
@@ -44,28 +49,56 @@ export const Timer = ({ displayTimer }: TimerProps = defaultProps) => {
     rideId: ride.id,
     userId: user?.id
   })
-  let { intervals, timeInSeconds } = ride;
 
   // Global countdown states
-  timeInSeconds -= 1;
-  const [elapsedTime, setElapsedTime] = useState<number>(0)
-  const [minutes, setMinutes] = useState<number>(Math.floor(timeInSeconds / 60));
-  const [seconds, setSeconds] = useState<number>(timeInSeconds % 60);
   const formattedSeconds = seconds.toLocaleString('en-US', {
     minimumIntegerDigits: 2,
   })
 
   // Zone countdown states
   const [zoneInterval, setZoneInterval] = useState<number>(0);
+  const zoneIntervalRef = useRef(zoneInterval)
   const [zoneElapsedTime, setZoneElapsedTime] = useState<number>(0);
   const zoneTimeInSeconds = intervals[zoneInterval]?.length;
   const tempSeconds = Math.floor(zoneTimeInSeconds % 60);
   const tempMinutes = Math.floor(zoneTimeInSeconds / 60);
   const [zoneMinutes, setZoneMinutes] = useState<number>(tempSeconds === 0 ? tempMinutes - 1 : tempMinutes);
-  const [zoneSeconds, setZoneSeconds] = useState<number>(tempSeconds === 0 ? 59 : tempSeconds - 1);
+  const [zoneSeconds, setZoneSeconds] = useState<number>(tempSeconds === 0 ? 60 : tempSeconds - 1);
+  const zoneSecondsRef = useRef(zoneSeconds);
   const formattedZoneSeconds = zoneSeconds.toLocaleString('en-US', {
     minimumIntegerDigits: 2,
   })
+  const nextInterval = zoneInterval + 1;
+
+  const incrementInterval = useCallback(() => {
+    zoneIntervalRef.current = zoneInterval + 1;
+    setZoneInterval(zoneIntervalRef.current)
+  }, [zoneInterval, setZoneInterval]);
+
+  const incrementZoneElapsedTime = useCallback(() => {
+    setZoneElapsedTime(seconds => seconds + 1)
+  }, [])
+
+  const decrementZoneMinutes = useCallback(() => {
+    zoneSecondsRef.current = 60;
+    setZoneSeconds(zoneSecondsRef.current);
+    setZoneMinutes(minutes => minutes - 1)
+  }, []);
+
+  const decrementZoneSeconds = useCallback(() => {
+    zoneSecondsRef.current -= 1;
+    setZoneSeconds(zoneSecondsRef.current);
+  }, []);
+
+  const resetZoneTimer = useCallback(() => {
+    incrementInterval()
+    const tempSeconds = Math.floor(intervals[nextInterval].length % 60);
+    const tempMinutes = Math.floor(intervals[nextInterval].length / 60);
+    zoneSecondsRef.current = tempSeconds === 0 ? 60 : tempSeconds - 1;
+    setZoneMinutes(tempSeconds === 0 ? tempMinutes - 1 : tempMinutes)
+    setZoneSeconds(zoneSecondsRef.current);
+    setZoneElapsedTime(-1)
+  }, [incrementInterval, intervals, nextInterval]);
 
   const toggleFinishRideModal = () => {
     if (user) {
@@ -79,6 +112,13 @@ export const Timer = ({ displayTimer }: TimerProps = defaultProps) => {
       })
     }
   }
+
+  const finishZone = useCallback(() => {
+    if (soundActive) {
+      bell.play();
+    }
+    resetZoneTimer();
+  }, [soundActive, bell, resetZoneTimer])
 
   useEffect(() => {
     if (ride.id) {
@@ -94,57 +134,36 @@ export const Timer = ({ displayTimer }: TimerProps = defaultProps) => {
 
   useEffect(() => {
     if (elapsedTime === timeInSeconds) {
-      setZoneElapsedTime(zoneTimeInSeconds);
       toast({
         title: "Ride complete!",
         status: "success",
         duration: 9000,
         isClosable: true,
       })
-      return;
     }
+  }, [elapsedTime, timeInSeconds, setZoneElapsedTime, zoneTimeInSeconds, toast])
 
-    let timerCountdown = setInterval(() => {
-      if (seconds > 0) {
-        setSeconds(seconds => seconds - 1)
-      }
-      if (seconds === 0) {
-        if (minutes === 0) {
-          clearInterval(timerCountdown)
-        } else {
-          setMinutes(minutes - 1)
-          setSeconds(59)
-        }
-      }
-      if (zoneSeconds > 0) {
-        setZoneSeconds(seconds => seconds - 1)
-      }
-      if (zoneSeconds === 0) {
-        if (zoneMinutes === 0 && zoneInterval < intervals.length - 1) {
-          if (soundActive) bell.play();
-          const nextInterval = zoneInterval + 1
-          setZoneInterval(nextInterval)
-          const tempSeconds = Math.floor(intervals[nextInterval].length % 60);
-          const tempMinutes = Math.floor(intervals[nextInterval].length / 60);
-          setZoneMinutes(tempSeconds === 0 ? tempMinutes - 1 : tempMinutes)
-          setZoneSeconds(tempSeconds === 0 ? 59 : tempSeconds - 1)
-          setZoneElapsedTime(0)
-        } else {
-          setZoneSeconds(59)
-          setZoneMinutes(minutes => minutes - 1)
-        }
-      }
-      setElapsedTime(seconds => seconds + 1)
-      setZoneElapsedTime(seconds => seconds + 1)
-    }, 1000);
+  useEffect(() => {
+    const isEndOfZone = zoneMinutes === 0 && zoneIntervalRef.current < intervals.length - 1;
+    const isEndOfZoneMinute = zoneSecondsRef.current === 0;
 
-    return () => {
-      clearInterval(timerCountdown);
-    };
+    if (zoneSecondsRef.current > 0) {
+      decrementZoneSeconds();
+    }
+    if (isEndOfZoneMinute) {
+      if (isEndOfZone) {
+        finishZone();
+        resetZoneTimer();
+      } else {
+        decrementZoneMinutes();
+      }
+    }
+    incrementZoneElapsedTime();
   }, [
-    intervals, minutes, seconds, zoneInterval, zoneTimeInSeconds,
-    zoneSeconds, zoneMinutes, toast, elapsedTime, timeInSeconds, bell, soundActive
-  ])
+      seconds, zoneSecondsRef, zoneMinutes, zoneIntervalRef,
+      intervals, finishZone, incrementZoneElapsedTime, decrementZoneSeconds,
+      resetZoneTimer, decrementZoneMinutes
+    ])
 
   return (
     <Box w='80%'>
