@@ -1,4 +1,17 @@
 const redis = require('../../cache');
+const apicache = require('../lib/apicache');
+
+const addRideToCache = (req, res, next) => {
+  const { id } = req.params;
+  req.apicacheGroup = id;
+  next();
+}
+
+const clearRideFromCache = (req, res, next) => {
+  const { id } = req.params;
+  apicache.clear(id);
+  next();
+}
 
 const keyGenerator = (listType, filters) => {
   const filterKeyValues = Object.entries(filters)
@@ -49,6 +62,8 @@ const setCachedRides = (req, res, next) => {
 }
 
 module.exports = {
+  addRideToCache,
+  clearRideFromCache,
   getCachedRides,
   setCachedRides
 }

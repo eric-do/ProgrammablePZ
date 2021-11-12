@@ -12,24 +12,14 @@ const {
   sendRides,
   sendCreatedRide
 } = require('../controllers/rides');
-const {
-  getCachedRides,
-  setCachedRides
-} = require('../cache/rides');
+const { addRideToCache, clearRideFromCache } = require('../cache/rides');
+const apicache = require('../lib/apicache').middleware;
 const { validateToken } = require('../middleware/auth');
 const rideFormatter = require('../middleware/rideFormatter');
-
-// router.get(
-//   '/',
-//   getCachedRides,
-//   rideFormatter,
-//   sendRides
-// );
 
 router.get(
   '/',
   getRides,
-  setCachedRides,
   rideFormatter,
   responseHandler
 );
@@ -44,8 +34,10 @@ router.post(
 
 router.get(
   '/:id',
+  apicache('5 minutes'),
   getRideById,
   rideFormatter,
+  addRideToCache,
   responseHandler
 );
 
@@ -64,6 +56,7 @@ router.get(
 
 router.post(
   '/:id/ride-count',
+  clearRideFromCache,
   incrementRideCount,
   responseHandler
 );

@@ -1,3 +1,5 @@
+const { BadRequestError } = require('../utils/errors');
+
 const formatRide = ride => {
   const {
     id,
@@ -32,11 +34,15 @@ const formatRide = ride => {
 }
 
 module.exports = (req, res, next) => {
-  if (Array.isArray(res.locals.data)) {
-    res.locals.data = res.locals.data.map(formatRide);
-  } else {
-    res.locals.data = { ride: formatRide(res.locals.data) };
-  }
+  try {
+    if (Array.isArray(res.locals.data)) {
+      res.locals.data = res.locals.data.map(formatRide);
+    } else {
+      res.locals.data = { ride: formatRide(res.locals.data) };
+    }
 
-  next();
+    next();
+  } catch (err) {
+    next(new BadRequestError(err));
+  }
 }
