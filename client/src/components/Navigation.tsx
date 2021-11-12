@@ -2,7 +2,14 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useAuth } from 'lib/auth';
 import { BellIcon, HamburgerIcon } from '@chakra-ui/icons'
-import { FaBicycle, FaRegUser, FaRegStar, FaFire, FaSignOutAlt } from 'react-icons/fa'
+import {
+  FaBicycle,
+  FaFire,
+  FaRegClock,
+  FaRegStar,
+  FaRegUser,
+  FaSignOutAlt,
+} from 'react-icons/fa'
 import { Link as RouterLink } from 'react-router-dom';
 import { ColorModeSwitcher } from 'ColorModeSwitcher';
 import {
@@ -46,6 +53,12 @@ const siteLinks = [
     url: '/rides',
     icon: FaFire,
     color: 'orange'
+  },
+  {
+    title: 'Recent rides',
+    url: '/recent',
+    icon: FaRegClock,
+    color: 'white'
   },
   {
     title: 'Saved rides',
