@@ -1,5 +1,14 @@
 const { query } = require('../../db');
 
+const getUserById = async (userId) => {
+  const q = `
+    SELECT * FROM users
+    WHERE id = $1
+  `;
+  const results = await query(q, [userId]);
+  return results[0];
+}
+
 const addTakenRide = async (userId, rideId) => {
   const q = `
     INSERT INTO user_rides (user_id, ride_id)
@@ -39,6 +48,7 @@ const getUserRidesTaken = async (userId) => {
 }
 
 module.exports = {
+  getUserById,
   addTakenRide,
   getUserRidesTaken
 }
