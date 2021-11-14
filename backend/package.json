@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "set NODE_ENV=dev&& nodemon server/index.js",
-    "test": "mocha test/index.js -w"
+    "test": "nyc mocha test/index.js -w"
   },
   "author": "",
   "license": "ISC",
@@ -23,5 +23,8 @@
     "pg-format": "^1.0.4",
     "redis": "^3.1.2",
     "supertest": "^6.1.6"
+  },
+  "devDependencies": {
+    "nyc": "^15.1.0"
   }
 }
