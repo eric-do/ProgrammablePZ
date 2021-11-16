@@ -40,6 +40,8 @@ export const Timer = ({ displayTimer }: TimerProps = defaultProps) => {
   const { ride } = useRide();
   let { intervals, timeInSeconds } = ride;
   const { minutes, seconds, elapsedTime } = useTimer(timeInSeconds)
+  const rideComplete = useRef(false);
+  rideComplete.current = elapsedTime === timeInSeconds;
 
   // Ride incrementing logic
   const { mutate: incrementRide} = useIncrementRideCount({
@@ -105,7 +107,7 @@ export const Timer = ({ displayTimer }: TimerProps = defaultProps) => {
       onOpenFinishRide();
     } else {
       toast({
-        title: "You must be logged to do that",
+        title: "You must be logged in to do that",
         status: "error",
         duration: 9000,
         isClosable: true,
@@ -133,7 +135,8 @@ export const Timer = ({ displayTimer }: TimerProps = defaultProps) => {
   }, [addUserRide, incrementRide, ride, user])
 
   useEffect(() => {
-    if (elapsedTime === timeInSeconds) {
+    console.log(zoneElapsedTime)
+    if (rideComplete.current) {
       toast({
         title: "Ride complete!",
         status: "success",
@@ -141,19 +144,18 @@ export const Timer = ({ displayTimer }: TimerProps = defaultProps) => {
         isClosable: true,
       })
     }
-  }, [elapsedTime, timeInSeconds, setZoneElapsedTime, zoneTimeInSeconds, toast])
+  }, [rideComplete, setZoneElapsedTime, zoneElapsedTime, toast])
 
   useEffect(() => {
     const isEndOfZone = zoneMinutes === 0 && zoneIntervalRef.current < intervals.length - 1;
     const isEndOfZoneMinute = zoneSecondsRef.current === 0;
 
-    if (zoneSecondsRef.current > 0) {
+    if (zoneSecondsRef.current > 0 && !rideComplete.current) {
       decrementZoneSeconds();
     }
-    if (isEndOfZoneMinute) {
+    if (isEndOfZoneMinute && !rideComplete.current) {
       if (isEndOfZone) {
         finishZone();
-        resetZoneTimer();
       } else {
         decrementZoneMinutes();
       }
@@ -162,7 +164,7 @@ export const Timer = ({ displayTimer }: TimerProps = defaultProps) => {
   }, [
       seconds, zoneSecondsRef, zoneMinutes, zoneIntervalRef,
       intervals, finishZone, incrementZoneElapsedTime, decrementZoneSeconds,
-      resetZoneTimer, decrementZoneMinutes
+      resetZoneTimer, decrementZoneMinutes, rideComplete
     ])
 
   return (
@@ -205,7 +207,10 @@ export const Timer = ({ displayTimer }: TimerProps = defaultProps) => {
             {
               intervals.map((interval, index) => (
                 <Tooltip
-                  label={`Zone ${interval.zone}`}
+                  label={
+                    `Zone ${interval.zone}
+                     for ${(interval.length/60).toFixed(2)} min`
+                  }
                   key={index}
                 >
                   <Box
