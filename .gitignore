@@ -24,3 +24,4 @@ client/yarn-debug.log*
 client/yarn-error.log*
 client/.env*
 backend/.env*
+backend/.nyc_output
