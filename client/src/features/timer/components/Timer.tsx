@@ -135,7 +135,6 @@ export const Timer = ({ displayTimer }: TimerProps = defaultProps) => {
   }, [addUserRide, incrementRide, ride, user])
 
   useEffect(() => {
-    console.log(zoneElapsedTime)
     if (rideComplete.current) {
       toast({
         title: "Ride complete!",
