@@ -50,6 +50,7 @@ describe('Users', () => {
 
       expect(response.status).to.eql(200);
       expect(response.body).to.have.lengthOf(1);
+      expect(response.body[0]).to.have.keys('id', 'username');
     });
   });
 });
