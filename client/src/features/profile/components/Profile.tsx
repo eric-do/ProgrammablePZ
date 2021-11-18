@@ -6,11 +6,8 @@ import {
   Link
 } from "@chakra-ui/react";
 import { Link as RouterLink } from 'react-router-dom';
-import { useAuth } from 'lib/auth';
 
 export const Profile = () => {
-  const { user } = useAuth();
-
   return (
     <Stack>
       <Heading size="lg" pb={3}>Profile</Heading>
