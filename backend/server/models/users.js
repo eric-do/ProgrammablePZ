@@ -9,6 +9,18 @@ const getUserById = async (userId) => {
   return results[0];
 }
 
+const lookupByUsername = async (username, currentUser) => {
+  const q = `
+    SELECT * FROM users
+    WHERE
+      username != '${currentUser}'
+    AND
+      username LIKE '${username}%'
+  `;
+  const results = await query(q);
+  return results;
+}
+
 const addTakenRide = async (userId, rideId) => {
   const q = `
     INSERT INTO user_rides (user_id, ride_id)
@@ -49,6 +61,7 @@ const getUserRidesTaken = async (userId) => {
 
 module.exports = {
   getUserById,
+  lookupByUsername,
   addTakenRide,
   getUserRidesTaken
 }

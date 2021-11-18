@@ -5,6 +5,13 @@ const { validateToken } = require('../middleware/auth');
 const rideFormatter = require('../middleware/rideFormatter');
 const UserController = require('../controllers/users')
 
+router.get(
+  '/lookup',
+  validateToken,
+  UserController.lookupByUsername,
+  responseHandler
+);
+
 router.post(
   '/:userId/rides_taken',
   validateToken,
