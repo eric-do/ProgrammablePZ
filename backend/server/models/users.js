@@ -11,7 +11,7 @@ const getUserById = async (userId) => {
 
 const lookupByUsername = async (username, currentUser) => {
   const q = `
-    SELECT * FROM users
+    SELECT id, username FROM users
     WHERE
       username != '${currentUser}'
     AND
