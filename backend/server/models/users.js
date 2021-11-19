@@ -17,6 +17,7 @@ const lookupByUsername = async (username, currentUser) => {
     AND
       username LIKE '${username}%'
   `;
+
   const results = await query(q);
   return results;
 }

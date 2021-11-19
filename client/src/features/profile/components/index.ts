@@ -1,1 +1,2 @@
-export * from './Profile'
+export * from './SearchInput'
+export * from './UserList'
