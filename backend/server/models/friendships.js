@@ -11,9 +11,12 @@ const addFriendship = async (userId, friendId) => {
 
 const getFriendIds = async (userId) => {
   const q = `
-    SELECT friend_id
-    FROM user_follows
-    WHERE user_id = $1
+    SELECT u.id, u.username
+    FROM user_follows uf, users u
+    WHERE
+      u.id = uf.friend_id
+    AND
+      uf.user_id = $1
   `
   const ids = await query(q, [userId]);
   return ids;

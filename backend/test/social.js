@@ -58,7 +58,7 @@ describe('Social interactions', () => {
       expect(addResponse.body).to.have.keys('id', 'username');
 
       const getResponse = await request(app)
-        .get("/api/friendships/ids")
+        .get("/api/friendships")
         .query({
           user_id: userA.id
         })
@@ -71,7 +71,8 @@ describe('Social interactions', () => {
       expect(getResponse.status).to.eql(200);
       expect(getResponse.body).to.have.keys('friends');
       expect(getResponse.body.friends).to.have.lengthOf(1)
-      expect(getResponse.body.friends[0].friend_id).to.eql(userB.id);
+      expect(getResponse.body.friends[0]).to.have.keys('id', 'username');
+      expect(getResponse.body.friends[0].id).to.eql(userB.id);
     })
   })
 

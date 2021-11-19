@@ -24,3 +24,8 @@ export interface Workout {
 export interface ColorDict {
   [k: number]: string
 }
+
+export interface User {
+  id: string;
+  username: string;
+}
