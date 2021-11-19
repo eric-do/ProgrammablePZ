@@ -31,6 +31,7 @@ const getFriendIds = async (req, res, next) => {
     res.locals.data = { friends };
     next();
   } catch (err) {
+    console.log(err)
     next(new BadRequestError(err));
   }
 }
