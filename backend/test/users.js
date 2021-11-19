@@ -52,5 +52,29 @@ describe('Users', () => {
       expect(response.body).to.have.lengthOf(1);
       expect(response.body[0]).to.have.keys('id', 'username');
     });
+
+    it(`empty lookup string should return empty array`, async () => {
+      await request(app)
+        .post("/auth/register")
+        .send({
+          email: 'test2@user.com',
+          password: 'password123',
+          username: 'test_search_user'
+        });
+
+      const response = await request(app)
+        .get(`/api/users/lookup`)
+        .query({
+          username: ''
+        })
+        .send()
+        .set({
+          'Authorization': 'Bearer ' + jwt,
+          'Content-Type': 'application/json'
+        });
+
+      expect(response.status).to.eql(200);
+      expect(response.body).to.have.lengthOf(0);
+    });
   });
 });

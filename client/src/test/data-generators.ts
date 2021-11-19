@@ -10,4 +10,5 @@ export const generateListOfFriends = (n = 10) => {
   for (let i = 0; i < n; i++) {
     friends.push(generateFriend());
   }
+  return friends;
 }

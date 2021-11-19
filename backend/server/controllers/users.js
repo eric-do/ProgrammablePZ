@@ -6,7 +6,7 @@ const lookupByUsername = async (req, res, next) => {
   const { username: currentUser } = res.locals.data.user;
 
   try {
-    res.locals.data = await UsersModel.lookupByUsername(username, currentUser);
+    res.locals.data = username ? await UsersModel.lookupByUsername(username, currentUser) : [];
     res.status(200);
     next();
   } catch (err) {
