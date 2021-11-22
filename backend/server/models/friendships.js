@@ -9,7 +9,7 @@ const addFriendship = async (userId, friendId) => {
   return response;
 }
 
-const getFriendIds = async (userId) => {
+const getFriends = async (userId) => {
   const q = `
     SELECT u.id, u.username
     FROM user_follows uf, users u
@@ -22,7 +22,32 @@ const getFriendIds = async (userId) => {
   return ids;
 }
 
+const getFriendCount = async (userId) => {
+  const q = `
+    SELECT COUNT(user_id) AS count
+    FROM user_follows uf
+    WHERE uf.user_id = $1
+  `
+  const result = await query(q, [userId]);
+  return parseInt(result[0].count);
+}
+
+const getFollowers = async (userId) => {
+  const q = `
+    SELECT u.id, u.username
+    FROM user_follows uf, users u
+    WHERE
+      u.id = uf.user_id
+    AND
+      uf.friend_id = $1
+  `
+  const ids = await query(q, [userId]);
+  return ids;
+}
+
 module.exports = {
   addFriendship,
-  getFriendIds
+  getFriends,
+  getFollowers,
+  getFriendCount
 }

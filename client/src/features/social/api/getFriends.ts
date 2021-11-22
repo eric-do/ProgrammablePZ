@@ -7,7 +7,7 @@ import {
 import { User } from 'types';
 
 export const getFriends = (user_id?: string): Promise<User[]> => {
-  return axios.get('/api/friendships', { params: { user_id } })
+  return axios.get('/api/friendships/friends', { params: { user_id } })
 };
 
 interface UseGetFriendsOptions {

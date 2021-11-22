@@ -2,21 +2,31 @@ const express = require('express');
 const router = express.Router();
 const responseHandler = require('../middleware/responseHandler');
 const { validateToken } = require('../middleware/auth');
-const { addFriendship, getFriendIds } = require('../controllers/friendships');
+const {
+  addFriendship,
+  getFriends,
+  getFollowers
+} = require('../controllers/friendships');
 
 router.post(
   '/create',
   validateToken,
   addFriendship,
   responseHandler
-)
+);
 
 router.get(
-  '/',
+  '/friends',
   validateToken,
-  getFriendIds,
+  getFriends,
   responseHandler
-)
+);
 
+router.get(
+  '/followers',
+  validateToken,
+  getFollowers,
+  responseHandler
+);
 
 module.exports = router;
