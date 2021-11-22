@@ -12,3 +12,8 @@ export const generateListOfFriends = (n = 10) => {
   }
   return friends;
 }
+
+export const generateFriendshipMetadata = () => ({
+  friend_count: faker.datatype.number({min: 0, max: 1000}),
+  follower_count: faker.datatype.number({min: 0, max: 1000})
+})

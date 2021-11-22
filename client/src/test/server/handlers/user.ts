@@ -7,6 +7,7 @@ export const userHandlers = [
   rest.get(`${API_URL}/api/users/lookup`,
     (req, res, ctx) => {
       const users = generateListOfFriends();
+      console.log(users)
       return res(ctx.json(users))
   }),
 

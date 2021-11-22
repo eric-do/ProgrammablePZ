@@ -14,7 +14,7 @@ import { AppProvider } from 'providers/app';
 import { MemoryRouter } from 'react-router-dom'
 import { Profile } from '..';
 
-test('it should render initial UI', () => {
+test('it should render UI after getting metadata', async () => {
   render(
     <AppProvider >
       <Profile />
@@ -23,7 +23,9 @@ test('it should render initial UI', () => {
   );
 
   expect(screen.getByRole('heading', { name: 'Profile' })).toBeInTheDocument();
-  expect(screen.getByRole('link', { name: 'Following' })).toBeInTheDocument();
-  expect(screen.getByRole('link', { name: 'Followers' })).toBeInTheDocument();
-  expect(screen.getByRole('link', { name: 'Find members' })).toBeInTheDocument();
+
+  await screen.findByText('Following');
+  expect(screen.getByText('Following')).toBeInTheDocument();
+  expect(screen.getByText('Followers')).toBeInTheDocument();
+  expect(screen.getByText('Find members')).toBeInTheDocument();
 })

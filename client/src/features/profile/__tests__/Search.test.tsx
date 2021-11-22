@@ -24,7 +24,7 @@ test('it should render initial UI', () => {
   expect(screen.getByPlaceholderText('Search')).toBeInTheDocument();
 })
 
-test('it takes user input', async () => {
+xtest('it takes user input', async () => {
   render(
     <AppProvider >
       <Search />
