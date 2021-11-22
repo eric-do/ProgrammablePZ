@@ -99,9 +99,19 @@ describe('Social interactions', () => {
       expect(addResponse.status).to.eql(201);
       expect(addResponse.body).to.have.keys('id', 'username');
 
-      const getResponseA = await getFriends(userA.id, jwtA)
-      const getResponseB = await getFollowers(userB.id, jwtB)
-      const metadataResponse = await getFriendshipMeta(userA.id, jwtA)
+      const getResponseA = await getFriends(userA.id, jwtA);
+      const getResponseB = await getFollowers(userB.id, jwtB);
+      const metadataResponse = await getFriendshipMeta(userA.id, jwtA);
+      const lookupResponse = await request(app)
+        .get(`/api/users/lookup`)
+        .query({
+          username: userB.username
+        })
+        .send()
+        .set({
+          'Authorization': 'Bearer ' + jwtA,
+          'Content-Type': 'application/json'
+        });
 
       expect(getResponseA.status).to.eql(200);
       expect(getResponseA.body).to.have.keys('friends');
@@ -122,6 +132,30 @@ describe('Social interactions', () => {
       );
       expect(metadataResponse.body.friend_count).to.eql(1)
       expect(metadataResponse.body.follower_count).to.eql(0)
+
+      expect(lookupResponse.body[0].is_friend).to.eql(true)
+    })
+
+    it('should not add duplicate friendships', async () => {
+      await addFriendship(jwtA, userB.id)
+      const addResponse = await addFriendship(jwtA, userB.id)
+      const getResponse = await getFriends(userA.id, jwtA);
+      const lookupResponse = await request(app)
+        .get(`/api/users/lookup`)
+        .query({
+          username: userB.username
+        })
+        .send()
+        .set({
+          'Authorization': 'Bearer ' + jwtA,
+          'Content-Type': 'application/json'
+        });
+
+      expect(addResponse.status).to.eql(400);
+      expect(getResponse.status).to.eql(200);
+      expect(lookupResponse.status).to.eql(200);
+      expect(getResponse.body.friends).to.have.lengthOf(1)
+      expect(lookupResponse.body).to.have.lengthOf(1)
     })
   })
 

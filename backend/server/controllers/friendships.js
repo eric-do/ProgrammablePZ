@@ -2,7 +2,8 @@ const UserModel = require('../models/users');
 const FriendshipsModel = require('../models/friendships');
 const {
   InternalServerError,
-  BadRequestError } = require('../utils/errors');
+  BadRequestError
+} = require('../utils/errors');
 
 const addFriendship = async (req, res, next) => {
   const { id: user_id } = res.locals.data.user;
@@ -20,7 +21,12 @@ const addFriendship = async (req, res, next) => {
     res.status(201);
     next();
   } catch (err) {
-    next(new InternalServerError(err));
+    switch (err.constraint) {
+      case 'user_follows_pkey':
+        next(new BadRequestError(err));
+      default:
+        next(new InternalServerError(err));
+    }
   }
 }
 

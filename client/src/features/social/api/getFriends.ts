@@ -2,7 +2,6 @@ import { useQuery } from 'react-query'
 import { axios } from 'lib/axios';
 import {
   QueryConfig,
-  QueryOptions,
 } from 'lib/react-query';
 import { User } from 'types';
 

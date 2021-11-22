@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState } from 'react';
 import {
   Center,
   Heading,
@@ -6,7 +6,6 @@ import {
   Spinner,
   Text
 } from "@chakra-ui/react";
-import { Link as RouterLink } from 'react-router-dom';
 import { SearchInput, UserList } from '../components';
 import { useLookupUsers } from 'features/social/api/lookupUsers';
 import { useDebounce } from 'hooks/useDebounce';
@@ -21,7 +20,7 @@ export const Search = () => {
       enabled: false
     }
   });
-
+  console.log(users)
   useDebounce(refetch, 1000, [search]);
 
   return (

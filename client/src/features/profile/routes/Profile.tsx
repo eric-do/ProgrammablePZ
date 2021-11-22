@@ -8,8 +8,7 @@ import {
   Spacer,
   Spinner,
   Stack,
-  Text,
-  Link
+  Text
 } from "@chakra-ui/react";
 import { Link as RouterLink } from 'react-router-dom';
 import { FaSearch } from 'react-icons/fa';
@@ -18,7 +17,7 @@ import { useAuth } from 'lib/auth';
 
 export const Profile = () => {
   const { user } = useAuth();
-  const { data, error, isLoading } = useGetMetadata({ user_id: user?.id })
+  const { data, isLoading } = useGetMetadata({ user_id: user?.id })
 
   return (
     <Stack

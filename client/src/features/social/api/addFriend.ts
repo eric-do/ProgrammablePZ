@@ -20,6 +20,7 @@ export const useAddFriend = ({ config }: UseCreateFriendshipOptions) => {
   return useMutation({
     ...config,
     onSuccess: () => {
+      console.log('invalidating')
       queryClient.invalidateQueries('friends');
       queryClient.invalidateQueries('lookup')
     },
