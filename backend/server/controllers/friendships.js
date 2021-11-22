@@ -42,7 +42,18 @@ const getFollowers = async (req, res, next) => {
     res.locals.data = { followers };
     next();
   } catch (err) {
-    console.log(err)
+    next(new BadRequestError(err));
+  }
+}
+
+const getFriendshipData = async (req, res, next) => {
+  const { user_id } = req.query;
+  try {
+    const friend_count = await FriendshipsModel.getFriendCount(user_id);
+    const follower_count = await FriendshipsModel.getFollowerCount(user_id);
+    res.locals.data = { friend_count, follower_count };
+    next();
+  } catch (err) {
     next(new BadRequestError(err));
   }
 }
@@ -50,5 +61,6 @@ const getFollowers = async (req, res, next) => {
 module.exports = {
   addFriendship,
   getFriends,
-  getFollowers
+  getFollowers,
+  getFriendshipData
 }

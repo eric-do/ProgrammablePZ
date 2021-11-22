@@ -8,6 +8,58 @@ const {
   deleteTestUsers,
 } = require('./sqlQueries');
 
+const addFriendship = (userJwt, friendId) => (
+  request(app)
+    .post("/api/friendships/create")
+    .query({
+      user_id: friendId
+    })
+    .set({
+      'Authorization': 'Bearer ' + userJwt,
+      'Content-Type': 'application/json'
+    })
+    .send()
+)
+
+const getFriends = (id, jwt) => (
+  request(app)
+    .get("/api/friendships/friends")
+    .query({
+      user_id: id
+    })
+    .set({
+      'Authorization': 'Bearer ' + jwt,
+      'Content-Type': 'application/json'
+    })
+    .send()
+)
+
+const getFollowers = (id, jwt) => (
+  request(app)
+    .get("/api/friendships/followers")
+    .query({
+      user_id: id
+    })
+    .set({
+      'Authorization': 'Bearer ' + jwt,
+      'Content-Type': 'application/json'
+    })
+    .send()
+)
+
+const getFriendshipMeta = (id, jwt) => (
+  request(app)
+    .get("/api/friendships/metadata")
+    .query({
+      user_id: id
+    })
+    .set({
+      'Authorization': 'Bearer ' + jwt,
+      'Content-Type': 'application/json'
+    })
+    .send()
+)
+
 describe('Social interactions', () => {
   let jwtA, jwtB, userA, userB;
 
@@ -43,41 +95,13 @@ describe('Social interactions', () => {
 
   describe('POST /api/friendships/create', () => {
     it('successfully adds friendship by user_id', async () => {
-      const addResponse = await request(app)
-        .post("/api/friendships/create")
-        .query({
-          user_id: userB.id
-        })
-        .set({
-          'Authorization': 'Bearer ' + jwtA,
-          'Content-Type': 'application/json'
-        })
-        .send();
-
+      const addResponse = await addFriendship(jwtA, userB.id)
       expect(addResponse.status).to.eql(201);
       expect(addResponse.body).to.have.keys('id', 'username');
 
-      const getResponseA = await request(app)
-        .get("/api/friendships/friends")
-        .query({
-          user_id: userA.id
-        })
-        .set({
-          'Authorization': 'Bearer ' + jwtA,
-          'Content-Type': 'application/json'
-        })
-        .send();
-
-        const getResponseB = await request(app)
-        .get("/api/friendships/followers")
-        .query({
-          user_id: userB.id
-        })
-        .set({
-          'Authorization': 'Bearer ' + jwtA,
-          'Content-Type': 'application/json'
-        })
-        .send();
+      const getResponseA = await getFriends(userA.id, jwtA)
+      const getResponseB = await getFollowers(userB.id, jwtB)
+      const metadataResponse = await getFriendshipMeta(userA.id, jwtA)
 
       expect(getResponseA.status).to.eql(200);
       expect(getResponseA.body).to.have.keys('friends');
@@ -88,9 +112,16 @@ describe('Social interactions', () => {
       expect(getResponseB.status).to.eql(200);
       expect(getResponseB.body).to.have.keys('followers');
       expect(getResponseB.body.followers).to.have.lengthOf(1)
-
       expect(getResponseB.body.followers[0]).to.have.keys('id', 'username');
       expect(getResponseB.body.followers[0].id).to.eql(userA.id);
+
+      expect(metadataResponse.status).to.eql(200);
+      expect(metadataResponse.body).to.have.keys(
+        'friend_count',
+        'follower_count'
+      );
+      expect(metadataResponse.body.friend_count).to.eql(1)
+      expect(metadataResponse.body.follower_count).to.eql(0)
     })
   })
 
