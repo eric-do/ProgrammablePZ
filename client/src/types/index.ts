@@ -28,4 +28,5 @@ export interface ColorDict {
 export interface User {
   id: string;
   username: string;
+  is_friend: boolean;
 }

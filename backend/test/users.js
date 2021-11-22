@@ -50,7 +50,9 @@ describe('Users', () => {
 
       expect(response.status).to.eql(200);
       expect(response.body).to.have.lengthOf(1);
-      expect(response.body[0]).to.have.keys('id', 'username');
+      expect(response.body[0]).to.have.keys('id', 'username', 'is_friend');
+      expect(response.body[0].username).to.eql('test_search_user');
+      expect(response.body[0].is_friend).to.eql(false);
     });
 
     it(`empty lookup string should return empty array`, async () => {

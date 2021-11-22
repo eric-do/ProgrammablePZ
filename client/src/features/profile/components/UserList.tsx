@@ -26,14 +26,14 @@ export const UserList = ({ users }: UserListProps) => {
 };
 
 interface UserCardProps {
-  user: User
+  user: User;
 };
 
-export const UserListCard = ({ user: { username, id: user_id } }: UserCardProps) => {
+export const UserListCard = ({ user: { username, id: user_id, is_friend: isFriend } }: UserCardProps) => {
   const { mutateAsync: addFriend } = useAddFriend({});
 
   const handleClick = () => {
-    addFriend({ user_id })
+    addFriend({ user_id });
   }
 
   return (
@@ -41,7 +41,8 @@ export const UserListCard = ({ user: { username, id: user_id } }: UserCardProps)
       <Flex>
         <Text>{username}</Text>
         <Spacer />
-        <Button colorScheme="blue" onClick={handleClick}>Follow</Button>
+        { isFriend && <Button colorScheme="green" onClick={handleClick}>Following</Button> }
+        { !isFriend && <Button colorScheme="blue" onClick={handleClick}>Follow</Button> }
       </Flex>
     </Box>
   )

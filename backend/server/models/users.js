@@ -11,11 +11,20 @@ const getUserById = async (userId) => {
 
 const lookupByUsername = async (username, currentUser) => {
   const q = `
-    SELECT id, username FROM users
+    SELECT
+      u.id,
+      u.username,
+      CASE
+        WHEN uf.friend_id IS NULL THEN FALSE
+        ELSE TRUE
+      END AS is_friend
+    FROM users u
+    LEFT JOIN user_follows uf
+    ON u.id = uf.friend_id
     WHERE
-      username != '${currentUser}'
+      u.username != '${currentUser}'
     AND
-      username LIKE '${username}%'
+      u.username LIKE '${username}%'
   `;
 
   const results = await query(q);

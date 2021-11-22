@@ -4,7 +4,8 @@ CREATE TABLE user_follows (
   id INT GENERATED ALWAYS AS IDENTITY,
   user_id uuid REFERENCES users (id) ON DELETE CASCADE,
   friend_id uuid REFERENCES users (id) ON DELETE CASCADE,
-  created_at TIMESTAMPTZ DEFAULT NOW()
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  PRIMARY KEY (user_id, friend_id)
 );
 
 CREATE INDEX user_follows_userid_index ON user_follows (user_id);
