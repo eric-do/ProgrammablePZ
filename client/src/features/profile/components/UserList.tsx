@@ -7,6 +7,7 @@ import {
   Text
 } from "@chakra-ui/react";
 import { User } from 'types';
+import { useAddFriend } from 'features/social/api/addFriend';
 
 interface UserListProps {
   users: User[];
@@ -28,12 +29,20 @@ interface UserCardProps {
   user: User
 };
 
-export const UserListCard = ({ user: { username, id } }: UserCardProps) => (
-  <Box data-testid="user">
-    <Flex>
-      <Text>{username}</Text>
-      <Spacer />
-      <Button colorScheme="blue">Follow</Button>
-    </Flex>
-  </Box>
-)
+export const UserListCard = ({ user: { username, id: user_id } }: UserCardProps) => {
+  const { mutateAsync: addFriend } = useAddFriend({});
+
+  const handleClick = () => {
+    addFriend({ user_id })
+  }
+
+  return (
+    <Box data-testid="user">
+      <Flex>
+        <Text>{username}</Text>
+        <Spacer />
+        <Button colorScheme="blue" onClick={handleClick}>Follow</Button>
+      </Flex>
+    </Box>
+  )
+}

@@ -1,6 +1,8 @@
 import React from 'react';
 import {
+  Flex,
   Heading,
+  Spacer,
   Stack,
   Text,
   Link
@@ -9,26 +11,37 @@ import { Link as RouterLink } from 'react-router-dom';
 
 export const Profile = () => {
   return (
-    <Stack>
+    <Stack
+      align='center'
+    >
       <Heading size="lg" pb={3}>Profile</Heading>
-      <Link
-        as={RouterLink}
-        to='/following'
+      <Flex
+        width={{
+          base: "100%",
+          md: "30%",
+        }}
       >
-        <Text>Following</Text>
-      </Link>
-      <Link
-        as={RouterLink}
-        to='/followers'
-      >
-        <Text>Followers</Text>
-      </Link>
-      <Link
-        as={RouterLink}
-        to='/search'
-      >
-        <Text>Find members</Text>
-      </Link>
+        <Link
+          as={RouterLink}
+          to='/following'
+        >
+          <Text>Following</Text>
+        </Link>
+        <Spacer />
+        <Link
+          as={RouterLink}
+          to='/followers'
+        >
+          <Text>Followers</Text>
+        </Link>
+        <Spacer />
+        <Link
+          as={RouterLink}
+          to='/search'
+        >
+          <Text>Find members</Text>
+        </Link>
+      </Flex>
     </Stack>
   )
 };

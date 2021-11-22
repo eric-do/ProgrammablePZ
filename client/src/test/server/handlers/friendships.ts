@@ -3,7 +3,7 @@ import { rest } from 'msw'
 import { generateListOfFriends } from '../../data-generators';
 
 export const userHandlers = [
-  rest.get(`${API_URL}/api/friendships`,
+  rest.get(`${API_URL}/api/friendships/friends`,
     (req, res, ctx) => {
       return res(ctx.json(generateListOfFriends()))
   }),
