@@ -54,6 +54,7 @@ const getFriendshipData = async (req, res, next) => {
     res.locals.data = { friend_count, follower_count };
     next();
   } catch (err) {
+    console.log(err)
     next(new BadRequestError(err));
   }
 }
