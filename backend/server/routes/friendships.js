@@ -5,7 +5,8 @@ const { validateToken } = require('../middleware/auth');
 const {
   addFriendship,
   getFriends,
-  getFollowers
+  getFollowers,
+  getFriendshipData
 } = require('../controllers/friendships');
 
 router.post(
@@ -26,6 +27,13 @@ router.get(
   '/followers',
   validateToken,
   getFollowers,
+  responseHandler
+);
+
+router.get(
+  '/metadata',
+  validateToken,
+  getFriendshipData,
   responseHandler
 );
 
