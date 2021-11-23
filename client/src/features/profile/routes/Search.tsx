@@ -20,8 +20,8 @@ export const Search = () => {
       enabled: false
     }
   });
-  console.log(users)
-  const debouncedSearch = useDebounce(search, 1000);
+
+  const debouncedSearch = useDebounce(search, 500);
 
   useEffect(() => {
     refetch();

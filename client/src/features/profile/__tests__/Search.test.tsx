@@ -3,13 +3,7 @@ import {
   userEvent,
   render,
   screen,
-  fireEvent,
-  waitFor
 } from 'test/test-utils';
-import { rest } from 'msw'
-import { server } from 'test/server/server';
-import { API_URL } from 'config';
-import { rides } from 'test/data';
 import { AppProvider } from 'providers/app';
 import { Search } from '..';
 
