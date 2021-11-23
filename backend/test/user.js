@@ -57,7 +57,7 @@ describe('User rides', () => {
       expect(getResponse.status).to.eql(200);
       expect(getResponse.body.length).to.eql(1)
       expect(getResponse.body[0]).to.have.keys(
-        'title', 'type', 'metadata',
+        'title', 'type', 'metadata', 'creator_id', 'username',
         'ratings', 'intervals', 'timeInSeconds', 'id'
       );
     });
