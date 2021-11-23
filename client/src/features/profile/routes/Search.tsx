@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Center,
   Heading,
@@ -7,7 +7,7 @@ import {
   Text
 } from "@chakra-ui/react";
 import { SearchInput, UserList } from '../components';
-import { useLookupUsers } from 'features/social/api/lookupUsers';
+import { useLookupUsers } from 'features/social/api';
 import { useDebounce } from 'hooks/useDebounce';
 
 export const Search = () => {
@@ -21,7 +21,11 @@ export const Search = () => {
     }
   });
   console.log(users)
-  useDebounce(refetch, 1000, [search]);
+  const debouncedSearch = useDebounce(search, 1000);
+
+  useEffect(() => {
+    refetch();
+  }, [debouncedSearch, refetch])
 
   return (
     <Stack

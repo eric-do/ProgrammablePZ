@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Button,
@@ -7,7 +7,8 @@ import {
   Text
 } from "@chakra-ui/react";
 import { User } from 'types';
-import { useAddFriend } from 'features/social/api/addFriend';
+import { useAddFriend } from 'features/social/api';
+import { AddFriend, DeleteFriend } from 'features/social/components'
 
 interface UserListProps {
   users: User[];
@@ -29,20 +30,19 @@ interface UserCardProps {
   user: User;
 };
 
-export const UserListCard = ({ user: { username, id: user_id, is_friend: isFriend } }: UserCardProps) => {
-  const { mutateAsync: addFriend } = useAddFriend({});
+export const UserListCard = ({ user: { username, id: friendId, is_friend } }: UserCardProps) => {
+  const [isFriend, setFriend] = useState(is_friend);
 
-  const handleClick = () => {
-    addFriend({ user_id });
-  }
+  const handleAddFriend = () => setFriend(true);
+  const handleRemoveFriend = () => setFriend(false);
 
   return (
     <Box data-testid="user">
       <Flex>
         <Text>{username}</Text>
         <Spacer />
-        { isFriend && <Button colorScheme="green" onClick={handleClick}>Following</Button> }
-        { !isFriend && <Button colorScheme="blue" onClick={handleClick}>Follow</Button> }
+        { isFriend && <DeleteFriend friendId={friendId} callback={handleRemoveFriend} /> }
+        { !isFriend && <AddFriend friendId={friendId} callback={handleAddFriend} /> }
       </Flex>
     </Box>
   )
