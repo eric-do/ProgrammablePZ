@@ -30,6 +30,25 @@ const addFriendship = async (req, res, next) => {
   }
 }
 
+const destroyFriendship = async (req, res, next) => {
+  const { id: user_id } = res.locals.data.user;
+  const { user_id: friend_id } = req.query;
+
+  try {
+    const response = await FriendshipsModel.destroyFriendship(user_id, friend_id);
+
+    res.status(201);
+    next();
+  } catch (err) {
+    switch (err.constraint) {
+      case 'user_follows_pkey':
+        next(new BadRequestError(err));
+      default:
+        next(new InternalServerError(err));
+    }
+  }
+}
+
 const getFriends = async (req, res, next) => {
   const { user_id } = req.query;
   try {
@@ -67,6 +86,7 @@ const getFriendshipData = async (req, res, next) => {
 
 module.exports = {
   addFriendship,
+  destroyFriendship,
   getFriends,
   getFollowers,
   getFriendshipData

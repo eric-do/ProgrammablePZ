@@ -4,6 +4,7 @@ const responseHandler = require('../middleware/responseHandler');
 const { validateToken } = require('../middleware/auth');
 const {
   addFriendship,
+  destroyFriendship,
   getFriends,
   getFollowers,
   getFriendshipData
@@ -13,6 +14,13 @@ router.post(
   '/create',
   validateToken,
   addFriendship,
+  responseHandler
+);
+
+router.post(
+  '/destroy',
+  validateToken,
+  destroyFriendship,
   responseHandler
 );
 

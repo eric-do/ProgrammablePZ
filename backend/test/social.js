@@ -21,6 +21,19 @@ const addFriendship = (userJwt, friendId) => (
     .send()
 )
 
+const destroyFriendship = (userJwt, friendId) => (
+  request(app)
+    .post("/api/friendships/destroy")
+    .query({
+      user_id: friendId
+    })
+    .set({
+      'Authorization': 'Bearer ' + userJwt,
+      'Content-Type': 'application/json'
+    })
+    .send()
+)
+
 const getFriends = (id, jwt) => (
   request(app)
     .get("/api/friendships/friends")
@@ -156,6 +169,32 @@ describe('Social interactions', () => {
       expect(lookupResponse.status).to.eql(200);
       expect(getResponse.body.friends).to.have.lengthOf(1)
       expect(lookupResponse.body).to.have.lengthOf(1)
+    })
+  })
+
+  describe('POST /api/friendships/destroy', () => {
+    it('should remove friendship', async () => {
+      const addResponse = await addFriendship(jwtA, userB.id);
+      const destroyResponse = await destroyFriendship(jwtA, userB.id)
+      const friendsResponse = await getFriends(userA.id, jwtA);
+      const followersResponse = await getFollowers(userB.id, jwtB);
+      const metadataResponse = await getFriendshipMeta(userA.id, jwtA);
+      const lookupResponse = await request(app)
+        .get(`/api/users/lookup`)
+        .query({
+          username: userB.username
+        })
+        .send()
+        .set({
+          'Authorization': 'Bearer ' + jwtA,
+          'Content-Type': 'application/json'
+        });
+
+        expect(destroyResponse.status).to.eql(201);
+        expect(friendsResponse.body.friends).to.have.lengthOf(0);
+        expect(followersResponse.body.followers).to.have.lengthOf(0);
+        expect(metadataResponse.body.friend_count).to.eql(0);
+        expect(lookupResponse.body[0].is_friend).to.eql(false)
     })
   })
 
