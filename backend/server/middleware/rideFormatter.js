@@ -3,6 +3,8 @@ const { BadRequestError } = require('../utils/errors');
 const formatRide = ride => {
   const {
     id,
+    creator_id,
+    username,
     type,
     title,
     created_on,
@@ -14,9 +16,10 @@ const formatRide = ride => {
     total_votes,
     intervals
   } = ride;
-
-  return {
+  const formattedRide = {
     id,
+    creator_id: creator_id ||  null,
+    username: username || null,
     type,
     title,
     metadata: {
@@ -31,6 +34,8 @@ const formatRide = ride => {
     intervals,
     timeInSeconds: timeinseconds
   }
+  // console.log(formattedRide)
+  return formattedRide;
 }
 
 module.exports = (req, res, next) => {
