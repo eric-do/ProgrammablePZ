@@ -9,6 +9,19 @@ const addFriendship = async (userId, friendId) => {
   return response;
 }
 
+const destroyFriendship = async (userId, friendId) => {
+  const q = `
+    DELETE FROM user_follows uf
+    WHERE
+      uf.user_id = $1
+    AND
+      uf.friend_id = $2
+  `
+  const response = await query(q, [userId, friendId]);
+  return response;
+}
+
+
 const getFriends = async (userId) => {
   const q = `
     SELECT u.id, u.username
@@ -58,6 +71,7 @@ const getFollowerCount = async (userId) => {
 
 module.exports = {
   addFriendship,
+  destroyFriendship,
   getFriends,
   getFollowers,
   getFriendCount,
