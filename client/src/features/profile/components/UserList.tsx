@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
 import {
   Box,
-  Button,
   Flex,
   Spacer,
   Text
 } from "@chakra-ui/react";
 import { User } from 'types';
-import { useAddFriend } from 'features/social/api';
 import { AddFriend, DeleteFriend } from 'features/social/components'
 
 interface UserListProps {

@@ -3,7 +3,6 @@ import {
   useState,
   useEffect,
 } from 'react';
-import { useTimeout } from './useTimeout';
 
 export type UseDebounceReturn = [() => boolean | null, () => void];
 
