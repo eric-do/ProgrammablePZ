@@ -9,11 +9,11 @@ interface GetFriendsResponse {
   friends: User[]
 }
 
-interface GetRideOptions {
+interface GetFriendsOptions {
   user_id: string;
 }
 
-export const getFriends = ({user_id}: GetRideOptions): Promise<GetFriendsResponse> => {
+export const getFriends = ({user_id}: GetFriendsOptions): Promise<GetFriendsResponse> => {
   return axios.get('/api/friendships/friends', { params: { user_id } })
 };
 

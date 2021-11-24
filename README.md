@@ -60,11 +60,13 @@ From `/client` run `npm test`
 From `/client` run `npm start`
 <br/><br/>
 ## 🕵🏻 Challenges
-### Query optimizations
+### Optimizations
+#### Caching
 Certain queries require excessive joins and are not productive to run on every request:
-- Search usernames
+- Search by username
 - Find rides created by user
 - Find all follows and followers
 
 These results are cached using redis and apicache. The GET requests will add results to the cache, and subsequent POST requests will clear the cache based on identifier, e.g. userId.
+
 <br/><br/>

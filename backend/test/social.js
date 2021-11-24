@@ -112,8 +112,8 @@ describe('Social interactions', () => {
       expect(addResponse.status).to.eql(201);
       expect(addResponse.body).to.have.keys('id', 'username');
 
-      const getResponseA = await getFriends(userA.id, jwtA);
-      const getResponseB = await getFollowers(userB.id, jwtB);
+      const friendsResponse = await getFriends(userA.id, jwtA);
+      const followersResponse = await getFollowers(userB.id, jwtB);
       const metadataResponse = await getFriendshipMeta(userA.id, jwtA);
       const lookupResponse = await request(app)
         .get(`/api/users/lookup`)
@@ -126,17 +126,18 @@ describe('Social interactions', () => {
           'Content-Type': 'application/json'
         });
 
-      expect(getResponseA.status).to.eql(200);
-      expect(getResponseA.body).to.have.keys('friends');
-      expect(getResponseA.body.friends).to.have.lengthOf(1)
-      expect(getResponseA.body.friends[0]).to.have.keys('id', 'username', 'is_friend');
-      expect(getResponseA.body.friends[0].id).to.eql(userB.id);
+      expect(friendsResponse.status).to.eql(200);
+      expect(friendsResponse.body).to.have.keys('friends');
+      expect(friendsResponse.body.friends).to.have.lengthOf(1)
+      expect(friendsResponse.body.friends[0]).to.have.keys('id', 'username', 'is_friend');
+      expect(friendsResponse.body.friends[0].id).to.eql(userB.id);
 
-      expect(getResponseB.status).to.eql(200);
-      expect(getResponseB.body).to.have.keys('followers');
-      expect(getResponseB.body.followers).to.have.lengthOf(1)
-      expect(getResponseB.body.followers[0]).to.have.keys('id', 'username');
-      expect(getResponseB.body.followers[0].id).to.eql(userA.id);
+      expect(followersResponse.status).to.eql(200);
+      expect(followersResponse.body).to.have.keys('followers');
+      expect(followersResponse.body.followers).to.have.lengthOf(1)
+      expect(followersResponse.body.followers[0]).to.have.keys('id', 'username', 'is_friend');
+      expect(followersResponse.body.followers[0].id).to.eql(userA.id);
+      expect(followersResponse.body.followers[0].is_friend).to.eql(false);
 
       expect(metadataResponse.status).to.eql(200);
       expect(metadataResponse.body).to.have.keys(
