@@ -38,7 +38,7 @@ export const Profile = () => {
             <LinkBox>
               <LinkOverlay
                 as={RouterLink}
-                to='/following'
+                to='/me/following'
               >
                 <Text fontSize="md">{ data.friend_count }</Text>
                 <Text fontSize="md">Following</Text>

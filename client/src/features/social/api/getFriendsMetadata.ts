@@ -16,10 +16,10 @@ interface UseGetFriendsMetaOptions {
   config?: QueryConfig<typeof getFriendsMetadata>
 };
 
-export const useGetMetadata = ({ config }: UseGetFriendsMetaOptions) => {
+export const useGetMetadata = ({ user_id, config }: UseGetFriendsMetaOptions) => {
   return useQuery({
     ...config,
     queryKey: ['metadata'],
-    queryFn: () => getFriendsMetadata()
+    queryFn: () => getFriendsMetadata(user_id)
   })
 };

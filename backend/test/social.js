@@ -129,7 +129,7 @@ describe('Social interactions', () => {
       expect(getResponseA.status).to.eql(200);
       expect(getResponseA.body).to.have.keys('friends');
       expect(getResponseA.body.friends).to.have.lengthOf(1)
-      expect(getResponseA.body.friends[0]).to.have.keys('id', 'username');
+      expect(getResponseA.body.friends[0]).to.have.keys('id', 'username', 'is_friend');
       expect(getResponseA.body.friends[0].id).to.eql(userB.id);
 
       expect(getResponseB.status).to.eql(200);

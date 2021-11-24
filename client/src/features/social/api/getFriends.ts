@@ -5,7 +5,15 @@ import {
 } from 'lib/react-query';
 import { User } from 'types';
 
-export const getFriends = (user_id?: string): Promise<User[]> => {
+interface GetFriendsResponse {
+  friends: User[]
+}
+
+interface GetRideOptions {
+  user_id: string;
+}
+
+export const getFriends = ({user_id}: GetRideOptions): Promise<GetFriendsResponse> => {
   return axios.get('/api/friendships/friends', { params: { user_id } })
 };
 
@@ -14,10 +22,10 @@ interface UseGetFriendsOptions {
   config?: QueryConfig<typeof getFriends>
 };
 
-export const useFriends = ({ config }: UseGetFriendsOptions) => {
+export const useFriends = ({ user_id='', config }: UseGetFriendsOptions) => {
   return useQuery({
     ...config,
     queryKey: ['friends'],
-    queryFn: () => getFriends()
+    queryFn: () => getFriends({user_id})
   })
 };
