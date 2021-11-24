@@ -21,7 +21,8 @@ export const useAddFriend = ({ config }: UseCreateFriendshipOptions) => {
     ...config,
     onSuccess: () => {
       queryClient.invalidateQueries('friends');
-      queryClient.invalidateQueries('lookup')
+      queryClient.invalidateQueries('users');
+      queryClient.invalidateQueries('lookup');
     },
     mutationFn: addFriend
   })

@@ -194,7 +194,7 @@ export const NavBar = () => {
               }
               <Divider />
               {
-                socialLinks.map(link => (
+                userLinks.map(link => (
                   <Link
                     key={link.url}
                     as={RouterLink}
@@ -218,7 +218,7 @@ export const NavBar = () => {
               }
               <Divider />
               {
-                userLinks.map(link => (
+                socialLinks.map(link => (
                   <Link
                     key={link.url}
                     as={RouterLink}
