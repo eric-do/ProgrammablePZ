@@ -6,18 +6,24 @@ import {
   Spinner,
   Text
 } from "@chakra-ui/react";
+import InfiniteScroll from 'react-infinite-scroll-component';
 import { SearchInput, UserList } from '../components';
-import { useLookupUsers } from 'features/social/api';
+import { useInfiniteSearch } from 'features/social/api';
 import { useDebounce } from 'hooks/useDebounce';
 
 export const Search = () => {
   const [search, setSearch] = useState('');
-  const { data: users, isLoading, error, refetch } = useLookupUsers({
+  const {
+    data,
+    fetchNextPage,
+    isLoading,
+    error,
+    refetch
+  } = useInfiniteSearch({
     options: {
-      username: search
-    },
-    config: {
-      enabled: false
+      username: search,
+      page: 1,
+      limit: 20
     }
   });
 
@@ -41,7 +47,25 @@ export const Search = () => {
         { isLoading && <Spinner /> }
         { error && <Text>Something went wrong.</Text> }
       </Center>
-      { users && <UserList users={users} /> }
+      { data &&
+        <InfiniteScroll
+        dataLength={data.pages.length}
+        next={fetchNextPage}
+        hasMore={data.pages[data.pages.length - 1].length > 0}
+        loader={<span></span>}
+        endMessage={
+          <p style={{ textAlign: 'center' }}>
+
+          </p>
+        }
+      >
+        {
+          data.pages.map((users, i) => (
+            <UserList key={i} users={users} />
+          ))
+        }
+      </InfiniteScroll>
+      }
     </Stack>
   )
 };

@@ -2,11 +2,16 @@ const UsersModel = require('../models/users');
 const { BadRequestError, InternalServerError } = require('../utils/errors');
 
 const lookupByUsername = async (req, res, next) => {
-  const { username } = req.query;
+  const {
+    username,
+    limit = 20,
+    offset = 0
+  } = req.query;
   const { username: currentUser } = res.locals.data.user;
+  const options = { limit, offset };
 
   try {
-    res.locals.data = username ? await UsersModel.lookupByUsername(username, currentUser) : [];
+    res.locals.data = username ? await UsersModel.lookupByUsername(username, currentUser, options) : [];
     res.status(200);
     next();
   } catch (err) {

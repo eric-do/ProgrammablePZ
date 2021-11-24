@@ -9,7 +9,11 @@ const getUserById = async (userId) => {
   return results[0];
 }
 
-const lookupByUsername = async (username, currentUser) => {
+const lookupByUsername = async (
+  username,
+  currentUser,
+  { limit = 20, offset = 0 }
+) => {
   const q = `
     SELECT
       u.id,
@@ -22,12 +26,14 @@ const lookupByUsername = async (username, currentUser) => {
     LEFT JOIN user_follows uf
     ON u.id = uf.friend_id
     WHERE
-      LOWER(u.username) != LOWER('${currentUser}')
+      LOWER(u.username) != LOWER($1)
     AND
-      LOWER(u.username) LIKE LOWER('${username}%')
+      LOWER(u.username) LIKE LOWER($2 || '%')
+    LIMIT $3
+    OFFSET $4
   `;
 
-  const results = await query(q);
+  const results = await query(q, [currentUser, username, limit, offset]);
   return results;
 }
 
