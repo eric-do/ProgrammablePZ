@@ -6,6 +6,8 @@ export interface Interval {
 export interface Workout {
   intervals: Interval[];
   timeInSeconds: number;
+  creator_id?: string;
+  username?: string;
   type?: string;
   id?: number;
   title?: string;
