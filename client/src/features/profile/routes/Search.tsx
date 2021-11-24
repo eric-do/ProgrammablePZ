@@ -44,8 +44,8 @@ export const Search = () => {
       <Heading>Find members</Heading>
       <SearchInput handleSearch={setSearch}/>
       <Center>
-        { isLoading && <Spinner /> }
-        { error && <Text>Something went wrong.</Text> }
+        { isLoading && <Spinner mt={10} />}
+        { error && <Text mt={10} >Something went wrong.</Text> }
       </Center>
       { data &&
         <InfiniteScroll

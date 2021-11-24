@@ -18,7 +18,10 @@ type UseDeleteFriendOptions = {
 export const useDeleteFriend = ({ config }: UseDeleteFriendOptions) => {
   return useMutation({
     ...config,
-    onSuccess: () => queryClient.invalidateQueries(['friends']),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['friends']);
+      queryClient.invalidateQueries('users');
+    },
     mutationFn: deleteFriend
   })
 }
