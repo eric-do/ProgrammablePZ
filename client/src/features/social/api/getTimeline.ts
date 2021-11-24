@@ -12,7 +12,7 @@ export const getTimelineInfinite = ({
 }: InfiniteQueryOptions): Promise<Ride[]> => {
   const offset = (page - 1) * limit;
 
-  return axios.get('/api/timeline', {
+  return axios.get('/api/me/timeline', {
     params: {
       limit,
       offset
@@ -20,19 +20,19 @@ export const getTimelineInfinite = ({
   });
 }
 
-type UseInfiniteRidesOptions = {
+type UseInfiniteTimelineOptions = {
   options: InfiniteQueryOptions;
   config?: InfiniteQueryConfig<typeof getTimelineInfinite>;
 };
 
 const defaultInfiniteOptions = {
   page: 1,
-  limit: 5
+  limit: 10
 }
 
 export const useInfiniteTimeline = ({
   options = defaultInfiniteOptions,
-  config }: UseInfiniteRidesOptions) => {
+  config }: UseInfiniteTimelineOptions) => {
 
   const queryFn = ({ pageParam = 1 }) => getTimelineInfinite({
     ...options,
