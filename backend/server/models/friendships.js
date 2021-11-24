@@ -24,7 +24,13 @@ const destroyFriendship = async (userId, friendId) => {
 
 const getFriends = async (userId) => {
   const q = `
-    SELECT u.id, u.username
+    SELECT
+      u.id,
+      u.username,
+      CASE
+        WHEN uf.friend_id IS NULL THEN FALSE
+        ELSE TRUE
+      END AS is_friend
     FROM user_follows uf, users u
     WHERE
       u.id = uf.friend_id
