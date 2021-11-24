@@ -230,7 +230,7 @@ describe('Social interactions', () => {
 
 
       const response = await request(app)
-        .get("/api/timeline")
+        .get("/api/me/timeline")
         .set({
           'Authorization': 'Bearer ' + jwtA,
           'Content-Type': 'application/json'
