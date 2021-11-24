@@ -1,5 +1,5 @@
 # Programmable Power Zones
-![Home screen](https://raw.githubusercontent.com/eric-do/ProgrammablePZ/master/.github/images/image1.png) ![Select ride](https://raw.githubusercontent.com/eric-do/ProgrammablePZ/master/.github/images/image3.png) ![Timer](https://raw.githubusercontent.com/eric-do/ProgrammablePZ/master/.github/images/image2.png)
+![Home screen](https://raw.githubusercontent.com/eric-do/ProgrammablePZ/master/.github/images/image1.png) ![Select ride](https://raw.githubusercontent.com/eric-do/ProgrammablePZ/master/.github/images/image3.png) ![Timer](https://raw.githubusercontent.com/eric-do/ProgrammablePZ/master/.github/images/image2.png) ![leftnav](https://raw.githubusercontent.com/eric-do/ProgrammablePZ/master/.github/images/leftnav.png) ![rides](https://raw.githubusercontent.com/eric-do/ProgrammablePZ/master/.github/images/rides.png) ![members](https://raw.githubusercontent.com/eric-do/ProgrammablePZ/master/.github/images/members.png)
 
 ## 🚴‍♂️ About
 Made for cycling enthusiasts, this app allows users to create, browse, and take programmed indoor rides, including ones made by other users.
@@ -60,6 +60,11 @@ From `/client` run `npm test`
 From `/client` run `npm start`
 <br/><br/>
 ## 🕵🏻 Challenges
-### Query optimization
-The ride list contains information such as total rides and average rating. With a small number of rides it's no problem, but as the application scales, calculating those expressions becomes expensive. Since users view rides far more frequently than they take or rate them, I added indexed expressions to the PSQL schema. I also denormalized by adding `average_rating` and `ride_count` to the `rides` table, which is calculated and updated on each write operation, rather than on read.
+### Query optimizations
+Certain queries require excessive joins and are not productive to run on every request:
+- Search usernames
+- Find rides created by user
+- Find all follows and followers
+
+These results are cached using redis and apicache. The GET requests will add results to the cache, and subsequent POST requests will clear the cache based on identifier, e.g. userId.
 <br/><br/>
