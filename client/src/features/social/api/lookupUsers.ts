@@ -49,13 +49,13 @@ interface LookupOptionsInfinite extends InfiniteQueryOptions{
 }
 
 export const getUsersInfinite = ({
-  limit = 5,
+  limit = 20,
   page,
   username
 }: LookupOptionsInfinite): Promise<User[]> => {
   const offset = (page - 1) * limit;
 
-  return axios.get('/api/rides', {
+  return axios.get('/api/users/lookup', {
     params: {
       username,
       limit,
@@ -71,7 +71,7 @@ type UseInfiniteRidesOptions = {
 
 const defaultInfiniteOptions = {
   page: 1,
-  limit: 5,
+  limit: 20,
   username: ''
 }
 

@@ -22,9 +22,9 @@ const lookupByUsername = async (username, currentUser) => {
     LEFT JOIN user_follows uf
     ON u.id = uf.friend_id
     WHERE
-      u.username != '${currentUser}'
+      LOWER(u.username) != LOWER('${currentUser}')
     AND
-      u.username LIKE '${username}%'
+      LOWER(u.username) LIKE LOWER('${username}%')
   `;
 
   const results = await query(q);

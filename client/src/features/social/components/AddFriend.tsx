@@ -21,6 +21,7 @@ export const AddFriend = ({ friendId, callback }: AddFriendProps) => {
     <Button
       colorScheme="blue"
       onClick={handleAddFriend}
+      size='sm'
     >
       Follow
     </Button>

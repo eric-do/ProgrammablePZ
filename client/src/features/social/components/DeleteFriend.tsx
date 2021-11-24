@@ -21,6 +21,7 @@ export const DeleteFriend = ({ friendId, callback }: DeleteFriendProps) => {
     <Button
       colorScheme="green"
       onClick={handleRemoveFriend}
+      size='sm'
     >
       Unfollow
     </Button>

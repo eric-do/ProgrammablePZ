@@ -35,9 +35,9 @@ export const UserListCard = ({ user: { username, id: friendId, is_friend } }: Us
   const handleRemoveFriend = () => setFriend(false);
 
   return (
-    <Box data-testid="user">
-      <Flex>
-        <Text>{username}</Text>
+    <Box pb={2} data-testid="user">
+      <Flex align='center'>
+        <Text fontSize='md'>{username}</Text>
         <Spacer />
         { isFriend && <DeleteFriend friendId={friendId} callback={handleRemoveFriend} /> }
         { !isFriend && <AddFriend friendId={friendId} callback={handleAddFriend} /> }
