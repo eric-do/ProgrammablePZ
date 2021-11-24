@@ -170,7 +170,7 @@ export const NavBar = () => {
             }
             <Stack spacing={4} mb={5}>
               {
-                socialLinks.map(link => (
+                siteLinks.map(link => (
                   <Link
                     key={link.url}
                     as={RouterLink}
@@ -194,7 +194,7 @@ export const NavBar = () => {
               }
               <Divider />
               {
-                siteLinks.map(link => (
+                socialLinks.map(link => (
                   <Link
                     key={link.url}
                     as={RouterLink}
