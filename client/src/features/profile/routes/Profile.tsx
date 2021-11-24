@@ -50,7 +50,7 @@ export const Profile = () => {
           <LinkBox>
             <LinkOverlay
               as={RouterLink}
-              to='/followers'
+              to='/me/followers'
             >
               <Text fontSize="md">{ data.follower_count }</Text>
               <Text fontSize="md">Followers</Text>

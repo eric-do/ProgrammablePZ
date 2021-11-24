@@ -15,7 +15,7 @@ import { Profile } from "features/profile/routes";
 import { Rides, UserRides, RecentRides } from "features/rides";
 import { Login, Register } from "features/auth/routes";
 import { Search } from 'features/profile';
-import { Following } from "features/social/routes";
+import { Following, Followers } from "features/social/routes";
 
 export const App = () => {
   return (
@@ -50,6 +50,9 @@ export const App = () => {
             </PrivateRoute>
             <PrivateRoute path="/me/following">
               <Following />
+            </PrivateRoute>
+            <PrivateRoute path="/me/followers">
+              <Followers />
             </PrivateRoute>
             <Route exact path="/">
               <ZoneTimer />

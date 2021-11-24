@@ -54,12 +54,23 @@ const getFriendCount = async (userId) => {
 
 const getFollowers = async (userId) => {
   const q = `
-    SELECT u.id, u.username
-    FROM user_follows uf, users u
+    SELECT
+      u.id,
+      u.username,
+      case when b.user_id is null then -- No record in b if 3 didn't follow this user back.
+        false
+      else
+        true
+      end as is_friend
+    FROM
+      user_follows f -- IDs of followers of user 3
+      INNER JOIN users u  -- User information of those followers
+        ON u.id = f.user_id
+      LEFT JOIN user_follows b  -- Check if 3 follows them back.
+        ON b.user_id = f.friend_id and
+            b.friend_id = u.id
     WHERE
-      u.id = uf.user_id
-    AND
-      uf.friend_id = $1
+      f.friend_id = $1
   `
   const ids = await query(q, [userId]);
   return ids;
