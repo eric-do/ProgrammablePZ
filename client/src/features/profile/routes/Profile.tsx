@@ -14,6 +14,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import { FaSearch } from 'react-icons/fa';
 import { useGetMetadata } from 'features/social/api';
 import { useAuth } from 'lib/auth';
+import { RideList } from 'features/rides/components'
 
 export const Profile = () => {
   const { user } = useAuth();
@@ -27,6 +28,7 @@ export const Profile = () => {
       { isLoading && <Spinner /> }
       { data &&
         <Flex
+          pb={10}
           width={{
             base: "100%",
             md: "30%",
@@ -38,8 +40,8 @@ export const Profile = () => {
                 as={RouterLink}
                 to='/following'
               >
-                <Text>{ data.friend_count }</Text>
-                <Text>Following</Text>
+                <Text fontSize="md">{ data.friend_count }</Text>
+                <Text fontSize="md">Following</Text>
               </LinkOverlay>
             </LinkBox>
           </Stack>
@@ -50,8 +52,8 @@ export const Profile = () => {
               as={RouterLink}
               to='/followers'
             >
-              <Text>{ data.follower_count }</Text>
-              <Text>Followers</Text>
+              <Text fontSize="md">{ data.follower_count }</Text>
+              <Text fontSize="md">Followers</Text>
             </LinkOverlay>
           </LinkBox>
           </Stack>
@@ -62,10 +64,10 @@ export const Profile = () => {
               as={RouterLink}
               to='/search'
             >
-              <Text>
-                <Icon as={FaSearch} w={5} h={5}/>
+              <Text fontSize="md">
+                <Icon as={FaSearch} w={4} h={4}/>
               </Text>
-              <Text>
+              <Text fontSize="md">
                 Find members
               </Text>
             </LinkOverlay>
@@ -73,6 +75,10 @@ export const Profile = () => {
           </Stack>
         </Flex>
        }
+       <Heading size="md">Created rides</Heading>
+       <Stack w={{base: '100%', lg: '60%'}} >
+       <RideList options={{ user: user?.username}}/>
+       </Stack>
     </Stack>
   )
 };

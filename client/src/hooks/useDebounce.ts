@@ -1,5 +1,4 @@
 import {
-  DependencyList,
   useState,
   useEffect,
 } from 'react';
