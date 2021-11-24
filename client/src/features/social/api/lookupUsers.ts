@@ -75,7 +75,7 @@ const defaultInfiniteOptions = {
   username: ''
 }
 
-export const useInfiniteRides = ({
+export const useInfiniteSearch = ({
   options = defaultInfiniteOptions,
   config
 }: UseInfiniteRidesOptions) => {
