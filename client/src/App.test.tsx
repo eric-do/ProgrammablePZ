@@ -57,7 +57,6 @@ describe('Navigation', () => {
   xtest('logged in user can navigate to profile page from Profile link', async () => {
     server.use(
       rest.get(`${API_URL}/auth/validate`, (req, res, ctx) => {
-        console.log('SENDING USER')
         return res.once(ctx.json({
           username: 'test_user',
           email: 'test@user.com',
