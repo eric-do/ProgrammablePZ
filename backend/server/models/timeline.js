@@ -2,8 +2,10 @@ const { query } = require('../../db');
 
 const getTimeline = async (
   userId,
-  limit = 10,
-  offset = 0
+  {
+    limit = 10,
+    offset = 0
+  }
 ) => {
   const q = `
     SELECT
@@ -38,8 +40,11 @@ const getTimeline = async (
       FROM user_follows
       WHERE user_id = $1
     )
+    ORDER BY r.created_on DESC
+    LIMIT $2
+    OFFSET $3
   `
-  const rides = await query(q, [userId]);
+  const rides = await query(q, [userId, limit, offset]);
   return  rides;
 }
 

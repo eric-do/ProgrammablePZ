@@ -6,6 +6,7 @@ import {
   FaBicycle,
   FaFire,
   FaRegClock,
+  FaRegListAlt,
   FaRegStar,
   FaRegUser,
   FaSearch,
@@ -48,7 +49,13 @@ const siteLinks = [
     url: '/rides',
     icon: FaFire,
     color: 'orange'
-  }
+  },
+  {
+    title: 'Ride feed',
+    url: '/me/timeline',
+    icon: FaRegListAlt,
+    color: 'white'
+  },
 ]
 
 const socialLinks = [

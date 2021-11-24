@@ -4,3 +4,4 @@ export * from './getFriends';
 export * from './getFollowers';
 export * from './getFriendsMetadata';
 export * from './lookupUsers';
+export * from './getTimeline';

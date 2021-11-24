@@ -28,7 +28,7 @@ export const RideCard = ({ ride, onClick }: RideProps) => {
         data-testid="ride-heading"
         fontSize={{base: 'sm', lg: 'md'}}
       >
-        {ride.title}
+        {`${ride.title}${ride.username ? ' by ' + ride.username: ''}`}
       </Heading>
       <ZoneGraph
         intervals={ride.intervals}
