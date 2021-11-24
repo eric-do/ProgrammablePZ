@@ -125,7 +125,7 @@ export const RideList = ({options}: RideListProps) => {
             loader={<span></span>}
             endMessage={
               <p style={{ textAlign: 'center' }}>
-                <b>Yay! You have seen it all</b>
+                <b></b>
               </p>
             }
           >

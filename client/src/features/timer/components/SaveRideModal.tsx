@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Button,
   FormControl,
@@ -27,9 +27,9 @@ export const SaveRideModal = ({ isOpen, onClose }: SaveRideModalProps) => {
   const { ride } = useRide();
   const toast = useToast();
   const createRideMutation = useCreateRide({ ride });
-  const [title, setTitle] = useState(`${new Date().toLocaleDateString('en-US')} ride`)
-  const [type, setType] = useState('pz');
-  const [timeInSeconds, setTimeInSeconds] = useState(2700);
+  const [title, setTitle] = useState(ride.title || `${new Date().toLocaleDateString('en-US')} ride`)
+  const [type, setType] = useState(ride.type);
+  const [timeInSeconds, setTimeInSeconds] = useState(ride.timeInSeconds);
   const mutateData = { data: { ride: { ...ride, title, type, timeInSeconds } }};
 
   const handleTitleChange = (event: React.FormEvent<HTMLInputElement>) => {
@@ -69,6 +69,12 @@ export const SaveRideModal = ({ isOpen, onClose }: SaveRideModalProps) => {
       onClose()
     }
   }
+
+  useEffect(() => {
+    setTitle(ride.title || `${new Date().toLocaleDateString('en-US')} ride`);
+    setType(ride.type);
+    setTimeInSeconds(ride.timeInSeconds);
+  }, [ride])
 
   return (
     <Modal

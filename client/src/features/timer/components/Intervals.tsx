@@ -31,7 +31,7 @@ interface ZoneSummary {
 export const Intervals = ({
   startWorkout
 }: Props ) => {
-  const { ride, setRide } = useRide();
+  const { ride, setRide, resetRide } = useRide();
   const {
     isOpen: isOpenZone,
     onOpen: onOpenZone,
@@ -71,10 +71,7 @@ export const Intervals = ({
     })
   }
 
-  const resetIntervals = () => setRide({
-    intervals: [],
-    timeInSeconds: 0
-  });
+  const resetIntervals = () => resetRide();
 
   const zoneSummary = intervals.reduce((acc: ZoneSummary, interval) => {
     return {
