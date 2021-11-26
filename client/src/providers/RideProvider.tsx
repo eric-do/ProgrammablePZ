@@ -7,7 +7,7 @@ type ProviderProps = {
 
 const initialWorkout: Workout = {
   intervals: [],
-  timeInSeconds: 0
+  timeInSeconds: 1800
 };
 
 const initialContext = {
