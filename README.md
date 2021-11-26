@@ -78,14 +78,10 @@ The frontend uses React Query for its robust query management, which includes lo
 
 Cache expiration is relatively short (5 minutes) and traffic is low, so an intelligent eviction policy is not high priority. However if traffic does grow, we can just evict using LRU policy.
 
-<br/>
 
-### Next steps
-#### Scaling
-##### Vertical
-The application code currently exists on one Heroku server. As more users join, we can look at vertically scaling by upgrading our plan.
+## Next steps
+### Horizontal scaling
 
-##### Horizontal
 Since the backend and frontend are hosted on different services (Heroku and Netlify, respectively), horizontally scaling the backend separately from the frontend wouldn't be a problem.
 
 We can migrate to microservice architecture based on performance bottlenecks, and put each service on its own server(s). We can use AWS EC2 if we're looking to do configurations manually.
@@ -101,7 +97,7 @@ We can use a load balancer such as nginx to point to the respective services and
 
 If our database becomes a bottleneck, we can create DB copies, i.e. one write DB and multiple read DBs.
 <br/>
-#### Timeline optimization
+### Timeline optimization
 As more users use the application, the cost of generating a timeline is going to becomes increasingly expensive in terms of performance.
 
 Timelines are currently generated on request, but we can generate timelines on the server on a given interval, independent of user action. Each new timeline can be stored as a row or document, depending on whether selecting a DB specifically for generating and inserting timelines is needed. The timeline content itself can be stored as a JSON object.
@@ -112,9 +108,9 @@ With indexing, retrieval of a timeline should be logarithmic, as there will be n
 
 This would be costly if we're doing it for all users, as we'd be generating timelines for inactive users. We can address this by doing so only for "active" users. The definition of "active" can be defined later, e.g. based on last login, login frequency, frequency of requests, etc.
 <br/>
-#### Storing friendships
+### Storing friendships
 At some point, a graph DB such as Neo4J might be interesting. If the application starts to become more social (likes, comments, posts, etc.), every entity can potentially point to another entity. This can still be maintained using Postgres, but maintenance could be potentially more intuitive and performance might be faster with a graph database.
 <br/>
-#### Schema optimizations
+### Schema optimizations
 If tables get to be large, we can partition them. We can start by partitioning users and rides based on creation date range. For the user's table we can consider hash partitioning, if queries of users ordered by join date are infrequent.
-<br/><br/>
+<br/>
