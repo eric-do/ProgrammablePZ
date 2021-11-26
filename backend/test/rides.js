@@ -82,7 +82,7 @@ describe('Rides', () => {
       expect(response.status).to.eql(200);
       expect(response.body).to.be.an.instanceOf(Array)
       expect(response.body[0]).to.have.keys(
-        'title', 'type', 'metadata',
+        'title', 'type', 'metadata', 'creator_id', 'username',
         'ratings', 'intervals', 'timeInSeconds', 'id'
       );
       expect(response.body[0].ratings).to.have.keys(
@@ -184,7 +184,7 @@ describe('Rides', () => {
       expect(response.status).to.eql(201);
       expect(response.body).to.have.keys('ride');
       expect(response.body.ride).to.have.keys(
-        'title', 'type', 'metadata',
+        'title', 'type', 'metadata', 'creator_id', 'username',
         'ratings', 'intervals', 'timeInSeconds', 'id'
       );
     });
@@ -206,7 +206,7 @@ describe('Rides', () => {
       expect(response.status).to.eql(200);
       expect(response.body).to.have.keys('ride');
       expect(response.body.ride).to.have.keys(
-        'title', 'type', 'metadata',
+        'title', 'type', 'metadata', 'creator_id', 'username',
         'ratings', 'intervals', 'timeInSeconds', 'id'
       );
       expect(response.body.ride.ratings).to.have.keys(

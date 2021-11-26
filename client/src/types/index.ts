@@ -6,6 +6,8 @@ export interface Interval {
 export interface Workout {
   intervals: Interval[];
   timeInSeconds: number;
+  creator_id?: string;
+  username?: string;
   type?: string;
   id?: number;
   title?: string;
@@ -23,4 +25,10 @@ export interface Workout {
 
 export interface ColorDict {
   [k: number]: string
+}
+
+export interface User {
+  id: string;
+  username: string;
+  is_friend: boolean;
 }

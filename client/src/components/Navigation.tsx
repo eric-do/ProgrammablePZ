@@ -2,7 +2,16 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useAuth } from 'lib/auth';
 import { BellIcon, HamburgerIcon } from '@chakra-ui/icons'
-import { FaBicycle, FaRegUser, FaRegStar, FaFire, FaSignOutAlt } from 'react-icons/fa'
+import {
+  FaBicycle,
+  FaFire,
+  FaRegClock,
+  FaRegListAlt,
+  FaRegStar,
+  FaRegUser,
+  FaSearch,
+  FaSignOutAlt,
+} from 'react-icons/fa'
 import { Link as RouterLink } from 'react-router-dom';
 import { ColorModeSwitcher } from 'ColorModeSwitcher';
 import {
@@ -30,12 +39,6 @@ import { useSound } from 'providers/SoundProvider';
 
 const siteLinks = [
   {
-    title: 'Profile',
-    url: '/profile',
-    icon: FaRegUser,
-    color: 'blue.400'
-  },
-  {
     title: 'Create ride',
     url: '/timer',
     icon: FaBicycle,
@@ -46,6 +49,36 @@ const siteLinks = [
     url: '/rides',
     icon: FaFire,
     color: 'orange'
+  },
+  {
+    title: 'Ride feed',
+    url: '/me/timeline',
+    icon: FaRegListAlt,
+    color: 'white'
+  },
+]
+
+const socialLinks = [
+  {
+    title: 'Profile',
+    url: '/profile',
+    icon: FaRegUser,
+    color: 'blue.400'
+  },
+  {
+    title: 'Find members',
+    url: '/search',
+    icon: FaSearch,
+    color: 'white'
+  }
+]
+
+const userLinks = [
+  {
+    title: 'Recent rides',
+    url: '/recent',
+    icon: FaRegClock,
+    color: 'white'
   },
   {
     title: 'Saved rides',
@@ -145,6 +178,54 @@ export const NavBar = () => {
             <Stack spacing={4} mb={5}>
               {
                 siteLinks.map(link => (
+                  <Link
+                    key={link.url}
+                    as={RouterLink}
+                    to={link.url}
+                    onClick={onClose}
+                  >
+                    <Flex direction="row" align="center">
+                      <Icon
+                        as={link.icon}
+                        color={link.color}
+                      />
+                      <Text
+                        pl={3}
+                        fontSize="lg"
+                      >
+                        { link.title}
+                      </Text>
+                    </Flex>
+                  </Link>
+                ))
+              }
+              <Divider />
+              {
+                userLinks.map(link => (
+                  <Link
+                    key={link.url}
+                    as={RouterLink}
+                    to={link.url}
+                    onClick={onClose}
+                  >
+                    <Flex direction="row" align="center">
+                      <Icon
+                        as={link.icon}
+                        color={link.color}
+                      />
+                      <Text
+                        pl={3}
+                        fontSize="lg"
+                      >
+                        { link.title}
+                      </Text>
+                    </Flex>
+                  </Link>
+                ))
+              }
+              <Divider />
+              {
+                socialLinks.map(link => (
                   <Link
                     key={link.url}
                     as={RouterLink}

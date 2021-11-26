@@ -25,3 +25,6 @@ client/yarn-error.log*
 client/.env*
 backend/.env*
 backend/.nyc_output
+
+.DS_Store
+backend/.DS_Store

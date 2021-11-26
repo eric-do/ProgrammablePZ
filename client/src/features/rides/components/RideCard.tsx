@@ -28,7 +28,7 @@ export const RideCard = ({ ride, onClick }: RideProps) => {
         data-testid="ride-heading"
         fontSize={{base: 'sm', lg: 'md'}}
       >
-        {ride.title}
+        {`${ride.title}${ride.username ? ' by ' + ride.username: ''}`}
       </Heading>
       <ZoneGraph
         intervals={ride.intervals}
@@ -49,7 +49,8 @@ export const RideCard = ({ ride, onClick }: RideProps) => {
           {`${Math.floor(ride.timeInSeconds / 60)} minutes`}
         </Text>
         <Spacer />
-        <Flex direction="row" w="30%" justifyContent="end">
+        <Flex direction="row" w="30%" justify="end">
+          <Spacer />
           <Text
             data-testid="ride-count"
             fontSize={'sm'}

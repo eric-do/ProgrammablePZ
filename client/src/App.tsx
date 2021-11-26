@@ -11,9 +11,11 @@ import { AppProvider } from "providers/app";
 import { NavBar } from "components/Navigation";
 import { PrivateRoute } from "features/auth/components/PrivateRoute";
 import { ZoneTimer } from "features/timer";
-import { Profile } from "features/profile";
-import { Rides, UserRides } from "features/rides";
+import { Profile } from "features/profile/routes";
+import { Rides, UserRides, RecentRides } from "features/rides";
 import { Login, Register } from "features/auth/routes";
+import { Search } from 'features/profile';
+import { Following, Followers, Timeline } from "features/social/routes";
 
 export const App = () => {
   return (
@@ -37,8 +39,23 @@ export const App = () => {
             <PrivateRoute path="/profile">
               <Profile />
             </PrivateRoute>
+            <PrivateRoute path="/recent">
+              <RecentRides />
+            </PrivateRoute>
             <PrivateRoute path="/favorites">
               <UserRides />
+            </PrivateRoute>
+            <PrivateRoute path="/search">
+              <Search />
+            </PrivateRoute>
+            <PrivateRoute path="/me/following">
+              <Following />
+            </PrivateRoute>
+            <PrivateRoute path="/me/followers">
+              <Followers />
+            </PrivateRoute>
+            <PrivateRoute path="/me/timeline">
+              <Timeline />
             </PrivateRoute>
             <Route exact path="/">
               <ZoneTimer />

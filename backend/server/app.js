@@ -5,6 +5,8 @@ const morgan = require('morgan');
 const ridesRouter = require('./routes/rides');
 const authRouter = require('./routes/auth');
 const userRouter = require('./routes/users');
+const friendshipsRouter = require('./routes/friendships');
+const timelineRouter = require('./routes/timeline');
 const cacheRouter = require('./routes/cache');
 const errorHandler = require('./middleware/errorHandler')
 
@@ -20,6 +22,8 @@ app.use(morgan('dev', {
 app.use('/auth', authRouter);
 app.use('/api/rides', ridesRouter);
 app.use('/api/users', userRouter);
+app.use('/api/friendships', friendshipsRouter);
+app.use('/api/me/timeline', timelineRouter);
 app.use('/api/cache', cacheRouter);
 
 // App level error handling

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Button,
   FormControl,
@@ -23,14 +23,28 @@ interface SaveRideModalProps {
   onClose: () => void;
 };
 
+const getNearestDuration = (seconds: number): number => {
+  switch (true) {
+    case (seconds <= 1200):
+      return 1200;
+    case (seconds <= 1800):
+      return 1800;
+    case (seconds <= 2700):
+      return 2700;
+    default:
+      return 3600;
+  }
+}
+
 export const SaveRideModal = ({ isOpen, onClose }: SaveRideModalProps) => {
   const { ride } = useRide();
   const toast = useToast();
   const createRideMutation = useCreateRide({ ride });
-  const [title, setTitle] = useState(`${new Date().toLocaleDateString('en-US')} ride`)
-  const [type, setType] = useState('pz');
-  const [timeInSeconds, setTimeInSeconds] = useState(2700);
-  const mutateData = { data: { ride: { ...ride, title, type, timeInSeconds } }};
+  const [title, setTitle] = useState(ride.title || `${new Date().toLocaleDateString('en-US')} ride`)
+  const [type, setType] = useState(ride.type);
+  const [timeInSeconds, setTimeInSeconds] = useState(ride.timeInSeconds);
+  const duration = getNearestDuration(timeInSeconds);
+  const mutateData = { data: { ride: { ...ride, title, type, timeInSeconds: duration } }};
 
   const handleTitleChange = (event: React.FormEvent<HTMLInputElement>) => {
     const { value } = event.currentTarget;
@@ -69,6 +83,12 @@ export const SaveRideModal = ({ isOpen, onClose }: SaveRideModalProps) => {
       onClose()
     }
   }
+
+  useEffect(() => {
+    setTitle(ride.title || `${new Date().toLocaleDateString('en-US')} ride`);
+    setType(ride.type);
+    setTimeInSeconds(ride.timeInSeconds);
+  }, [ride])
 
   return (
     <Modal
@@ -110,7 +130,7 @@ export const SaveRideModal = ({ isOpen, onClose }: SaveRideModalProps) => {
               <FormControl id="ride-length-select">
                 <FormLabel>Length</FormLabel>
                 <Select
-                  value={timeInSeconds}
+                  value={duration}
                   name="timeInSeconds"
                   onChange={handleLengthChange}
                 >

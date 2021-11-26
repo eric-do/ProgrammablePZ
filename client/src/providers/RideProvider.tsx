@@ -7,17 +7,19 @@ type ProviderProps = {
 
 const initialWorkout: Workout = {
   intervals: [],
-  timeInSeconds: 0
+  timeInSeconds: 1800
 };
 
 const initialContext = {
   ride: initialWorkout,
-  setRide: () => {}
+  setRide: () => {},
+  resetRide: () => {}
 }
 
 interface IRideContext {
   ride: Workout;
   setRide: (w: Workout) => void;
+  resetRide: () => void;
 }
 
 const RideContext = createContext<IRideContext>(initialContext)
@@ -25,17 +27,20 @@ const RideContext = createContext<IRideContext>(initialContext)
 export const RideProvider = ({ children }: ProviderProps) => {
   const [ride, setRide] = useState<Workout>(initialWorkout);
 
+  const resetRide = () => setRide({
+    ...initialWorkout,
+    title: `${new Date().toLocaleDateString('en-US')} ride`
+  });
+
   return (
-    <RideContext.Provider value={{ride, setRide}}>
+    <RideContext.Provider value={{ride, setRide, resetRide}}>
       { children }
     </RideContext.Provider>
   )
 }
 
 export const useRide = () => {
-  const {ride, setRide} = useContext(RideContext);
+  const {ride, setRide, resetRide} = useContext(RideContext);
 
-  // const handleRide = (ride: Workout) => setRide(ride);
-
-  return { ride, setRide }
+  return { ride, setRide, resetRide }
 }

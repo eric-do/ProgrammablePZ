@@ -35,6 +35,7 @@ describe('Navigation', () => {
     expect(screen.getByRole('link', { name: 'Create ride' })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Popular rides' })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Profile' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Recent rides' })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Saved rides' })).toBeInTheDocument();
     expect(screen.getByTestId('sound-button')).toBeInTheDocument();
   })
@@ -56,7 +57,6 @@ describe('Navigation', () => {
   xtest('logged in user can navigate to profile page from Profile link', async () => {
     server.use(
       rest.get(`${API_URL}/auth/validate`, (req, res, ctx) => {
-        console.log('SENDING USER')
         return res.once(ctx.json({
           username: 'test_user',
           email: 'test@user.com',

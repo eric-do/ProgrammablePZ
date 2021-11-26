@@ -1,5 +1,42 @@
 const { query } = require('../../db');
 
+const getUserById = async (userId) => {
+  const q = `
+    SELECT * FROM users
+    WHERE id = $1
+  `;
+  const results = await query(q, [userId]);
+  return results[0];
+}
+
+const lookupByUsername = async (
+  username,
+  currentUser,
+  { limit = 20, offset = 0 }
+) => {
+  const q = `
+    SELECT
+      u.id,
+      u.username,
+      CASE
+        WHEN uf.friend_id IS NULL THEN FALSE
+        ELSE TRUE
+      END AS is_friend
+    FROM users u
+    LEFT JOIN user_follows uf
+    ON u.id = uf.friend_id
+    WHERE
+      LOWER(u.username) != LOWER($1)
+    AND
+      LOWER(u.username) LIKE LOWER($2 || '%')
+    LIMIT $3
+    OFFSET $4
+  `;
+
+  const results = await query(q, [currentUser, username, limit, offset]);
+  return results;
+}
+
 const addTakenRide = async (userId, rideId) => {
   const q = `
     INSERT INTO user_rides (user_id, ride_id)
@@ -39,6 +76,8 @@ const getUserRidesTaken = async (userId) => {
 }
 
 module.exports = {
+  getUserById,
+  lookupByUsername,
   addTakenRide,
   getUserRidesTaken
 }

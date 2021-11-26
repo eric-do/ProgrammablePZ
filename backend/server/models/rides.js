@@ -10,6 +10,10 @@ const getRides = async (
     SELECT
       r.id,
       r.creator_id,
+      CASE
+        WHEN u.admin = TRUE THEN 'PPZ'
+        ELSE u.username
+      END AS username,
       r.title,
       r.type,
       r.likes,
@@ -55,6 +59,7 @@ const getRidesCreatedByUser = async (
     SELECT
       r.id,
       r.creator_id,
+      u.username,
       r.title,
       r.type,
       r.likes,
@@ -94,6 +99,10 @@ const getRidesTakenByUser = async (userId, limit, offset) => {
     SELECT
       r.id,
       r.creator_id,
+      CASE
+        WHEN u.admin = TRUE THEN 'PPZ'
+        ELSE u.username
+      END AS username,
       r.title,
       r.type,
       r.likes,
@@ -105,10 +114,12 @@ const getRidesTakenByUser = async (userId, limit, offset) => {
       r.intervals,
       r.timeInSeconds,
       r.created_on
-    FROM user_rides as u
+    FROM user_rides as ur
     INNER JOIN rides as r
-      ON u.ride_id = r.id
-    WHERE u.user_id = ?
+      ON ur.ride_id = r.id
+    INNER JOIN users AS u
+      ON u.user_id = r.creator_id
+    WHERE ur.user_id = ?
     LIMIT ?
     OFFSET ?
   `

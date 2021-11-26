@@ -7,15 +7,15 @@ import {
 import { useHistory } from 'react-router-dom';
 import { useAuth } from 'lib/auth';
 import { Workout } from 'types';
-import { useUserRides } from '../api';
+import { useRecentRides } from '../api';
 import { RideCard } from 'features/rides';
 import { useRide } from 'providers/RideProvider';
 
-export const Profile = () => {
+export const RecentRides = () => {
   const { user } = useAuth();
   const history = useHistory();
   const { setRide } = useRide();
-  const { data: rides, error } = useUserRides({
+  const { data: rides, error } = useRecentRides({
     options: {
       userId: user?.id
     }
