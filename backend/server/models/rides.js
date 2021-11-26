@@ -10,7 +10,10 @@ const getRides = async (
     SELECT
       r.id,
       r.creator_id,
-      u.username,
+      CASE
+        WHEN u.admin = TRUE THEN 'PPZ'
+        ELSE u.username
+      END AS username,
       r.title,
       r.type,
       r.likes,
@@ -96,7 +99,10 @@ const getRidesTakenByUser = async (userId, limit, offset) => {
     SELECT
       r.id,
       r.creator_id,
-      u.username
+      CASE
+        WHEN u.admin = TRUE THEN 'PPZ'
+        ELSE u.username
+      END AS username,
       r.title,
       r.type,
       r.likes,
