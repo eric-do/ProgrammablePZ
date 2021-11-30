@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Heading,
+  Box,
   Flex,
   Spinner,
   Stack,
@@ -9,6 +9,7 @@ import {
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useHistory } from 'react-router-dom';
 import { Workout } from 'types';
+import { Page } from 'components';
 import { useInfiniteTimeline } from '../api';
 import { RideCard } from 'features/rides';
 import { useRide } from 'providers/RideProvider';
@@ -34,8 +35,7 @@ export const Timeline = () => {
   }
 
   return (
-    <Stack>
-      <Heading size="lg" pb={3}>Ride Feed</Heading>
+    <Page title="Ride Feed">
       { error &&
         <Text data-testid='error-message'>
           Something went wrong. Please reload the page.
@@ -47,6 +47,7 @@ export const Timeline = () => {
         </Flex>
       }
       { data &&
+        <Box w="100%">
         <InfiniteScroll
           dataLength={data.pages.length}
           next={fetchNextPage}
@@ -79,7 +80,8 @@ export const Timeline = () => {
             }
           </Stack>
         </InfiniteScroll>
+        </Box>
       }
-    </Stack>
+    </Page>
   )
 };

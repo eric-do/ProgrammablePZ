@@ -3,7 +3,6 @@ import {
   Button,
   ButtonGroup,
   Stack,
-  Heading,
   Text,
   Table,
   Thead,
@@ -12,13 +11,13 @@ import {
   Tr,
   Th,
   Td,
+  useDisclosure
 } from "@chakra-ui/react"
-import { useDisclosure, Box } from "@chakra-ui/react"
 import { useRide } from 'providers/RideProvider';
 import { Interval } from 'types';
 import { ZoneModal } from './ZoneModal';
 import { SaveRideModal } from './SaveRideModal';
-import { ZoneGraph } from 'components';
+import { ZoneGraph, Page } from 'components';
 
 interface Props {
   startWorkout: () => void;
@@ -81,11 +80,10 @@ export const Intervals = ({
   }, {})
 
   return (
-    <Box>
-      <Stack direction="column" spacing={6}>
-        <Heading as="h1" size="lg">Zones</Heading>
+    <Page title="Zones">
+        <Stack direction="column" spacing={6}>
         { intervals.length === 0 && <Text>No intervals set</Text>}
-        <Table size="md">
+        <Table size="lg">
           <Thead>
             <Tr>
               <Th>Zone</Th>
@@ -178,8 +176,8 @@ export const Intervals = ({
           isOpen={isOpenSave}
           onClose={onCloseSave}
         />
-
       </Stack>
-    </Box>
+      </Page>
+
   )
 }
