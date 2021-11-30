@@ -1,15 +1,14 @@
 import React from 'react';
 import {
+  Box,
   Center,
-  Flex,
-  Heading,
   Spinner,
-  Stack,
   Text
 } from '@chakra-ui/react';
 import { useGetFollowers } from '../api';
 import { useAuth } from 'lib/auth';
 import { UserList } from 'features/profile/components';
+import { Page } from 'components'
 
 export const Followers = () => {
   const { user } = useAuth();
@@ -17,16 +16,14 @@ export const Followers = () => {
   const { data, error, isLoading } = useGetFollowers({ user_id: user?.id })
 
   return (
-    <Flex justify='center'>
-      <Stack width={{
-        base: "100%",
-        md: "30%",
-      }}>
-      <Heading size="lg" pb={3}>Followers</Heading>
+    <Page title="Followers">
       { isLoading && <Center><Spinner /></Center> }
       { error && <Text>Something went wrong.</Text> }
-      { data && <UserList users={data.followers} />  }
-    </Stack>
-    </Flex>
+      { data &&
+        <Box w="100%">
+          <UserList users={data.followers} />
+        </Box>
+      }
+    </Page>
   )
 }

@@ -15,23 +15,21 @@ import { FaSearch } from 'react-icons/fa';
 import { useGetMetadata } from 'features/social/api';
 import { useAuth } from 'lib/auth';
 import { RideList } from 'features/rides/components'
+import { Page } from 'components';
 
 export const Profile = () => {
   const { user } = useAuth();
   const { data, isLoading } = useGetMetadata({ user_id: user?.id })
 
   return (
-    <Stack
-      align='center'
-    >
-      <Heading size="lg" pb={3}>Profile</Heading>
+    <Page title="Profile">
       { isLoading && <Spinner /> }
       { data &&
         <Flex
           pb={10}
           width={{
             base: "100%",
-            md: "30%",
+            md: "60%",
           }}
         >
           <Stack justify='center'>
@@ -76,9 +74,9 @@ export const Profile = () => {
         </Flex>
        }
        <Heading size="md">Created rides</Heading>
-       <Stack w={{base: '100%', lg: '60%'}} >
+       <Stack w={{base: '100%'}} >
        <RideList options={{ user: user?.username}}/>
        </Stack>
-    </Stack>
+    </Page>
   )
 };

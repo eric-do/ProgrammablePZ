@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
+  Box,
   Center,
-  Heading,
-  Stack,
   Spinner,
   Text
 } from "@chakra-ui/react";
@@ -10,6 +9,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { SearchInput, UserList } from '../components';
 import { useInfiniteSearch } from 'features/social/api';
 import { useDebounce } from 'hooks/useDebounce';
+import { Page } from 'components';
 
 export const Search = () => {
   const [search, setSearch] = useState('');
@@ -34,26 +34,20 @@ export const Search = () => {
   }, [debouncedSearch, refetch])
 
   return (
-    <Stack
-      justifySelf='center'
-      width={{
-        base: "100%",
-        md: "50%",
-      }}
-    >
-      <Heading>Find members</Heading>
+    <Page title="Find members" >
       <SearchInput handleSearch={setSearch}/>
       <Center>
         { isLoading && <Spinner mt={10} />}
         { error && <Text mt={10} >Something went wrong.</Text> }
       </Center>
       { data &&
+        <Box w="100%">
         <InfiniteScroll
-        dataLength={data.pages.length}
-        next={fetchNextPage}
-        hasMore={data.pages[data.pages.length - 1].length > 0}
-        loader={<span></span>}
-        endMessage={
+          dataLength={data.pages.length}
+          next={fetchNextPage}
+          hasMore={data.pages[data.pages.length - 1].length > 0}
+          loader={<span></span>}
+          endMessage={
           <p style={{ textAlign: 'center' }}>
 
           </p>
@@ -65,7 +59,8 @@ export const Search = () => {
           ))
         }
       </InfiniteScroll>
+      </Box>
       }
-    </Stack>
+    </Page>
   )
 };
