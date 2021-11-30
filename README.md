@@ -1,5 +1,8 @@
 # Programmable Power Zones
-![Home screen](https://raw.githubusercontent.com/eric-do/ProgrammablePZ/master/.github/images/image1.png) ![Select ride](https://raw.githubusercontent.com/eric-do/ProgrammablePZ/master/.github/images/image3.png) ![Timer](https://raw.githubusercontent.com/eric-do/ProgrammablePZ/master/.github/images/image2.png) ![leftnav](https://raw.githubusercontent.com/eric-do/ProgrammablePZ/master/.github/images/leftnav.png) ![rides](https://raw.githubusercontent.com/eric-do/ProgrammablePZ/master/.github/images/rides.png) ![members](https://raw.githubusercontent.com/eric-do/ProgrammablePZ/master/.github/images/members.png)
+![leftnav](https://raw.githubusercontent.com/eric-do/ProgrammablePZ/master/.github/images/leftnav.png)  ![rides](https://raw.githubusercontent.com/eric-do/ProgrammablePZ/master/.github/images/rides.png)  ![members](https://raw.githubusercontent.com/eric-do/ProgrammablePZ/master/.github/images/members.png)
+<br />
+![Home screen](https://raw.githubusercontent.com/eric-do/ProgrammablePZ/master/.github/images/image1.png)  ![Select ride](https://raw.githubusercontent.com/eric-do/ProgrammablePZ/master/.github/images/image3.png)  ![Timer](https://raw.githubusercontent.com/eric-do/ProgrammablePZ/master/.github/images/image2.png) 
+
 
 ## 🚴‍♂️ About
 Made for cycling enthusiasts, this app allows users to create, browse, and take programmed indoor rides, including ones made by other users.
@@ -63,25 +66,49 @@ From `/client` run `npm test`
 From `/client` run `npm start`
 <br/><br/>
 ## 🕵🏻 Challenges
-### Optimizations
-#### Caching
+### Timeline optimization
+#### Problem
+As more users use the application, the cost of generating a timeline is going to becomes increasingly expensive in terms of performance.
+
+Timelines were originally generated on request and cached with redis. As user follows increased, response times were hitting extremes of 5+ seconds. 
+
+#### Solution
+On the fly timeline generation as well as backend caching were unnecessary:
+- Queries were already being cached in the frontend
+- Users don't view each other's timelines, so caching them with redis was a waste of space
+
+I created a cron job that executes twice a day. It:
+1. Finds all users who have logged in within 48 hours
+2. Generates timeline for each user, making sure to not overlap with previous timelines
+3. Inserts timelines into DB
+
+This way timeline retrieval is independent from timeline generation. The script only runs for recently logged in users, as the process is still slow and intensive on the DB, and it's wasteful to fill the DB with data for inactive users.
+
+Timeline retrieval becomes a simple index search, as there are no expensive joins required. As users continue to view more rides (e.g. infinite scroll), we keep serving progressively older timelines.
+
+#### Result
+For users with thousands of follows, API response time dropped from 5-8 seconds to 40-50 ms average.
+
+### Caching
+#### Problem
 Certain queries require excessive joins and are not productive to run on every request:
 - Search by username
 - Find rides created by user
 - Find all follows and followers
 
-##### Backend
-Results are cached using redis and apicache. GET requests will add results to the cache, and subsequent POST requests will clear the cache.
+#### Solution
+In the backend, results are cached using redis and apicache. GET requests will add results to the cache, and subsequent POST requests will clear the cache.
 
-##### Frontend
 The frontend uses React Query for its robust query management, which includes local caching.
 
 Cache expiration is relatively short (5 minutes) and traffic is low, so an intelligent eviction policy is not high priority. However if traffic does grow, we can just evict using LRU policy.
 
+#### Result
+GET response times, un-cached: 50 ms
+GET response times, cached: 5 ms
 
 ## Next steps
 ### Horizontal scaling
-
 Since the backend and frontend are hosted on different services (Heroku and Netlify, respectively), horizontally scaling the backend separately from the frontend wouldn't be a problem.
 
 We can migrate to microservice architecture based on performance bottlenecks, and put each service on its own server(s). We can use AWS EC2 if we're looking to do configurations manually.
@@ -97,17 +124,7 @@ We can use a load balancer such as nginx to point to the respective services and
 
 If our database becomes a bottleneck, we can create DB copies, i.e. one write DB and multiple read DBs.
 <br/>
-### Timeline optimization
-As more users use the application, the cost of generating a timeline is going to becomes increasingly expensive in terms of performance.
 
-Timelines are currently generated on request, but we can generate timelines on the server on a given interval, independent of user action. Each new timeline can be stored as a row or document, depending on whether selecting a DB specifically for generating and inserting timelines is needed. The timeline content itself can be stored as a JSON object.
-
-When generating a new timeline, we only add rides created after the creation date of the most recent timeline.
-
-With indexing, retrieval of a timeline should be logarithmic, as there will be no expensive joins required. As users continue to view more rides (e.g. infinite scroll), we keep serving progressively older timelines.
-
-This would be costly if we're doing it for all users, as we'd be generating timelines for inactive users. We can address this by doing so only for "active" users. The definition of "active" can be defined later, e.g. based on last login, login frequency, frequency of requests, etc.
-<br/>
 ### Storing friendships
 At some point, a graph DB such as Neo4J might be interesting. If the application starts to become more social (likes, comments, posts, etc.), every entity can potentially point to another entity. This can still be maintained using Postgres, but maintenance could be potentially more intuitive and performance might be faster with a graph database.
 <br/>
