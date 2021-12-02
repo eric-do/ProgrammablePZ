@@ -1,7 +1,7 @@
 # Programmable Power Zones
 ![leftnav](https://raw.githubusercontent.com/eric-do/ProgrammablePZ/master/.github/images/leftnav.png)  ![rides](https://raw.githubusercontent.com/eric-do/ProgrammablePZ/master/.github/images/rides.png)  ![members](https://raw.githubusercontent.com/eric-do/ProgrammablePZ/master/.github/images/members.png)
 <br />
-![Home screen](https://raw.githubusercontent.com/eric-do/ProgrammablePZ/master/.github/images/image1.png)  ![Select ride](https://raw.githubusercontent.com/eric-do/ProgrammablePZ/master/.github/images/image3.png)  ![Timer](https://raw.githubusercontent.com/eric-do/ProgrammablePZ/master/.github/images/image2.png) 
+![Home screen](https://raw.githubusercontent.com/eric-do/ProgrammablePZ/master/.github/images/image1.png)  ![Select ride](https://raw.githubusercontent.com/eric-do/ProgrammablePZ/master/.github/images/image3.png)  ![Timer](https://raw.githubusercontent.com/eric-do/ProgrammablePZ/master/.github/images/image2.png)
 
 
 ## 🚴‍♂️ About
@@ -64,13 +64,39 @@ From `/client` run `npm test`
 
 #### Local testing
 From `/client` run `npm start`
+
+## 🐳 Docker
+
+Containers have been made out of the following services:
+- React app
+- Node app
+- PostgresSQL
+- Redis
+
+Containers can be composed and ran in isolation using the docker-compose file found in root directory.
+```
+docker-compose up  -d
+docker-compose down
+```
+
+For the Dockerized PSQL DB, these scripts will dump to, and restore from, a sql file:
+```
+docker exec -i ppz_db /bin/bash -c "pg_dump --username postgres ppz" > dump.sql
+docker exec -i pg_container_name /bin/bash -c "psql --username postgres ppz" < dump.sql
+```
+
+### Containerization next steps
+- Add nginx container
+- Deploy and scale on EC2
+- Implement CI/CD workflow
+
 <br/><br/>
 ## 🕵🏻 Challenges
 ### Timeline optimization
 #### Problem
 As more users use the application, the cost of generating a timeline is going to becomes increasingly expensive in terms of performance.
 
-Timelines were originally generated on request and cached with redis. As user follows increased, response times were hitting extremes of 5+ seconds. 
+Timelines were originally generated on request and cached with redis. As user follows increased, response times were hitting extremes of 5+ seconds.
 
 #### Solution
 On the fly timeline generation as well as backend caching were unnecessary:
