@@ -31,7 +31,6 @@ services:
     build:
       context: ./database
       dockerfile: Dockerfile
-    # image: postgres:14
     container_name: ppz_db
     restart: unless-stopped
     env_file: .env
@@ -39,11 +38,11 @@ services:
       - POSTGRES_USER
       - POSTGRES_PASSWORD
     volumes:
-      - ./database/migrations:/docker-entrypoint-initdb.d/
+      - ./database/scripts:/docker-entrypoint-initdb.d/
     networks:
       - app-network
     ports:
-      - "5432:5432"
+      - "5431:5432"
 
   redis:
     image: "redis:alpine"
