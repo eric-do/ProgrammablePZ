@@ -1,6 +1,19 @@
 version: '3'
 
 services:
+  web:
+    image: nginx
+    container_name: ppz_web
+    volumes:
+      - ./nginx/templates:/etc/nginx/templates
+    ports:
+      - "8080:80"
+    environment:
+      - NGINX_HOST
+      - NGINX_PORT
+    networks:
+      - app-network
+
   nodejs:
     build:
       context: ./backend
