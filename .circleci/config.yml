@@ -21,6 +21,7 @@ workflows:
   sample:
     jobs:
       - node/test:
+          app-dir: backend
           context:
             - Docker
       - heroku/deploy-via-git:
@@ -62,6 +63,7 @@ jobs:
       - run: sudo apt install postgresql-client
       - run: echo 'export PATH=/usr/lib/postgresql/9.4/bin/:$PATH' >> $BASH_ENV
       - run: pg_restore -h localhost -p 5432 -U postgres -d ppz -C '../database/scripts/init.sql'
+      - run: npm install
       - run:
           name: Run tests
           command: npm test
