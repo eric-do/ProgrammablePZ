@@ -60,8 +60,8 @@ jobs:
     steps:
       - checkout
       # Bundle install dependencies
-      - run: sudo apt-get update
-      - run: sudo apt install postgresql-client
+      - run: apt-get update
+      - run: apt install postgresql-client
       - run: echo 'export PATH=/usr/lib/postgresql/9.4/bin/:$PATH' >> $BASH_ENV
       - run: pg_restore -h localhost -p 5432 -U postgres -d ppz -C '../database/scripts/init.sql'
       - run: dockerize -wait tcp://localhost:5432 -timeout 1m
