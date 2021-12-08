@@ -24,6 +24,8 @@ workflows:
           context:
             - Docker
       - node/test:
+          requires:
+            - build
           app-dir: backend
       - heroku/deploy-via-git:
           force: true # this parameter instructs the push to use a force flag when pushing to the heroku remote, see: https://devcenter.heroku.com/articles/git
@@ -62,6 +64,7 @@ jobs:
       # Bundle install dependencies
       # - run: apt-get update
       # - run: apt install postgresql-client
+      - run: echo $(ls)
       - run: echo 'export PATH=/usr/lib/postgresql/9.4/bin/:$PATH' >> $BASH_ENV
       - run: pg_restore -h localhost -p 5432 -U postgres -d ppz -C '../database/scripts/init.sql'
       - run: dockerize -wait tcp://localhost:5432 -timeout 1m
