@@ -20,10 +20,11 @@ workflows:
   # For more details on extending your workflow, see the configuration docs: https://circleci.com/docs/2.0/configuration-reference/#workflows
   sample:
     jobs:
-      - node/test:
-          app-dir: backend
+      - build:
           context:
             - Docker
+      - node/test:
+          app-dir: backend
       - heroku/deploy-via-git:
           force: true # this parameter instructs the push to use a force flag when pushing to the heroku remote, see: https://devcenter.heroku.com/articles/git
           requires:
@@ -35,7 +36,7 @@ workflows:
               # only: master  # Uncomment this line
 
 jobs:
-  node/test:
+  build:
     docker:
       # - image: ericdo/ppz_node
       #   auth:
@@ -63,7 +64,8 @@ jobs:
       - run: sudo apt install postgresql-client
       - run: echo 'export PATH=/usr/lib/postgresql/9.4/bin/:$PATH' >> $BASH_ENV
       - run: pg_restore -h localhost -p 5432 -U postgres -d ppz -C '../database/scripts/init.sql'
-      - run: npm install
-      - run:
-          name: Run tests
-          command: npm test
+      - run: dockerize -wait tcp://localhost:5432 -timeout 1m
+      # - run: npm install
+      # - run:
+      #     name: Run tests
+      #     command: npm test
