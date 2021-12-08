@@ -58,7 +58,7 @@ jobs:
     environment:
       DATABASE_URL: postgresql://root@localhost/ppz
       REDIS_URL: redis://localhost
-    working_directory: ~/backend
+    working_directory: backend
     steps:
       - checkout
       # Bundle install dependencies
