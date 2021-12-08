@@ -10,7 +10,8 @@ services:
       - app-network
 
   nodejs:
-    image: ericdo/ppz_node:latest
+    build: ./backend
+    image: ericdo/ppz_node
     container_name: ppz_node
     restart: unless-stopped
     ports:
