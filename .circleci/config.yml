@@ -66,9 +66,10 @@ jobs:
       # - run: apt install postgresql-client
       - run: echo $(ls)
       - run: echo 'export PATH=/usr/lib/postgresql/9.4/bin/:$PATH' >> $BASH_ENV
+      - run: dockerize -wait tcp://localhost:5432 -timeout 1m
       # - run: pg_restore -h localhost -p 5432 -U postgres -d ppz -C './database/scripts/init.sql'
       - run: psql ppz < './database/scripts/init.sql'
-      - run: dockerize -wait tcp://localhost:5432 -timeout 1m
+      
       # - run: npm install
       # - run:
       #     name: Run tests
