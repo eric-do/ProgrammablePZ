@@ -10,7 +10,7 @@ const devConfig = {
 }
 
 const testConfig = {
-  connectionString: process.env.TEST_DATABASE_URL
+  connectionString: process.env.DATABASE_URL
 }
 
 const pool = process.env.NODE_ENV === 'production'

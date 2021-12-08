@@ -2,52 +2,35 @@ version: '3'
 
 services:
   web:
-    image: nginx
+    image: ericdo/ppz_web:latest
     container_name: ppz_web
-    volumes:
-      - ./nginx/templates:/etc/nginx/templates
     ports:
       - "8080:80"
-    environment:
-      - NGINX_HOST
-      - NGINX_PORT
     networks:
       - app-network
 
   nodejs:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
-    image: nodejs
+    image: ericdo/ppz_node:latest
     container_name: ppz_node
     restart: unless-stopped
-    env_file: .env
-    environment:
-      - DATABASE_URL
-      - SECRET_TOKEN
-      - NODE_ENV
     ports:
       - "80:3001"
-    volumes:
-      - ./backend:/usr/src/app
-      - ./backend/node_modules:/usr/src/app/node_modules
     depends_on:
       db:
         condition: service_started
       redis:
         condition: service_started
+    volumes:
+      - ./backend:/usr/src/app
     networks:
       - app-network
-    command: /usr/src/app/node_modules/.bin/nodemon server/index.js
 
   db:
     image: postgres:14
     container_name: ppz_db
     restart: unless-stopped
-    env_file: .env
     environment:
-      - POSTGRES_USER
-      - POSTGRES_PASSWORD
+      - POSTGRES_PASSWORD=student
     volumes:
       - ./database/scripts:/docker-entrypoint-initdb.d/
     networks:
@@ -56,16 +39,13 @@ services:
       - "5431:5432"
 
   redis:
-    image: "redis:alpine"
+    image: ericdo/ppz_redis:latest
     container_name: ppz_redis
-    volumes:
-      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
+    ports:
+      - "6379:6379"
     networks:
       - app-network
 
 networks:
   app-network:
     driver: bridge
-
-volumes:
-  node_modules:
