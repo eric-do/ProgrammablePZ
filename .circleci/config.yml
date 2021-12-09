@@ -61,5 +61,6 @@ jobs:
       - run: echo 'export PATH=/usr/lib/postgresql/9.4/bin/:$PATH' >> $BASH_ENV
       - run: dockerize -wait tcp://localhost:5432 -timeout 1m
       - run: psql -h localhost -p 5432 -U postgres < './database/scripts/init.sql'
+      - run: echo $(ls)
       - run: cd backend
       - run: npm test
