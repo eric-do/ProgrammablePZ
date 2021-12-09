@@ -23,14 +23,10 @@ workflows:
       - build-and-test:
           context:
             - Docker
-      - node/test:
-          requires:
-            - build-and-test
-          app-dir: backend
       - heroku/deploy-via-git:
           force: true # this parameter instructs the push to use a force flag when pushing to the heroku remote, see: https://devcenter.heroku.com/articles/git
           requires:
-            - node/test # only run deploy-via-git job if the build job has completed
+            - build-and-test # only run deploy-via-git job if the build job has completed
           filters:
             branches:
               # This sample config runs this job on any branch matching the regex below, however, it's more likely you want to only run this job on master.
@@ -47,7 +43,7 @@ jobs:
           POSTGRES_PASSWORD: postgres
       - image: circleci/redis
     environment: 
-      DATABASE_URL: postgresql://postgres:postgres@localhost/pp
+      DATABASE_URL: postgresql://postgres:postgres@localhost/ppz
       REDIS_URL: redis://localhost
     steps:
       # Checkout code from Github
