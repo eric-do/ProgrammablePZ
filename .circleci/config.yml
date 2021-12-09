@@ -78,4 +78,4 @@ jobs:
       - run: cd backend && npm run test:ci
       - run:
           name: Generate code coverage
-          command: './node_modules/.bin/nyc report --reporter=text-lcov'
+          command: './backend/node_modules/.bin/nyc report --reporter=text-lcov'
