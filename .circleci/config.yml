@@ -62,6 +62,4 @@ jobs:
       - run: dockerize -wait tcp://localhost:5432 -timeout 1m
       - run: psql -h localhost -p 5432 -U postgres < './database/scripts/init.sql'
       - run: echo $(ls)
-      - run: cd backend
-      - run: echo $(ls)
-      - run: npm test
+      - run: cd backend && npm test
