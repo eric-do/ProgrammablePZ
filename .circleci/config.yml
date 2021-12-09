@@ -20,12 +20,12 @@ workflows:
   # For more details on extending your workflow, see the configuration docs: https://circleci.com/docs/2.0/configuration-reference/#workflows
   sample:
     jobs:
-      - build:
+      - build-and-test:
           context:
             - Docker
       - node/test:
           requires:
-            - build
+            - build-and-test
           app-dir: backend
       - heroku/deploy-via-git:
           force: true # this parameter instructs the push to use a force flag when pushing to the heroku remote, see: https://devcenter.heroku.com/articles/git
@@ -38,7 +38,7 @@ workflows:
               # only: master  # Uncomment this line
 
 jobs:
-  build:
+  build-and-test:
     docker:
       - image: cimg/node:17.2.0
       - image: circleci/postgres:11-alpine-ram
@@ -61,4 +61,4 @@ jobs:
       - run: echo 'export PATH=/usr/lib/postgresql/9.4/bin/:$PATH' >> $BASH_ENV
       - run: dockerize -wait tcp://localhost:5432 -timeout 1m
       - run: psql -h localhost -p 5432 -U postgres < './database/scripts/init.sql'
-      
+      - run: npm test
