@@ -35,9 +35,9 @@ workflows:
             - Docker
           requires:
             - build-and-test
-          # filters:
-          #   branches:
-          #     only: master
+          filters:
+            branches:
+              only: master
       - heroku/deploy-via-git:
           force: true # this parameter instructs the push to use a force flag when pushing to the heroku remote, see: https://devcenter.heroku.com/articles/git
           requires:
@@ -45,8 +45,8 @@ workflows:
           filters:
             branches:
               # This sample config runs this job on any branch matching the regex below, however, it's more likely you want to only run this job on master.
-              only: /.*-heroku-deploy/ # Delete this line
-              # only: master  # Uncomment this line
+              # only: /.*-heroku-deploy/ # Delete this line
+              only: master  # Uncomment this line
 
 jobs:
   build-and-test:
