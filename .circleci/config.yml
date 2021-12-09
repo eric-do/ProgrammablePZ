@@ -40,7 +40,7 @@ workflows:
 jobs:
   build:
     docker:
-      - image: node:11.10.1
+      - image: cimg/node:17.2.0
       - image: circleci/postgres:11-alpine-ram
         environment:
           POSTGRES_USER: postgres
@@ -53,8 +53,8 @@ jobs:
     steps:
       - checkout
       # Bundle install dependencies
-      # - run: apt-get update
-      # - run: apt install postgresql-client
+      - run: apt-get update
+      - run: apt install postgresql-client
       - run:
           name: install dockerize
           command: wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
