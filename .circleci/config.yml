@@ -40,21 +40,12 @@ workflows:
 jobs:
   build:
     docker:
-      # - image: ericdo/ppz_node
-      #   auth:
-      #     username: ericdo
-      #     password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
-      #   environment:
-      #     DATABASE_URL: postgresql://root@localhost/ppz
-      #     REDIS_URL: redis://localhost
-      - image: circleci/postgres:9.4.12-alpine
-        auth:
-          username: ericdo
-          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+      - image: node:11.10.1
+      - image: circleci/postgres:11-alpine-ram
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
       - image: circleci/redis
-        auth:
-          username: ericdo
-          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
     environment:
       DATABASE_URL: postgresql://root@localhost/ppz
       REDIS_URL: redis://localhost
@@ -66,14 +57,14 @@ jobs:
       # - run: apt install postgresql-client
       - run:
           name: install dockerize
-          command: wget http://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && sudo tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
+          command: wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && sudo tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
           environment:
             DOCKERIZE_VERSION: v0.6.1
       - run: echo $(ls)
       - run: echo 'export PATH=/usr/lib/postgresql/9.4/bin/:$PATH' >> $BASH_ENV
-      - run: dockerize -wait tcp://localhost:5432 -timeout 1m
+      # - run: dockerize -wait tcp://localhost:5432 -timeout 1m
       # - run: pg_restore -h localhost -p 5432 -U postgres -d ppz -C './database/scripts/init.sql'
-      - run: psql ppz < './database/scripts/init.sql'
+      - run: psql -U postgres ppz < './database/scripts/init.sql'
       
       # - run: npm install
       # - run:
