@@ -76,3 +76,6 @@ jobs:
       # Install npm libraries and run tests
       - run: cd backend && npm install
       - run: cd backend && npm run test:ci
+      - run:
+          name: Generate code coverage
+          command: './node_modules/.bin/nyc report --reporter=text-lcov'
