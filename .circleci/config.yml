@@ -52,8 +52,8 @@ jobs:
     steps:
       - checkout
       # Bundle install dependencies
-      - run: apt-get update
-      - run: apt install postgresql-client
+      - run: sudo apt-get update
+      - run: sudo apt install postgresql-client
       - run:
           name: install dockerize
           command: sudo wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && sudo tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
