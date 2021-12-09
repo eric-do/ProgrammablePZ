@@ -74,6 +74,8 @@ jobs:
           command: psql -h localhost -p 5432 -U postgres < './database/scripts/init.sql'
 
       # Install npm libraries and run tests
-      - run: echo $(ls)
       - run: cd backend && npm install
-      - run: cd backend && npm test
+      - run: cd backend && npm run test:ci
+      - run:
+          name: Generate code coverage
+          command: './node_modules/.bin/nyc report --reporter=text-lcov'
