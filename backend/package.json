@@ -6,7 +6,7 @@
   "scripts": {
     "start": "set NODE_ENV=dev&& nodemon server/index.js",
     "test": "set NODE_ENV=test&& mocha test/index.js -w",
-    "test:ci": "set NODE_ENV=test&& nyc mocha test/index.js"
+    "test:ci": "set NODE_ENV=test&& nyc mocha test/index.js --exit"
   },
   "author": "",
   "license": "ISC",
