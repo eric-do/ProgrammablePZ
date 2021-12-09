@@ -47,7 +47,7 @@ jobs:
           POSTGRES_PASSWORD: postgres
       - image: circleci/redis
     environment: 
-      DATABASE_URL: postgresql://postgres:postgres@localhost/ppz
+      DATABASE_URL: postgresql://postgres:postgresql@localhost/ppz
       REDIS_URL: redis://localhost
     steps:
       # Checkout code from Github
