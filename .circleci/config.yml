@@ -50,9 +50,14 @@ jobs:
       DATABASE_URL: postgresql://postgres:postgres@localhost/ppz
       REDIS_URL: redis://localhost
     steps:
+      # Checkout code from Github
       - checkout
+      
+      # Update and install packages
       - run: sudo apt-get update
       - run: sudo apt install postgresql-client
+
+      # Set up Postgres
       - run:
           name: install dockerize
           command: sudo wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && sudo tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
@@ -65,8 +70,10 @@ jobs:
           name: Wait for Postgres container to be ready
           command: dockerize -wait tcp://localhost:5432 -timeout 1m
       - run: 
-          run: Initialize database
+          name: Initialize database
           command: psql -h localhost -p 5432 -U postgres < './database/scripts/init.sql'
+
+      # Install npm libraries and run tests
       - run: echo $(ls)
       - run: cd backend && npm install
       - run: cd backend && npm test
