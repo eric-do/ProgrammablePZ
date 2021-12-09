@@ -63,4 +63,5 @@ jobs:
       - run: psql -h localhost -p 5432 -U postgres < './database/scripts/init.sql'
       - run: echo $(ls)
       - run: cd backend
+      - run: echo $(ls)
       - run: npm test
