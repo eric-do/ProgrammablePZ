@@ -112,6 +112,7 @@ Deployment is automated when code is pulled to master:
 - Deploy and scale on EC2
 
 <br/>
+
 ## 🕵🏻 Challenges
 ### Timeline optimization
 #### Problem
@@ -154,7 +155,7 @@ Cache expiration is relatively short (5 minutes) and traffic is low, so an intel
 GET response times, un-cached: 50 ms
 GET response times, cached: 5 ms
 
-## Next steps
+## ✏️ Next steps
 ### Horizontal scaling
 Since the backend and frontend are hosted on different services (Heroku and Netlify, respectively), horizontally scaling the backend separately from the frontend wouldn't be a problem.
 
