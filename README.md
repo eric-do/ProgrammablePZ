@@ -17,8 +17,9 @@ Primary functionality of the application (programming and taking rides), is open
 
 ## 🚀  Deployment
 
-The front-end of the application is deployed to Netlify for its fast CDN. The back-end (Node, Express, Redis, Postgres) is deployed to Heroku.
-
+The front-end of the application is deployed to Netlify for its fast CDN. The back-end (Node, Express, Redis, Postgres) is deployed to Heroku, using CircleCI for CI/CD
+.
+[![CircleCI](https://circleci.com/gh/eric-do/ProgrammablePZ/tree/master.svg?style=svg)](https://circleci.com/gh/eric-do/ProgrammablePZ/tree/master)
 [![Netlify Status](https://api.netlify.com/api/v1/badges/057160b9-be9b-4559-9341-ce3bc74b77ab/deploy-status)](https://app.netlify.com/sites/ppz/deploys)
 
 Live deployment: https://ppz.netlify.app/
