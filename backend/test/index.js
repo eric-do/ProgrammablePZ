@@ -1,6 +1,6 @@
 require('dotenv').config()
-process.env.NODE_ENV = 'test'
-
+console.log(process.env.REDIS_URL)
+console.log(process.env.DATABASE_URL)
 require('./auth');
 require('./rides');
 require('./likes');

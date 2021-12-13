@@ -1,0 +1,7 @@
+version: '3'
+
+services:
+  nodejs:
+    environment:
+      - NODE_ENV=test
+    command: npm run test

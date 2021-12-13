@@ -1,0 +1,72 @@
+version: '3'
+
+services:
+  web:
+    image: nginx
+    container_name: ppz_web
+    volumes:
+      - ./nginx/templates:/etc/nginx/templates
+    ports:
+      - "8080:80"
+    environment:
+      - NGINX_HOST
+      - NGINX_PORT
+    networks:
+      - app-network
+
+  nodejs:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    image: nodejs
+    container_name: ppz_node
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      - DATABASE_URL
+      - REDIS_URL
+      - SECRET_TOKEN
+      - NODE_ENV
+    ports:
+      - "80:3001"
+    volumes:
+      - ./backend:/usr/src/app
+      - ./backend/node_modules:/usr/src/app/node_modules
+    depends_on:
+      db:
+        condition: service_started
+      redis:
+        condition: service_started
+    networks:
+      - app-network
+    command: /usr/src/app/node_modules/.bin/nodemon server/index.js
+
+  db:
+    image: postgres:14
+    container_name: ppz_db
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+    volumes:
+      - ./database/scripts:/docker-entrypoint-initdb.d/
+    networks:
+      - app-network
+    ports:
+      - "5431:5432"
+
+  redis:
+    image: "redis:alpine"
+    container_name: ppz_redis
+    volumes:
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  node_modules:

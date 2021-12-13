@@ -1,0 +1,7 @@
+version: '3'
+
+services:
+  nodejs:
+    environment:
+      - NODE_ENV=development
+    command: /usr/src/app/node_modules/.bin/nodemon server/index.js

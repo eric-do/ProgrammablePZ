@@ -1,7 +1,7 @@
 # Programmable Power Zones
 ![leftnav](https://raw.githubusercontent.com/eric-do/ProgrammablePZ/master/.github/images/leftnav.png)  ![rides](https://raw.githubusercontent.com/eric-do/ProgrammablePZ/master/.github/images/rides.png)  ![members](https://raw.githubusercontent.com/eric-do/ProgrammablePZ/master/.github/images/members.png)
 <br />
-![Home screen](https://raw.githubusercontent.com/eric-do/ProgrammablePZ/master/.github/images/image1.png)  ![Select ride](https://raw.githubusercontent.com/eric-do/ProgrammablePZ/master/.github/images/image3.png)  ![Timer](https://raw.githubusercontent.com/eric-do/ProgrammablePZ/master/.github/images/image2.png) 
+![Home screen](https://raw.githubusercontent.com/eric-do/ProgrammablePZ/master/.github/images/image1.png)  ![Select ride](https://raw.githubusercontent.com/eric-do/ProgrammablePZ/master/.github/images/image3.png)  ![Timer](https://raw.githubusercontent.com/eric-do/ProgrammablePZ/master/.github/images/image2.png)
 
 
 ## 🚴‍♂️ About
@@ -64,13 +64,54 @@ From `/client` run `npm test`
 
 #### Local testing
 From `/client` run `npm start`
+
+## 🐳 Docker and CI/CD
+
+### Docker compose
+Containers can be composed and ran in isolation using the docker-compose file found in root directory.
+```
+docker-compose up  -d
+docker-compose down
+```
+
+Local development can be done with
+```
+docker compose up -d
+```
+
+Tests can be ran in isolation using Docker containers
+```
+docker compose -f docker-compose.yml -f docker-compose.test.yml up -d
+```
+
+Published images can be pulled and tested with
+```
+docker compose -f docker-compose.build.yml -f docker-compose.test.yml up -d
+docker compose -f docker-compose.build.yml -f docker-compose.test.yml down
+```
+
+For the Dockerized PSQL DB, these scripts will dump to, and restore from, a dump.sql file:
+```
+docker exec -i ppz_db /bin/bash -c "pg_dump --username postgres ppz" > dump.sql
+docker exec -i pg_container_name /bin/bash -c "psql --username postgres ppz" < dump.sql
+```
+### CI/CD
+Backend code is tested on CircleCI.
+
+Deployment is automated when code is pulled to master:
+- Docker images are built and pushed to Dockerhub
+- Code is deployed to Heroku
+
+### Containerization next steps
+- Deploy and scale on EC2
+
 <br/><br/>
 ## 🕵🏻 Challenges
 ### Timeline optimization
 #### Problem
 As more users use the application, the cost of generating a timeline is going to becomes increasingly expensive in terms of performance.
 
-Timelines were originally generated on request and cached with redis. As user follows increased, response times were hitting extremes of 5+ seconds. 
+Timelines were originally generated on request and cached with redis. As user follows increased, response times were hitting extremes of 5+ seconds.
 
 #### Solution
 On the fly timeline generation as well as backend caching were unnecessary:
