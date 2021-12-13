@@ -20,9 +20,10 @@ Primary functionality of the application (programming and taking rides), is open
 The front-end of the application is deployed to Netlify for its fast CDN. The back-end (Node, Express, Redis, Postgres) is deployed to Heroku, using CircleCI for CI/CD
 .
 </br>
-[![CircleCI](https://circleci.com/gh/eric-do/ProgrammablePZ/tree/master.svg?style=svg)](https://circleci.com/gh/eric-do/ProgrammablePZ/tree/master)
-</br>
-[![Netlify Status](https://api.netlify.com/api/v1/badges/057160b9-be9b-4559-9341-ce3bc74b77ab/deploy-status)](https://app.netlify.com/sites/ppz/deploys)
+| Deployment | Status |
+| ------------- | ------------- |
+| CircleCI |[![CircleCI](https://circleci.com/gh/eric-do/ProgrammablePZ/tree/master.svg?style=svg)](https://circleci.com/gh/eric-do/ProgrammablePZ/tree/master)|
+| Netlify | [![Netlify Status](https://api.netlify.com/api/v1/badges/057160b9-be9b-4559-9341-ce3bc74b77ab/deploy-status)](https://app.netlify.com/sites/ppz/deploys)|
 
 Live deployment: https://ppz.netlify.app/
 </br></br>
@@ -68,6 +69,8 @@ From `/client` run `npm test`
 #### Local testing
 From `/client` run `npm start`
 
+</br>
+
 ## 🐳 Docker and CI/CD
 
 ### Docker compose
@@ -108,7 +111,7 @@ Deployment is automated when code is pulled to master:
 ### Containerization next steps
 - Deploy and scale on EC2
 
-<br/><br/>
+<br/>
 ## 🕵🏻 Challenges
 ### Timeline optimization
 #### Problem
