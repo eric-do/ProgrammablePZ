@@ -27,13 +27,13 @@ workflows:
           filters:
             branches:
               only: master
-      - heroku/deploy-via-git:
-          force: true
-          requires:
-            - build-and-test
-          filters:
-            branches:
-              only: master
+      # - heroku/deploy-via-git:
+      #     force: true
+      #     requires:
+      #       - build-and-test
+      #     filters:
+      #       branches:
+      #         only: master
 
 jobs:
   build-and-test:
