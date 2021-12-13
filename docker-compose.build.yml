@@ -10,10 +10,15 @@ services:
       - app-network
 
   nodejs:
-    build: ./backend
     image: ericdo/ppz_node
     container_name: ppz_node
     restart: unless-stopped
+    env_file: .env
+    environment:
+      - DATABASE_URL
+      - REDIS_URL
+      - SECRET_TOKEN
+      - NODE_ENV
     ports:
       - "80:3001"
     depends_on:

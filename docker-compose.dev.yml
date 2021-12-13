@@ -1,20 +1,7 @@
 version: '3'
 
 services:
-  web:
-    environment:
-      - NGINX_HOST=localhost
-      - NGINX_PORT=80
-
   nodejs:
     environment:
-      - DATABASE_URL=postgres://postgres:student@db:5432/ppz
-      - REDIS_URL=redis://redis:6379
-      - SECRET_TOKEN=9C9710DF87117D1661A7407A62A82B262CA1610C78030BAC12E7C66BA56E410A
-      - NODE_ENV=test
+      - NODE_ENV=development
     command: /usr/src/app/node_modules/.bin/nodemon server/index.js
-
-  db:
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=student

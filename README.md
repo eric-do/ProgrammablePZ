@@ -65,30 +65,45 @@ From `/client` run `npm test`
 #### Local testing
 From `/client` run `npm start`
 
-## 🐳 Docker
+## 🐳 Docker and CI/CD
 
-Containers have been made out of the following services:
-- React app
-- Node app
-- PostgresSQL
-- Redis
-
+### Docker compose
 Containers can be composed and ran in isolation using the docker-compose file found in root directory.
 ```
 docker-compose up  -d
 docker-compose down
 ```
 
-For the Dockerized PSQL DB, these scripts will dump to, and restore from, a sql file:
+Local development can be done with
+```
+docker compose up -d
+```
+
+Tests can be ran in isolation using Docker containers
+```
+docker compose -f docker-compose.yml -f docker-compose.test.yml up -d
+```
+
+Published images can be pulled and tested with
+```
+docker compose -f docker-compose.build.yml -f docker-compose.test.yml up -d
+docker compose -f docker-compose.build.yml -f docker-compose.test.yml down
+```
+
+For the Dockerized PSQL DB, these scripts will dump to, and restore from, a dump.sql file:
 ```
 docker exec -i ppz_db /bin/bash -c "pg_dump --username postgres ppz" > dump.sql
 docker exec -i pg_container_name /bin/bash -c "psql --username postgres ppz" < dump.sql
 ```
+### CI/CD
+Backend code is tested on CircleCI.
+
+Deployment is automated when code is pulled to master:
+- Docker images are built and pushed to Dockerhub
+- Code is deployed to Heroku
 
 ### Containerization next steps
-- Add nginx container
 - Deploy and scale on EC2
-- Implement CI/CD workflow
 
 <br/><br/>
 ## 🕵🏻 Challenges
