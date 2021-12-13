@@ -24,6 +24,7 @@ services:
     env_file: .env
     environment:
       - DATABASE_URL
+      - REDIS_URL
       - SECRET_TOKEN
       - NODE_ENV
     ports:
