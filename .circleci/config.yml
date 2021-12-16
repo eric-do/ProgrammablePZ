@@ -40,9 +40,9 @@ workflows:
           repo: ericdo/ppz_node
           skip-when-tags-exist: false
           tag: 'latest'
-          filters:
-            branches:
-              only: aws
+          # filters:
+          #   branches:
+          #     only: aws
       # - heroku/deploy-via-git:
       #     force: true
       #     requires:
