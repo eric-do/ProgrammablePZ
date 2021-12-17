@@ -27,7 +27,7 @@ workflows:
             - build-and-test
           filters:
             branches:
-              only: aws
+              only: aws-production
       # - aws-ecr/build-and-push-image:
       #     requires:
       #       - build-and-test
