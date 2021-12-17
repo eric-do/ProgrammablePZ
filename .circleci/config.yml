@@ -73,7 +73,7 @@ jobs:
           command: dockerize -wait tcp://localhost:5432 -timeout 1m
       - run: 
           name: Initialize database
-          command: psql -h localhost -p 5432 -U postgres < './database/scripts/init.sql'
+          command: psql -h localhost -p 5432 -U postgres < './database/scripts/01_init.sql'
       - run: cd backend && npm install
       - run: cd backend && npm run test:ci
 
