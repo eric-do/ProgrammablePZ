@@ -31,12 +31,14 @@ describe('Rides', () => {
       intervals
     } = testRide;
 
-    return await query(insertRide, [
+    const insertedRide = await query(insertRide, [
       type,
       title,
       timeInSeconds,
       JSON.stringify(intervals)
     ]);
+    await(query(`SELECT refresh_admin_rides()`));
+    return insertedRide;
   }
 
   const postRide = async ride => {
