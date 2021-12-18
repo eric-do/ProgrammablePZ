@@ -48,10 +48,10 @@ jobs:
   build-and-test:
     docker:
       - image: cimg/node:17.2.0
-      - image: circleci/postgres:11-alpine-ram
-        environment:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
+      # - image: circleci/postgres:11-alpine-ram
+      #   environment:
+      #     POSTGRES_USER: postgres
+      #     POSTGRES_PASSWORD: postgres
       - image: circleci/redis
     environment: 
       DATABASE_URL: postgresql://postgres:postgres@localhost/ppz
@@ -60,6 +60,9 @@ jobs:
       - checkout
       - run: sudo apt-get update
       - run: sudo apt install postgresql-client
+      - run: | 
+            docker build ./database
+            docker run -e "POSTGRES_USER=postgres" -e "POSTGRES_PASSWORD=student"
       - run:
           name: install dockerize
           command: sudo wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && sudo tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
