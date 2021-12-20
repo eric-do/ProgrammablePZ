@@ -43,7 +43,7 @@ SET default_table_access_method = heap;
 
 CREATE TABLE public.ride_ratings (
     id integer NOT NULL,
-    user_id uuid,
+    user_id integer,
     ride_id integer,
     rating smallint,
     difficulty smallint,
@@ -86,7 +86,7 @@ ALTER TABLE public.ride_types OWNER TO postgres;
 
 CREATE TABLE public.rides (
     id integer NOT NULL,
-    creator_id uuid,
+    creator_id integer,
     title text,
     type character varying(5),
     likes integer DEFAULT 0,
@@ -123,8 +123,8 @@ ALTER TABLE public.rides ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
 
 CREATE TABLE public.user_follows (
     id integer NOT NULL,
-    user_id uuid NOT NULL,
-    friend_id uuid NOT NULL,
+    user_id integer NOT NULL,
+    friend_id integer NOT NULL,
     created_at timestamp with time zone DEFAULT now()
 );
 
@@ -151,7 +151,7 @@ ALTER TABLE public.user_follows ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY
 
 CREATE TABLE public.user_likes (
     ride_id integer NOT NULL,
-    user_id uuid NOT NULL
+    user_id integer NOT NULL
 );
 
 
@@ -163,7 +163,7 @@ ALTER TABLE public.user_likes OWNER TO postgres;
 
 CREATE TABLE public.user_rides (
     id integer NOT NULL,
-    user_id uuid,
+    user_id integer,
     ride_id integer,
     ridden_at timestamp with time zone DEFAULT now()
 );
@@ -190,7 +190,7 @@ ALTER TABLE public.user_rides ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
 --
 
 CREATE TABLE public.users (
-    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    id integer GENERATED ALWAYS AS IDENTITY,
     email text NOT NULL,
     username text NOT NULL,
     password text NOT NULL,
@@ -376,81 +376,6 @@ CREATE INDEX users_username_idx ON public.users USING btree (username);
 --
 -- Name: ride_ratings ride_ratings_ride_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
-
-ALTER TABLE ONLY public.ride_ratings
-    ADD CONSTRAINT ride_ratings_ride_id_fkey FOREIGN KEY (ride_id) REFERENCES public.rides(id) ON DELETE CASCADE;
-
-
---
--- Name: ride_ratings ride_ratings_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.ride_ratings
-    ADD CONSTRAINT ride_ratings_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
-
-
---
--- Name: rides rides_creator_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.rides
-    ADD CONSTRAINT rides_creator_id_fkey FOREIGN KEY (creator_id) REFERENCES public.users(id) ON DELETE CASCADE;
-
-
---
--- Name: rides rides_type_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.rides
-    ADD CONSTRAINT rides_type_fkey FOREIGN KEY (type) REFERENCES public.ride_types(type);
-
-
---
--- Name: user_follows user_follows_friend_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.user_follows
-    ADD CONSTRAINT user_follows_friend_id_fkey FOREIGN KEY (friend_id) REFERENCES public.users(id) ON DELETE CASCADE;
-
-
---
--- Name: user_follows user_follows_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.user_follows
-    ADD CONSTRAINT user_follows_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
-
-
---
--- Name: user_likes user_likes_ride_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.user_likes
-    ADD CONSTRAINT user_likes_ride_id_fkey FOREIGN KEY (ride_id) REFERENCES public.rides(id) ON DELETE CASCADE;
-
-
---
--- Name: user_likes user_likes_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.user_likes
-    ADD CONSTRAINT user_likes_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id);
-
-
---
--- Name: user_rides user_rides_ride_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.user_rides
-    ADD CONSTRAINT user_rides_ride_id_fkey FOREIGN KEY (ride_id) REFERENCES public.rides(id) ON DELETE CASCADE;
-
-
---
--- Name: user_rides user_rides_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.user_rides
-    ADD CONSTRAINT user_rides_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
 
 
 --
