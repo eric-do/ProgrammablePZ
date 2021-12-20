@@ -7,7 +7,7 @@
     "start": "set NODE_ENV=dev&& nodemon server/index.js",
     "start:production": "set NODE_ENV=production&& nodemon server/index.js",
     "test": "DOTENV_CONFIG_PATH=.env.test mocha test/index.js -w -r dotenv/config",
-    "test:ci": "set NODE_ENV=test&& nyc mocha test/index.js --exit"
+    "test:ci": "nyc mocha test/index.js --exit"
   },
   "author": "",
   "license": "ISC",

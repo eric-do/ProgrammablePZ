@@ -1,3 +1,3 @@
 FROM postgres:latest
 
-ADD ./scripts/init.sql /docker-entrypoint-initdb.d/
+ADD ./scripts/ /docker-entrypoint-initdb.d/
