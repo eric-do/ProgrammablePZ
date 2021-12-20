@@ -102,6 +102,15 @@ const incrementRideLikes = async (req, res, next) => {
   }
 }
 
+const refreshAdminRides = async (req, res, next) => {
+  try {
+    await RideModel.refreshAdminRides();
+    next();
+  } catch (err) {
+    next(new InternalServerError(err));
+  }
+}
+
 module.exports = {
   getRides,
   addRide,
@@ -109,5 +118,6 @@ module.exports = {
   getRideRatings,
   getRideById,
   incrementRideCount,
-  incrementRideLikes
+  incrementRideLikes,
+  refreshAdminRides
 }

@@ -220,6 +220,10 @@ const getRideById = async (rideId) => {
   return rides[0];
 }
 
+const refreshAdminRides = async () => {
+  await query(`SELECT refresh_admin_rides()`)
+}
+
 module.exports = {
   getRides,
   getRidesCreatedByUser,
@@ -228,5 +232,6 @@ module.exports = {
   getRideRatings,
   getRideById,
   incrementRideCount,
-  incrementRideLikes
+  incrementRideLikes,
+  refreshAdminRides
 }
