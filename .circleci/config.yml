@@ -27,7 +27,7 @@ workflows:
             - build-and-test
           filters:
             branches:
-              only: aws-production
+              only: /aws\/.*/
       # - aws-ecr/build-and-push-image:
       #     requires:
       #       - build-and-test
@@ -53,7 +53,7 @@ jobs:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
       - image: circleci/redis
-    environment: 
+    environment:
       DATABASE_URL: postgresql://postgres:postgres@localhost/ppz
       REDIS_URL: redis://localhost
     steps:
@@ -65,13 +65,13 @@ jobs:
           command: sudo wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && sudo tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
           environment:
             DOCKERIZE_VERSION: v0.6.1
-      - run: 
+      - run:
           name: Add Postgres commands to PATH
           command: echo 'export PATH=/usr/lib/postgresql/9.4/bin/:$PATH' >> $BASH_ENV
-      - run: 
+      - run:
           name: Wait for Postgres container to be ready
           command: dockerize -wait tcp://localhost:5432 -timeout 1m
-      - run: 
+      - run:
           name: Initialize database
           command: |
                   psql -h localhost -p 5432 -U postgres < './database/scripts/01_init.sql'
