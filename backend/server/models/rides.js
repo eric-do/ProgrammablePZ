@@ -7,39 +7,10 @@ const getRides = async (
   offset
 ) => {
   const q = `
-    SELECT
-      r.id,
-      r.creator_id,
-      CASE
-        WHEN u.admin = TRUE THEN 'PPZ'
-        ELSE u.username
-      END AS username,
-      r.title,
-      r.type,
-      r.likes,
-      rr.rating,
-      rr.difficulty,
-      r.dislikes,
-      r.total_votes,
-      r.ride_count,
-      r.intervals,
-      r.timeInSeconds,
-      r.created_on
-    FROM rides as r
-    LEFT JOIN (
-      SELECT
-        ride_id AS id,
-        ROUND(AVG(rating), 1)::float as rating,
-        ROUND(AVG(difficulty), 1)::float as difficulty
-      FROM ride_ratings
-      GROUP BY ride_id
-    ) AS rr
-      ON rr.id = r.id
-    LEFT JOIN users as u
-      ON u.id = r.creator_id
+    SELECT *
+    FROM admin_rides AS r
     WHERE ($1::VARCHAR IS NULL OR r.type = $1)
       AND ($2::INT IS NULL OR r.timeInSeconds = $2)
-      AND (r.creator_id IS NULL OR u.admin = True)
     ORDER BY created_on DESC
     LIMIT $3 OFFSET $4
   `;

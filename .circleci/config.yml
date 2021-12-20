@@ -5,6 +5,7 @@ version: 2.1
 orbs:
   node: circleci/node@4.1
   heroku: circleci/heroku@1.2
+  aws-ecr: circleci/aws-ecr@7.3.0
 
 executors:
   docker-publisher:
@@ -26,14 +27,7 @@ workflows:
             - build-and-test
           filters:
             branches:
-              only: master
-      # - heroku/deploy-via-git:
-      #     force: true
-      #     requires:
-      #       - build-and-test
-      #     filters:
-      #       branches:
-      #         only: master
+              only: aws/production
 
 jobs:
   build-and-test:
@@ -44,7 +38,7 @@ jobs:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
       - image: circleci/redis
-    environment: 
+    environment:
       DATABASE_URL: postgresql://postgres:postgres@localhost/ppz
       REDIS_URL: redis://localhost
     steps:
@@ -56,15 +50,17 @@ jobs:
           command: sudo wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && sudo tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
           environment:
             DOCKERIZE_VERSION: v0.6.1
-      - run: 
+      - run:
           name: Add Postgres commands to PATH
           command: echo 'export PATH=/usr/lib/postgresql/9.4/bin/:$PATH' >> $BASH_ENV
-      - run: 
+      - run:
           name: Wait for Postgres container to be ready
           command: dockerize -wait tcp://localhost:5432 -timeout 1m
-      - run: 
+      - run:
           name: Initialize database
-          command: psql -h localhost -p 5432 -U postgres < './database/scripts/init.sql'
+          command: |
+                  psql -h localhost -p 5432 -U postgres < './database/scripts/01_init.sql'
+                  psql -h localhost -p 5432 -U postgres < './database/scripts/02_add_materialized_view_rides.sql'
       - run: cd backend && npm install
       - run: cd backend && npm run test:ci
 
