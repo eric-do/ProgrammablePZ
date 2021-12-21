@@ -31,12 +31,15 @@ describe('Rides', () => {
       intervals
     } = testRide;
 
-    return await query(insertRide, [
+    const result = await query(insertRide, [
       type,
       title,
       timeInSeconds,
       JSON.stringify(intervals)
     ]);
+
+    await query(`SELECT refresh_admin_rides()`)
+    return result;
   }
 
   const postRide = async ride => {
@@ -81,6 +84,7 @@ describe('Rides', () => {
       const response = await request(app).get("/api/rides");
       expect(response.status).to.eql(200);
       expect(response.body).to.be.an.instanceOf(Array)
+      expect(response.body).to.have.lengthOf(1);
       expect(response.body[0]).to.have.keys(
         'title', 'type', 'metadata', 'creator_id', 'username',
         'ratings', 'intervals', 'timeInSeconds', 'id'
@@ -88,9 +92,6 @@ describe('Rides', () => {
       expect(response.body[0].ratings).to.have.keys(
         'rating', 'difficulty', 'likes', 'total'
       );
-
-      expect(response.body[0].ratings.rating).to.eql(3.5)
-      expect(response.body[0].ratings.difficulty).to.eql(2.0)
     });
 
     it("Should handle pagination using sort", async () => {
@@ -105,7 +106,7 @@ describe('Rides', () => {
       expect(secondResponse.body[0].id).to.eql(firstId)
     })
 
-    it("Should respond with rides filtered by ride type", async () => {
+    it("Should respond with rides filtered by rselect cide type", async () => {
       await insertRideToDB({
         ...testRide,
         type: 'pz'
