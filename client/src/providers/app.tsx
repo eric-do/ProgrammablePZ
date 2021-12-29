@@ -3,7 +3,6 @@ import {ChakraProvider } from "@chakra-ui/react";
 import { BrowserRouter as Router } from "react-router-dom";
 import { QueryClientProvider } from 'react-query';
 import { AuthProvider } from 'lib/auth';
-import { RideProvider } from "./RideProvider";
 import { SoundProvider } from "./SoundProvider";
 import { queryClient } from "lib/react-query";
 import theme from 'theme';
@@ -18,11 +17,9 @@ export const AppProvider = ({ children }: AppProviderProps) => {
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
           <SoundProvider>
-            <RideProvider>
               <Router>
                 { children }
               </Router>
-            </RideProvider>
           </SoundProvider>
         </AuthProvider>
       </QueryClientProvider>

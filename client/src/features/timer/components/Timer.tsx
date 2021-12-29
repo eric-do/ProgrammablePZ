@@ -11,10 +11,10 @@ import {
   useToast
 } from "@chakra-ui/react";
 import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { useStore } from "store";
 import { useTimer } from "hooks";
 import { useAuth } from "lib/auth";
 import { zoneColors, inactiveZoneColors, zoneColorSchemes } from 'shared';
-import { useRide } from 'providers/RideProvider';
 import { useSound } from "providers/SoundProvider";
 import { useIncrementRideCount } from 'features/rides/api/incrementRideCount';
 import { useRidesTakenByUser } from "features/rides/api";
@@ -37,7 +37,7 @@ export const Timer = ({ displayTimer }: TimerProps = defaultProps) => {
   } = useDisclosure();
   const toast = useToast();
   const { active: soundActive, sounds: { bell } } = useSound();
-  const { ride } = useRide();
+  const ride = useStore(state => state.ride);
   let { intervals, timeInSeconds } = ride;
   const { minutes, seconds, elapsedTime } = useTimer(timeInSeconds)
   const rideComplete = useRef(false);

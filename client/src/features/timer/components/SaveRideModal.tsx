@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useStore } from 'store';
 import {
   Button,
   FormControl,
@@ -15,7 +16,6 @@ import {
   Input,
   useToast
 } from "@chakra-ui/react"
-import { useRide } from 'providers/RideProvider';
 import { useCreateRide } from 'features/rides/api/createRide';
 
 interface SaveRideModalProps {
@@ -37,7 +37,7 @@ const getNearestDuration = (seconds: number): number => {
 }
 
 export const SaveRideModal = ({ isOpen, onClose }: SaveRideModalProps) => {
-  const { ride } = useRide();
+  const ride = useStore( state => state.ride)
   const toast = useToast();
   const createRideMutation = useCreateRide({ ride });
   const [title, setTitle] = useState(ride.title || `${new Date().toLocaleDateString('en-US')} ride`)
