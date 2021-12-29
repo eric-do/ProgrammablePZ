@@ -1,4 +1,5 @@
 import React from 'react';
+import { useStore } from 'store';
 import {
   Button,
   ButtonGroup,
@@ -13,7 +14,6 @@ import {
   Td,
   useDisclosure
 } from "@chakra-ui/react"
-import { useRide } from 'providers/RideProvider';
 import { Interval } from 'types';
 import { ZoneModal } from './ZoneModal';
 import { SaveRideModal } from './SaveRideModal';
@@ -30,7 +30,9 @@ interface ZoneSummary {
 export const Intervals = ({
   startWorkout
 }: Props ) => {
-  const { ride, setRide, resetRide } = useRide();
+  const { ride, setRide, resetRide } = useStore((
+    { ride, setRide, resetRide }) => ({ ride, setRide, resetRide })
+  );
   const {
     isOpen: isOpenZone,
     onOpen: onOpenZone,

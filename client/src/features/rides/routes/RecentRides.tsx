@@ -4,17 +4,17 @@ import {
   Stack,
   Text
 } from "@chakra-ui/react";
+import { useStore } from 'store';
 import { useHistory } from 'react-router-dom';
 import { useAuth } from 'lib/auth';
 import { Workout } from 'types';
 import { useRecentRides } from '../api';
 import { RideCard } from 'features/rides';
-import { useRide } from 'providers/RideProvider';
 
 export const RecentRides = () => {
   const { user } = useAuth();
   const history = useHistory();
-  const { setRide } = useRide();
+  const setRide = useStore(state => state.setRide);
   const { data: rides, error } = useRecentRides({
     options: {
       userId: user?.id
