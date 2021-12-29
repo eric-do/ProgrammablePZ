@@ -11,7 +11,8 @@ import {
   userEvent,
   fireEvent,
   waitFor
-} from "test/test-utils"
+} from "test/test-utils";
+import { useStore } from "store";
 import { App } from "./App"
 import { API_URL } from "config";
 
@@ -161,6 +162,11 @@ xdescribe('Auth', () => {
 
 
 describe('Create custom ride', () => {
+  const initialStoreState = useStore.getState();
+  beforeEach(() => {
+    useStore.setState(initialStoreState, true);
+  });
+
   test('it should render default interface', () => {
     renderWithRouter(<App />);
     expect(screen.getByRole('table')).toBeInTheDocument()
@@ -205,7 +211,6 @@ describe('Create custom ride', () => {
 
   test('it should reset table when user hits Reset button', () => {
     renderWithRouter(<App />);
-
     expect(screen.getAllByRole('row')).toHaveLength(2);
     userEvent.click(screen.getByRole('button', { name: 'Add Zone' }));
     userEvent.click(screen.getByRole('button', { name: 'Add' }));
