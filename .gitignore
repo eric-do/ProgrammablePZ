@@ -30,3 +30,4 @@ backend/.nyc_output
 backend/.DS_Store
 
 .env
+*.dump

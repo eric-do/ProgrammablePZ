@@ -27,7 +27,7 @@ workflows:
             - build-and-test
           filters:
             branches:
-              only: aws/production
+              only: aws/development
 
 jobs:
   build-and-test:
