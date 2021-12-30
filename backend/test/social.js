@@ -127,17 +127,15 @@ describe('Social interactions', () => {
         });
 
       expect(friendsResponse.status).to.eql(200);
-      expect(friendsResponse.body).to.have.keys('friends');
-      expect(friendsResponse.body.friends).to.have.lengthOf(1)
-      expect(friendsResponse.body.friends[0]).to.have.keys('id', 'username', 'is_friend');
-      expect(friendsResponse.body.friends[0].id).to.eql(userB.id);
+      expect(friendsResponse.body).to.have.lengthOf(1)
+      expect(friendsResponse.body[0]).to.have.keys('id', 'username', 'is_friend');
+      expect(friendsResponse.body[0].id).to.eql(userB.id);
 
       expect(followersResponse.status).to.eql(200);
-      expect(followersResponse.body).to.have.keys('followers');
-      expect(followersResponse.body.followers).to.have.lengthOf(1)
-      expect(followersResponse.body.followers[0]).to.have.keys('id', 'username', 'is_friend');
-      expect(followersResponse.body.followers[0].id).to.eql(userA.id);
-      expect(followersResponse.body.followers[0].is_friend).to.eql(false);
+      expect(followersResponse.body).to.have.lengthOf(1)
+      expect(followersResponse.body[0]).to.have.keys('id', 'username', 'is_friend');
+      expect(followersResponse.body[0].id).to.eql(userA.id);
+      expect(followersResponse.body[0].is_friend).to.eql(false);
 
       expect(metadataResponse.status).to.eql(200);
       expect(metadataResponse.body).to.have.keys(
@@ -168,7 +166,7 @@ describe('Social interactions', () => {
       expect(addResponse.status).to.eql(400);
       expect(getResponse.status).to.eql(200);
       expect(lookupResponse.status).to.eql(200);
-      expect(getResponse.body.friends).to.have.lengthOf(1)
+      expect(getResponse.body).to.have.lengthOf(1)
       expect(lookupResponse.body).to.have.lengthOf(1)
     })
   })
@@ -192,8 +190,8 @@ describe('Social interactions', () => {
         });
 
         expect(destroyResponse.status).to.eql(201);
-        expect(friendsResponse.body.friends).to.have.lengthOf(0);
-        expect(followersResponse.body.followers).to.have.lengthOf(0);
+        expect(friendsResponse.body).to.have.lengthOf(0);
+        expect(followersResponse.body).to.have.lengthOf(0);
         expect(metadataResponse.body.friend_count).to.eql(0);
         expect(lookupResponse.body[0].is_friend).to.eql(false)
     })
