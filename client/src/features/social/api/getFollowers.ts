@@ -15,7 +15,7 @@ interface GetFollowersOptions {
   user_id: string;
 }
 
-export const getFollowers = ({user_id}: GetFollowersOptions): Promise<GetFollowersResponse> => {
+export const getFollowers = ({ user_id }: GetFollowersOptions): Promise<GetFollowersResponse> => {
   return axios.get('/api/friendships/followers', { params: { user_id } })
 };
 

@@ -34,19 +34,20 @@ export const Followers = () => {
           hasMore={data.pages[data.pages.length - 1].length > 0}
           loader={<span></span>}
           endMessage={
-          <p style={{ textAlign: 'center' }}>
+            <p style={{ textAlign: 'center' }}>
 
-          </p>
-        }
-      >
-        {
-          data.pages.map((users, i) => (
-            <UserList key={i} users={users} />
-          ))
-        }
+            </p>
+          }
+        >
+          {
+            data.pages.map((users, i) => (
+              <UserList key={i} users={users} />
+            ))
+          }
       </InfiniteScroll>
         </Box>
       }
+      { data?.pages[0].length === 0 && <Text>No one is following you, yet!</Text>}
     </Page>
   )
 }

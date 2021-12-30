@@ -22,7 +22,7 @@ const destroyFriendship = async (userId, friendId) => {
 }
 
 
-const getFriends = async (userId) => {
+const getFriends = async (userId, limit, offset) => {
   const q = `
     SELECT
       u.id,
@@ -36,8 +36,10 @@ const getFriends = async (userId) => {
       u.id = uf.friend_id
     AND
       uf.user_id = $1
+    LIMIT $2
+    OFFSET $3
   `
-  const ids = await query(q, [userId]);
+  const ids = await query(q, [userId, limit, offset]);
   return ids;
 }
 
