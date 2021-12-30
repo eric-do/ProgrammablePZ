@@ -52,7 +52,7 @@ const getFriendCount = async (userId) => {
 }
 
 
-const getFollowers = async (userId) => {
+const getFollowers = async (userId, limit, offset) => {
   const q = `
     SELECT
       u.id,
@@ -71,8 +71,10 @@ const getFollowers = async (userId) => {
             b.friend_id = u.id
     WHERE
       f.friend_id = $1
+    LIMIT $2
+    OFFSET $3
   `
-  const ids = await query(q, [userId]);
+  const ids = await query(q, [userId, limit, offset]);
   return ids;
 }
 
