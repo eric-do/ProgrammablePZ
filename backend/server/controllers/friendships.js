@@ -50,10 +50,10 @@ const destroyFriendship = async (req, res, next) => {
 }
 
 const getFriends = async (req, res, next) => {
-  const { user_id } = req.query;
+  const { user_id, limit = 20, offset = 0 } = req.query;
   try {
-    const friends = await FriendshipsModel.getFriends(user_id);
-    res.locals.data = { friends };
+    const friends = await FriendshipsModel.getFriends(user_id, limit, offset);
+    res.locals.data = friends;
     next();
   } catch (err) {
     next(new BadRequestError(err));
@@ -61,10 +61,10 @@ const getFriends = async (req, res, next) => {
 }
 
 const getFollowers = async (req, res, next) => {
-  const { user_id } = req.query;
+  const { user_id, limit = 20, offset = 0 } = req.query;
   try {
-    const followers = await FriendshipsModel.getFollowers(user_id);
-    res.locals.data = { followers };
+    const followers = await FriendshipsModel.getFollowers(user_id, limit, offset);
+    res.locals.data = followers;
     next();
   } catch (err) {
     next(new BadRequestError(err));
