@@ -6,17 +6,17 @@ import {
   Stack,
   Text
 } from "@chakra-ui/react";
+import { useStore } from 'store';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useHistory } from 'react-router-dom';
 import { Workout } from 'types';
 import { Page } from 'components';
 import { useInfiniteTimeline } from '../api';
 import { RideCard } from 'features/rides';
-import { useRide } from 'providers/RideProvider';
 
 export const Timeline = () => {
   const history = useHistory();
-  const { setRide } = useRide();
+  const setRide = useStore(state => state.setRide);
   const {
     data,
     fetchNextPage,

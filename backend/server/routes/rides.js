@@ -9,6 +9,7 @@ const {
   getRideById,
   incrementRideCount,
   incrementRideLikes,
+  refreshAdminRides,
   sendRides,
   sendCreatedRide
 } = require('../controllers/rides');
@@ -28,6 +29,7 @@ router.post(
   '/',
   validateToken,
   addRide,
+  refreshAdminRides,
   rideFormatter,
   responseHandler
 );
@@ -45,6 +47,7 @@ router.post(
   '/:id/ratings',
   validateToken,
   addRideRating,
+  refreshAdminRides,
   responseHandler
 )
 
@@ -58,6 +61,7 @@ router.post(
   '/:id/ride-count',
   clearRideFromCache,
   incrementRideCount,
+  refreshAdminRides,
   responseHandler
 );
 
@@ -65,6 +69,7 @@ router.post(
   '/like',
   validateToken,
   incrementRideLikes,
+  refreshAdminRides,
   responseHandler
 );
 

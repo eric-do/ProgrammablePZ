@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useStore } from 'store';
 import {
   Select,
   Text,
@@ -11,7 +12,6 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { useHistory } from 'react-router-dom';
 import { ErrorBoundary } from 'react-error-boundary';
 import { QueryOptions } from 'lib/react-query';
-import { useRide } from 'providers/RideProvider';
 import { Workout } from 'types';
 import { useInfiniteRides } from '../api/index';
 import { RideCard } from './RideCard';
@@ -97,7 +97,7 @@ export const RideList = ({options}: RideListProps) => {
     }
   });
   const history = useHistory();
-  const { setRide } = useRide();
+  const setRide = useStore(state => state.setRide);
 
   const handleSetRide = (ride: Workout) => {
     setRide(ride);

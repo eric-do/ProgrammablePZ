@@ -22,10 +22,10 @@ import {
   Flex
 } from "@chakra-ui/react"
 import { Link as RouterLink} from "react-router-dom";
+import { useStore } from 'store';
 import { QueryOptions } from 'lib/react-query';
 import { Workout } from 'types';
 import { ZoneGraph } from 'components';
-import { useRide } from 'providers/RideProvider';
 import { useRides } from 'features/rides/api';
 
 interface ZoneModalProps {
@@ -40,7 +40,7 @@ const defaultFilter =  {
 }
 
 export const SuggestionsModal = ({ isOpen, onClose }: ZoneModalProps) => {
-  const { setRide } = useRide();
+  const setRide = useStore(state => state.setRide);
   const [filter, setFilter] = useState<QueryOptions>(defaultFilter)
   const { data: rides, isLoading, error } = useRides({ options: filter });
   const { type, timeInSeconds } = filter;

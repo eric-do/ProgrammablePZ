@@ -32,6 +32,7 @@ export interface InfiniteQueryOptions {
   type?: string;
   timeInSeconds?: string;
   user?: string;
+  user_id?: string;
 }
 
 export const queryClient = new QueryClient({ defaultOptions: queryConfig});

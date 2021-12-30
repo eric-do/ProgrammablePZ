@@ -13,7 +13,7 @@ import {
   Spacer,
   Stack
 } from "@chakra-ui/react"
-import { useRide } from 'providers/RideProvider';
+import { useStore } from 'store';
 import { useRateRide } from 'features/rides/api/rateRide';
 
 interface FinishRideModalProps {
@@ -22,7 +22,7 @@ interface FinishRideModalProps {
 };
 
 export const FinishRideModal = ({ isOpen, onClose }: FinishRideModalProps) => {
-  const { ride } = useRide();
+  const ride = useStore(state => state.ride);
   const [ratingScore, setRatingScore] = useState<number | null>(null);
   const [difficultyScore, setDifficultyScore] = useState<number | null>(null);
   const options = {
