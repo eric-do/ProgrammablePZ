@@ -30,6 +30,10 @@ type TimerStackParamList = {
 
 type Props = NativeStackScreenProps<TimerStackParamList, 'ZoneInput'>;
 
+type ZoneSummary = {
+  [z: number]:  number,
+}
+
 export const ZoneInput = ({ navigation }: Props) => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const { ride, resetRide } = useStore(state => ({
@@ -37,9 +41,21 @@ export const ZoneInput = ({ navigation }: Props) => {
     resetRide: state.resetRide
   }))
 
+  const zoneSummary = ride.intervals.reduce((acc: ZoneSummary, interval) => {
+    return {
+      ...acc,
+      [interval.zone]: acc[interval.zone] + interval.timeInSeconds || interval.timeInSeconds
+    }
+  }, {})
+
   return (
     <Screen>
-      <Box h={100} px='5%'>
+      {
+        Object.entries(zoneSummary).sort((a, b) => parseInt(a[0]) - parseInt(b[0])).map(zone => (
+          <Text>Zone {zone[0]}: {zone[1] / 60} minutes</Text>
+        ))
+      }
+      <Box h={100} px='10%'>
         <RideBarChart ride={ride} />
       </Box>
       <Button.Group px="10%" justifyContent='center'>
