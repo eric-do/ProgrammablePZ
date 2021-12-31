@@ -15,8 +15,13 @@ export interface RideState {
 export const createRideSlice = (set: SetState<RideState>) => ({
   ride: defaultRide,
   setRide: (ride: Ride) => set(() => ({ ride })),
-  resetRide: () => set(() => ({ ride: {
-      ...defaultRide,
-      title: `${new Date().toLocaleDateString('en-US')} ride`
-  }}))
+  resetRide: () => {
+    set(() => ({
+      ride: {
+        intervals: [],
+        timeInSeconds: 0,
+        title: `${new Date().toLocaleDateString('en-US')} ride`
+      }
+    }))
+  }
 })

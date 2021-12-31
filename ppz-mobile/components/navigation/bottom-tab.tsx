@@ -12,8 +12,16 @@ export const AppTabs = () => {
 
       }}
     >
-      <Tab.Screen name="Timer" component={Timer} />
-      <Tab.Screen name="Profile" component={Profile} />
+      <Tab.Screen
+        name="Timer"
+        component={Timer}
+        options={{ title: 'Timer'}}
+      />
+      <Tab.Screen
+        name="Profile"
+        component={Profile}
+        options={{ title: 'Profile'}}
+      />
     </Tab.Navigator>
   )
 }
