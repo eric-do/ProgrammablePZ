@@ -48,13 +48,26 @@ export const ZoneInput = ({ navigation }: Props) => {
     }
   }, {})
 
+  const totalMinutes = Object.values(zoneSummary).reduce((sum, current) => sum + current, 0);
+
   return (
     <Screen>
-      {
-        Object.entries(zoneSummary).sort((a, b) => parseInt(a[0]) - parseInt(b[0])).map(zone => (
-          <Text>Zone {zone[0]}: {zone[1] / 60} minutes</Text>
-        ))
-      }
+      <VStack space={3} w="60%">
+        {
+          Object.entries(zoneSummary).sort((a, b) => parseInt(a[0]) - parseInt(b[0])).map(zone => (
+            <TableRow
+              category={`Zone ${zone[0]}`}
+              quantity={zone[1] / 60}
+              unit='minutes'
+            />
+          ))
+        }
+        <TableRow
+          category='Total'
+          quantity={totalMinutes / 60}
+          unit='minutes'
+        />
+      </VStack>
       <Box h={100} px='10%'>
         <RideBarChart ride={ride} />
       </Box>
@@ -87,6 +100,21 @@ export const ZoneInput = ({ navigation }: Props) => {
       <ZoneModal showModal={showModal} setShowModal={setShowModal}/>
     </Screen>
   )
+}
+
+interface RowProps {
+  category: string;
+  quantity: number;
+  unit: string;
+}
+
+const TableRow = ({ category, quantity, unit }: RowProps) => {
+  return (
+    <HStack space={2}>
+      <Text alignSelf="flex-end" w="50%" fontSize="md">{category}:</Text>
+      <Text w="50%" fontSize="md">{quantity} {unit}</Text>
+    </HStack>
+  );
 }
 
 interface ModalProps {
