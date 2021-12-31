@@ -17,16 +17,31 @@ import {
   Modal,
   Box
 } from "native-base";
-import { Ride } from '../types';
-import { zoneColors } from '../utils/colors';
+import { Ride, Interval } from '../types';
+import { zoneColors, inactiveZoneColors } from '../utils/colors';
 
 interface BarChartProps {
   ride: Ride;
+  currentInterval?: number;
 }
 
-export const RideBarChart = ({ ride }: BarChartProps) => {
+export const RideBarChart = ({ ride, currentInterval }: BarChartProps) => {
+  console.log(currentInterval)
   const totalTimeInSeconds = ride.intervals.reduce((acc: number, interval) => (
     acc + interval.timeInSeconds), 0);
+
+  const getBarColor = (interval: number) => {
+    if (currentInterval !== undefined) {
+      const color = interval <= currentInterval
+      ? zoneColors[ride.intervals[interval].zone]
+      : inactiveZoneColors[ride.intervals[interval].zone];
+      return interval <= currentInterval
+        ? zoneColors[ride.intervals[interval].zone]
+        : inactiveZoneColors[ride.intervals[interval].zone]
+    } else {
+      return zoneColors[ride.intervals[interval].zone]
+    }
+  }
 
   return (
     <HStack space={0.5} h='100%' alignItems='flex-end'>
@@ -36,7 +51,7 @@ export const RideBarChart = ({ ride }: BarChartProps) => {
             key={index}
             w={`${Math.floor(interval.timeInSeconds / totalTimeInSeconds * 100)}%`}
             h={`${Math.floor(interval.zone / 7 * 100)}%`}
-            bgColor={zoneColors[interval.zone]}
+            bgColor={getBarColor(index)}
           />
         })
       }

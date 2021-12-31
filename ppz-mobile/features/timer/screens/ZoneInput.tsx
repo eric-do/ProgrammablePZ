@@ -148,6 +148,9 @@ const ZoneModal = ({ showModal, setShowModal }: ModalProps) => {
       timeInSeconds: minutes * 60,
       zone: zone
     });
+    updatedRide.timeInSeconds = updatedRide.intervals.reduce((sum, interval) => (
+      sum + interval.timeInSeconds
+    ), 0);
     setRide(updatedRide);
     setShowModal(false);
   }
