@@ -15,7 +15,11 @@ import {
   Code,
   View,
   Modal,
-  Box
+  Box,
+  FormControl,
+  Input,
+  Select,
+  CheckIcon
 } from "native-base";
 import { NativeStackScreenProps} from '@react-navigation/native-stack';
 import { useStore } from "../../../store";
@@ -35,7 +39,8 @@ type ZoneSummary = {
 }
 
 export const ZoneInput = ({ navigation }: Props) => {
-  const [showModal, setShowModal] = useState<boolean>(false);
+  const [showInputModal, setShowInputModal] = useState<boolean>(false);
+  const [showSaveModal, setShowSaveModal] = useState<boolean>(false);
   const { ride, resetRide } = useStore(state => ({
     ride: state.ride,
     resetRide: state.resetRide
@@ -82,7 +87,7 @@ export const ZoneInput = ({ navigation }: Props) => {
         <Button
           w='50%'
           colorScheme="blue"
-          onPress={() => setShowModal(true)}
+          onPress={() => setShowInputModal(true)}
         >
           Add zone
         </Button>
@@ -95,9 +100,16 @@ export const ZoneInput = ({ navigation }: Props) => {
         >
           Start!
         </Button>
-        <Button w='50%' colorScheme="pink">Save ride</Button>
+        <Button
+          w='50%'
+          colorScheme="pink"
+          onPress={() => setShowSaveModal(true)}
+        >
+          Save ride
+        </Button>
       </Button.Group>
-      <ZoneModal showModal={showModal} setShowModal={setShowModal}/>
+      <ZoneModal showModal={showInputModal} setShowModal={setShowInputModal}/>
+      <SaveRideModal showModal={showSaveModal} setShowModal={setShowSaveModal}/>
     </Screen>
   )
 }
@@ -182,6 +194,67 @@ const ZoneModal = ({ showModal, setShowModal }: ModalProps) => {
           <Button onPress={addZoneAndCloseModal}>Add zone</Button>
           </VStack>
         </Modal.Body>
+      </Modal.Content>
+    </Modal>
+  );
+}
+
+const SaveRideModal = ({ showModal, setShowModal }: ModalProps) => {
+  const [type, setType] = useState<string>('pz');
+  const [minutes, setMinutes] = useState<string>('30');
+  const ride = useStore(state => state.ride);
+
+  const addZoneAndCloseModal = () => {
+    setShowModal(false);
+  }
+
+  return (
+    <Modal
+      isOpen={showModal}
+      onClose={() => setShowModal(false)}
+    >
+      <Modal.Content>
+      <Modal.CloseButton />
+      <Modal.Header>Save ride</Modal.Header>
+      <Modal.Body>
+        <VStack space={3}>
+          <FormControl>
+            <FormControl.Label>Title</FormControl.Label>
+            <Input
+              type="text"
+              defaultValue={`${new Date().toLocaleDateString('en-US')} ride`}
+            />
+          </FormControl>
+          <FormControl>
+            <FormControl.Label>Ride type</FormControl.Label>
+            <Select
+              selectedValue={type}
+              accessibilityLabel="Select class type"
+              onValueChange={(zone) => setType(zone)}
+            >
+              <Select.Item label='Power Zone' value='pz' />
+              <Select.Item label='Power Zone Endurance' value='pze' />
+              <Select.Item label='Power Zone Max' value='pzm' />
+              <Select.Item label='Power Zone FTP' value='ftp' />
+            </Select>
+          </FormControl>
+          <FormControl>
+            <FormControl.Label>Length</FormControl.Label>
+            <Select
+              selectedValue={minutes}
+              accessibilityLabel="Select class length"
+              onValueChange={(minutes) => setMinutes(minutes)}
+            >
+              <Select.Item label='30 minutes' value='30' />
+              <Select.Item label='45 minutes' value='45' />
+              <Select.Item label='60 minutes' value='60' />
+              <Select.Item label='75 minutes' value='75' />
+              <Select.Item label='90 minutes' value='90' />
+            </Select>
+          </FormControl>
+          <Button onPress={addZoneAndCloseModal}>Save</Button>
+        </VStack>
+      </Modal.Body>
       </Modal.Content>
     </Modal>
   );
