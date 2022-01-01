@@ -38,20 +38,29 @@ type Props = NativeStackScreenProps<TimerStackParamList, 'ZoneInput'>;
 export const RideProgress = ({ navigation }: Props) => {
   const ride = useStore(state => state.ride);
   const elapsedTime = useTimer(ride.timeInSeconds);
-  const percentageComplete = elapsedTime / ride.timeInSeconds * 100;
-  const currentInterval = getCurrentInterval(ride.intervals, elapsedTime);
+  const { currentInterval, currentZoneTime } = getCurrentInterval(ride.intervals, elapsedTime);
+  const percentageRideComplete = elapsedTime / ride.timeInSeconds * 100;
+  const percentageZoneComplete = currentZoneTime / ride.intervals[currentInterval].timeInSeconds * 100;
   const currentZone = ride.intervals[currentInterval].zone;
 
   return (
     <Screen title={`Zone ${currentZone}`}>
       <VStack h='60%' space={4} justifyContent={'center'}>
-      <Text>{elapsedTime}</Text>
+      <Spacer />
+        <Heading alignSelf='center' size='md'>Ride Progress</Heading>
         <Box h={100} px='5%'>
           <RideBarChart ride={ride} currentInterval={currentInterval} />
         </Box>
         <Progress
-          value={percentageComplete}
+          value={percentageRideComplete}
           colorScheme={'green'}
+          mx="4"
+        />
+        <Spacer />
+        <Heading alignSelf='center' size='md'>Zone Progress</Heading>
+        <Progress
+          value={percentageZoneComplete}
+          colorScheme={zoneColorSchemes[ride.intervals[currentInterval].zone]}
           mx="4"
         />
       </VStack>
@@ -70,5 +79,7 @@ const getCurrentInterval = (intervals: Interval[], elapsedTime: number) => {
     i += 1
   }
 
-  return currentInterval
+  const currentZoneTime = elapsedTime - sum;
+
+  return { currentInterval, currentZoneTime }
 }

@@ -26,7 +26,6 @@ interface BarChartProps {
 }
 
 export const RideBarChart = ({ ride, currentInterval }: BarChartProps) => {
-  console.log(currentInterval)
   const totalTimeInSeconds = ride.intervals.reduce((acc: number, interval) => (
     acc + interval.timeInSeconds), 0);
 
