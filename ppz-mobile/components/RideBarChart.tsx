@@ -27,7 +27,7 @@ interface BarChartProps {
 
 export const RideBarChart = ({ ride, currentInterval }: BarChartProps) => {
   const totalTimeInSeconds = ride.intervals.reduce((acc: number, interval) => (
-    acc + interval.timeInSeconds), 0);
+    acc + interval.length), 0);
 
   const getBarColor = (interval: number) => {
     if (currentInterval !== undefined) {
@@ -48,7 +48,7 @@ export const RideBarChart = ({ ride, currentInterval }: BarChartProps) => {
         ride.intervals.map((interval, index) => {
           return <Box
             key={index}
-            w={`${Math.floor(interval.timeInSeconds / totalTimeInSeconds * 100)}%`}
+            w={`${Math.floor(interval.length / totalTimeInSeconds * 100)}%`}
             h={`${Math.floor(interval.zone / 7 * 100)}%`}
             bgColor={getBarColor(index)}
           />

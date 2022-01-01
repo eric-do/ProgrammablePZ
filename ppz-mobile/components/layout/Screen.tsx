@@ -1,5 +1,4 @@
 import React from "react";
-import { NavigationContainer } from '@react-navigation/native';
 import {
   Center,
   extendTheme,
@@ -27,7 +26,7 @@ export const Screen= ({ children, title }: ScreenProps) => {
       px={4}
       flex={1}
     >
-      <VStack space={5} alignItems="center">
+      <VStack mt='50px' space={5} alignItems="center">
         <Heading alignSelf='center'>{title}</Heading>
         { children }
       </VStack>

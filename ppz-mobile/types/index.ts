@@ -1,6 +1,6 @@
 export interface Interval {
   zone: number;
-  timeInSeconds: number;
+  length: number;
 }
 
 export interface Ride {

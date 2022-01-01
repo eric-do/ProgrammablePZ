@@ -1,24 +1,7 @@
-import React, { useState } from "react";
-import {
-  Text,
-  Button,
-  Link,
-  HStack,
-  Center,
-  Heading,
-  Switch,
-  useColorMode,
-  NativeBaseProvider,
-  extendTheme,
-  Slider,
-  VStack,
-  Code,
-  View,
-  Modal,
-  Box
-} from "native-base";
+import React from "react";
 import { createNativeStackNavigator, NativeStackScreenProps} from '@react-navigation/native-stack';
 import { SiteRides, SocialRides } from "./screens";
+import { ZoneInput, RideProgress } from "../timer/screens";
 
 export type TimerStackParamList = {
   SiteRides: undefined;
@@ -36,6 +19,8 @@ export const Rides = () => {
       >
         <Stack.Screen name="SiteRides" component={SiteRides} />
         <Stack.Screen name="SocialRides" component={SocialRides} />
+        <Stack.Screen name="ZoneInput" component={ZoneInput} />
+        <Stack.Screen name="RideProgress" component={RideProgress} />
       </Stack.Navigator>
   )
 }

@@ -1,23 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import {
-  Text,
-  Button,
-  Link,
-  HStack,
-  Center,
   Heading,
-  Switch,
-  useColorMode,
-  NativeBaseProvider,
-  extendTheme,
-  Slider,
   VStack,
-  Code,
-  View,
-  Modal,
   Box,
   Progress,
-  Flex,
   Spacer
 } from "native-base";
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -40,7 +26,7 @@ export const RideProgress = ({ navigation }: Props) => {
   const elapsedTime = useTimer(ride.timeInSeconds);
   const { currentInterval, currentZoneTime } = getCurrentInterval(ride.intervals, elapsedTime);
   const percentageRideComplete = elapsedTime / ride.timeInSeconds * 100;
-  const percentageZoneComplete = currentZoneTime / ride.intervals[currentInterval].timeInSeconds * 100;
+  const percentageZoneComplete = currentZoneTime / ride.intervals[currentInterval].length * 100;
   const currentZone = ride.intervals[currentInterval].zone;
 
   return (
@@ -73,9 +59,9 @@ const getCurrentInterval = (intervals: Interval[], elapsedTime: number) => {
   let sum = 0;
   let i = 0;
 
-  while (intervals[i].timeInSeconds + sum < elapsedTime && i < intervals.length) {
+  while (intervals[i].length + sum < elapsedTime && i < intervals.length) {
     currentInterval += 1;
-    sum += intervals[i].timeInSeconds;
+    sum += intervals[i].length;
     i += 1
   }
 

@@ -1,22 +1,4 @@
-import React, { useState } from "react";
-import {
-  Text,
-  Button,
-  Link,
-  HStack,
-  Center,
-  Heading,
-  Switch,
-  useColorMode,
-  NativeBaseProvider,
-  extendTheme,
-  Slider,
-  VStack,
-  Code,
-  View,
-  Modal,
-  Box
-} from "native-base";
+import React from "react";
 import { createNativeStackNavigator, NativeStackScreenProps} from '@react-navigation/native-stack';
 import { ZoneInput, RideProgress } from './screens'
 

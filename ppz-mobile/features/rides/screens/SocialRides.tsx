@@ -1,24 +1,6 @@
 import React from 'react';
 import {
-  Text,
-  Button,
-  Link,
-  HStack,
-  Center,
-  Heading,
-  Switch,
-  useColorMode,
-  NativeBaseProvider,
-  extendTheme,
-  Slider,
-  VStack,
-  Code,
-  View,
-  Modal,
-  Box,
-  Progress,
-  Flex,
-  Spacer
+  Text
 } from "native-base";
 
 export const SocialRides = () => {

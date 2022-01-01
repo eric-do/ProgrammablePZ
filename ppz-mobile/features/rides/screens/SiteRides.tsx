@@ -1,31 +1,49 @@
 import React from 'react';
 import {
-  Text,
-  Button,
-  Link,
-  HStack,
-  Center,
   Heading,
-  Switch,
-  useColorMode,
-  NativeBaseProvider,
-  extendTheme,
-  Slider,
   VStack,
-  Code,
-  View,
-  Modal,
   Box,
-  Progress,
-  Flex,
-  Spacer
+  ScrollView
 } from "native-base";
 import { useGetRides } from '../api/';
+import { RideCard } from '../components/RideCard';
+import { NativeStackScreenProps} from '@react-navigation/native-stack';
+import { useStore } from '../../../store';
+import { Ride } from '../../../types';
 
-export const SiteRides = () => {
+type RidesStackParamList = {
+  SiteRides: undefined;
+  ZoneInput: undefined;
+  RideProgress: undefined
+};
+
+type Props = NativeStackScreenProps<RidesStackParamList, 'SiteRides'>;
+
+export const SiteRides = ({ navigation }: Props) => {
   const { rides, isPending, error, getMoreRides } = useGetRides();
+  const setRide = useStore(state => state.setRide);
+
+  const navigateToTimer = (ride: Ride) => {
+    setRide(ride)
+    navigation.navigate('ZoneInput');
+  }
 
   return (
-    <Text>Site Rides</Text>
+    <ScrollView>
+    <Box alignItems='center'>
+      <VStack w='90%' space={3}>
+        <Heading alignSelf='center' mb='5px' mt={10}>Rides</Heading>
+        {
+          rides && rides.map((ride, index) => (
+            <RideCard
+              ride={ride}
+              key={ride.id}
+              onPress={ride => navigateToTimer(ride)}
+            />
+          ))
+        }
+      </VStack>
+    </Box>
+    </ScrollView>
   )
 };

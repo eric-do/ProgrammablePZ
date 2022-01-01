@@ -2,24 +2,15 @@ import React, { useState } from "react";
 import {
   Text,
   Button,
-  Link,
   HStack,
-  Center,
-  Heading,
-  Switch,
-  useColorMode,
-  NativeBaseProvider,
-  extendTheme,
   Slider,
   VStack,
-  Code,
-  View,
   Modal,
   Box,
   FormControl,
   Input,
   Select,
-  CheckIcon
+  Divider
 } from "native-base";
 import { NativeStackScreenProps} from '@react-navigation/native-stack';
 import { useStore } from "../../../store";
@@ -49,7 +40,7 @@ export const ZoneInput = ({ navigation }: Props) => {
   const zoneSummary = ride.intervals.reduce((acc: ZoneSummary, interval) => {
     return {
       ...acc,
-      [interval.zone]: acc[interval.zone] + interval.timeInSeconds || interval.timeInSeconds
+      [interval.zone]: acc[interval.zone] + interval.length || interval.length
     }
   }, {})
 
@@ -67,6 +58,7 @@ export const ZoneInput = ({ navigation }: Props) => {
             />
           ))
         }
+        <Divider backgroundColor={'gray.600'} w={200}/>
         <TableRow
           category='Total'
           quantity={totalMinutes / 60}
@@ -123,7 +115,7 @@ interface RowProps {
 const TableRow = ({ category, quantity, unit }: RowProps) => {
   return (
     <HStack space={2}>
-      <Text alignSelf="flex-end" w="50%" fontSize="md">{category}:</Text>
+      <Text alignSelf="flex-end" w="50%" fontSize="md">{category}</Text>
       <Text w="50%" fontSize="md">{quantity} {unit}</Text>
     </HStack>
   );
@@ -145,11 +137,11 @@ const ZoneModal = ({ showModal, setShowModal }: ModalProps) => {
   const addZoneAndCloseModal = () => {
     const updatedRide = {...ride}
     updatedRide.intervals.push({
-      timeInSeconds: minutes * 60,
+      length: minutes * 60,
       zone: zone
     });
     updatedRide.timeInSeconds = updatedRide.intervals.reduce((sum, interval) => (
-      sum + interval.timeInSeconds
+      sum + interval.length
     ), 0);
     setRide(updatedRide);
     setShowModal(false);
