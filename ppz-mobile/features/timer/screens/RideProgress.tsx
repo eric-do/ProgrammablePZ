@@ -16,12 +16,17 @@ import {
   View,
   Modal,
   Box,
-  Progress
+  Progress,
+  Flex,
+  Spacer
 } from "native-base";
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useTimer } from '../../../hooks';
 import { useStore } from "../../../store";
 import { RideBarChart } from '../../../components/RideBarChart';
+import { Interval } from '../../../types';
+import { Screen } from '../../../components/layout/Screen'
+import { zoneColorSchemes } from '../../../utils/colors'
 
 type TimerStackParamList = {
   ZoneInput: undefined;
@@ -34,27 +39,36 @@ export const RideProgress = ({ navigation }: Props) => {
   const ride = useStore(state => state.ride);
   const elapsedTime = useTimer(ride.timeInSeconds);
   const percentageComplete = elapsedTime / ride.timeInSeconds * 100;
-  let currentInterval = 0;
-  let sum = 0;
-  for (const interval of ride.intervals) {
-    if (interval.timeInSeconds + sum < elapsedTime) {
-      currentInterval += 1;
-      sum += interval.timeInSeconds;
-    } else {
-      break;
-    }
-  }
+  const currentInterval = getCurrentInterval(ride.intervals, elapsedTime);
+  const currentZone = ride.intervals[currentInterval].zone;
 
   return (
-    <>
-      <Text>Progress</Text>
+    <Screen title={`Zone ${currentZone}`}>
+      <VStack h='60%' space={4} justifyContent={'center'}>
       <Text>{elapsedTime}</Text>
-      <VStack space={4}>
         <Box h={100} px='5%'>
           <RideBarChart ride={ride} currentInterval={currentInterval} />
         </Box>
-        <Progress value={percentageComplete} mx="4" />
+        <Progress
+          value={percentageComplete}
+          colorScheme={'green'}
+          mx="4"
+        />
       </VStack>
-    </>
+    </Screen>
   );
 };
+
+const getCurrentInterval = (intervals: Interval[], elapsedTime: number) => {
+  let currentInterval = 0;
+  let sum = 0;
+  let i = 0;
+
+  while (intervals[i].timeInSeconds + sum < elapsedTime && i < intervals.length) {
+    currentInterval += 1;
+    sum += intervals[i].timeInSeconds;
+    i += 1
+  }
+
+  return currentInterval
+}

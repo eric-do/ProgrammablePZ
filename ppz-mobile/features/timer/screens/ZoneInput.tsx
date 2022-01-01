@@ -56,7 +56,7 @@ export const ZoneInput = ({ navigation }: Props) => {
   const totalMinutes = Object.values(zoneSummary).reduce((sum, current) => sum + current, 0);
 
   return (
-    <Screen>
+    <Screen title={'Timer'}>
       <VStack space={3} w="60%">
         {
           Object.entries(zoneSummary).sort((a, b) => parseInt(a[0]) - parseInt(b[0])).map(zone => (

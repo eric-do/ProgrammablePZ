@@ -4,7 +4,7 @@ import {
   Center,
   extendTheme,
   VStack,
-
+  Heading
 } from "native-base";
 
 // Define the config
@@ -13,10 +13,13 @@ const config = {
   initialColorMode: "dark",
 };
 
+interface ScreenProps extends React.PropsWithChildren<any> {
+  title?: String
+}
 // extend the theme
 export const theme = extendTheme({ config });
 
-export const Screen: React.FunctionComponent = ({ children }) => {
+export const Screen= ({ children, title }: ScreenProps) => {
   return (
     <Center
       _dark={{ bg: "blueGray.900" }}
@@ -25,6 +28,7 @@ export const Screen: React.FunctionComponent = ({ children }) => {
       flex={1}
     >
       <VStack space={5} alignItems="center">
+        <Heading alignSelf='center'>{title}</Heading>
         { children }
       </VStack>
     </Center>

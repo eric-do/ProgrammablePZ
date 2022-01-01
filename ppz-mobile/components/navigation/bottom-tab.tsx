@@ -9,7 +9,7 @@ export const AppTabs = () => {
   return (
     <Tab.Navigator
       screenOptions={{
-
+        headerShown: false
       }}
     >
       <Tab.Screen
