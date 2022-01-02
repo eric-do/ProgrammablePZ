@@ -12,6 +12,7 @@ import {
   extendTheme,
   VStack,
   Code,
+  Box,
 } from "native-base";
 import NativeBaseIcon from "./components/NativeBaseIcon";
 import { AppTabs } from "./components/navigation";

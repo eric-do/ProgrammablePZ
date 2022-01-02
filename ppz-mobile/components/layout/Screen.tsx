@@ -3,6 +3,7 @@ import {
   Center,
   extendTheme,
   VStack,
+  Box,
   Heading
 } from "native-base";
 
@@ -18,7 +19,7 @@ interface ScreenProps extends React.PropsWithChildren<any> {
 // extend the theme
 export const theme = extendTheme({ config });
 
-export const Screen= ({ children, title }: ScreenProps) => {
+export const Screen = ({ children, title }: ScreenProps) => {
   return (
     <Center
       _dark={{ bg: "blueGray.900" }}
@@ -26,7 +27,7 @@ export const Screen= ({ children, title }: ScreenProps) => {
       px={4}
       flex={1}
     >
-      <VStack mt='50px' space={5} alignItems="center">
+      <VStack w='100%' space={5} alignItems="center">
         <Heading alignSelf='center'>{title}</Heading>
         { children }
       </VStack>

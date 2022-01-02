@@ -5,6 +5,7 @@
     "baseUrl": ".",
     "paths": {
       "features/*": ["features/*/index", "features/*"],
+      "components/*": ["components/*/index", "components/*"],
       "types/*": ["types/*/index", "types/*"],
       "store/*": ["store/*/index", "store/*"]
     },
