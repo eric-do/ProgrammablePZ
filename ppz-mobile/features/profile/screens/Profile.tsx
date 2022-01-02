@@ -1,13 +1,19 @@
-import React from 'react';
+import * as React from "react"
 import {
-  Text,
   Box,
+  Text,
   Heading,
-  Pressable
-} from "native-base";
-
+  VStack,
+  FormControl,
+  Input,
+  Link,
+  Button,
+  HStack,
+  Center,
+  NativeBaseProvider,
+} from "native-base"
 export const Profile = () => {
   return (
     <Text>Profile</Text>
-  );
-};
+  )
+}
