@@ -19,7 +19,10 @@
     "eject": "expo eject"
   },
   "jest": {
-    "preset": "jest-expo"
+    "preset": "jest-expo",
+    "transformIgnorePatterns": [
+      "node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg)"
+    ]
   },
   "dependencies": {
     "@react-navigation/bottom-tabs": "^6.0.9",
@@ -27,33 +30,33 @@
     "@react-navigation/native-stack": "^6.2.5",
     "axios": "^0.24.0",
     "babel-plugin-module-resolver": "^4.1.0",
-    "expo": "~42.0.0",
-    "expo-secure-store": "~10.2.0",
-    "expo-status-bar": "~1.0.4",
+    "expo": "^44.0.0",
+    "expo-secure-store": "~11.1.0",
+    "expo-status-bar": "~1.2.0",
     "i": "^0.3.7",
-    "jest": "^27.4.5",
-    "jest-expo": "^42.0.1",
+    "jest": "^26.6.3",
+    "jest-expo": "^44.0.0",
     "native-base": "3.2.1",
     "npm": "^8.3.0",
-    "react": "16.13.1",
-    "react-dom": "16.13.1",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-42.0.0.tar.gz",
+    "react": "17.0.1",
+    "react-dom": "17.0.1",
+    "react-native": "0.64.3",
     "react-native-chart-kit": "^6.11.0",
     "react-native-date-time-scroll-picker": "0.0.8",
-    "react-native-safe-area-context": "3.2.0",
-    "react-native-screens": "~3.4.0",
+    "react-native-safe-area-context": "3.3.2",
+    "react-native-screens": "~3.10.1",
     "react-native-svg": "12.1.1",
-    "react-native-web": "~0.13.12",
+    "react-native-web": "0.17.1",
     "styled-components": "^5.3.0",
     "styled-system": "^5.1.5",
     "zustand": "^3.6.8"
   },
   "devDependencies": {
-    "@babel/core": "^7.9.0",
+    "@babel/core": "^7.12.9",
     "@testing-library/react-native": "^9.0.0",
-    "@types/react": "~16.9.35",
-    "@types/react-native": "~0.63.2",
-    "typescript": "~4.0.0"
+    "@types/react": "~17.0.21",
+    "@types/react-native": "~0.64.12",
+    "typescript": "~4.3.5"
   },
   "bugs": {
     "url": "https://github.com/GeekyAnts/nativebase-templates/issues"
