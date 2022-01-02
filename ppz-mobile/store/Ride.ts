@@ -1,5 +1,6 @@
 import { SetState } from  'zustand';
 import { Ride } from '../types';
+import { StoreState } from './'
 
 const defaultRide: Ride = {
   intervals: [],
@@ -12,7 +13,7 @@ export interface RideState {
   resetRide: () => void;
 }
 
-export const createRideSlice = (set: SetState<RideState>) => ({
+export const createRideSlice: any = (set: SetState<StoreState>) => ({
   ride: defaultRide,
   setRide: (ride: Ride) => set(() => ({ ride })),
   resetRide: () => {

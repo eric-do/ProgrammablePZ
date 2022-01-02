@@ -51,6 +51,6 @@ export interface User {
 }
 
 export interface AuthenticatedUser {
-  jwt: string | null;
-  user: AuthenticatedUser | null;
+  jwt: string;
+  user: User;
 }

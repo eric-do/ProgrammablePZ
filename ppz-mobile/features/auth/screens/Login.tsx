@@ -1,4 +1,4 @@
-import * as React from "react"
+import React, { useState } from "react"
 import {
   Box,
   Text,
@@ -11,8 +11,16 @@ import {
   HStack,
   Center,
   NativeBaseProvider,
-} from "native-base"
-export const Login = () => {
+} from "native-base";
+import { NativeStackScreenProps} from '@react-navigation/native-stack';
+import { AuthStackParamList } from '../';
+
+type Props = NativeStackScreenProps<AuthStackParamList, 'Login'>;
+
+export const Login = ({ navigation }: Props) => {
+  const [username, setUsername] = useState<string>('')
+  const [password, setPassword] = useState<string>('')
+
   return (
     <Box safeArea p="2" py="8" w="90%" maxW="290">
       <Heading
@@ -36,15 +44,21 @@ export const Login = () => {
       >
         Sign in to continue!
       </Heading>
-
       <VStack space={3} mt="5">
         <FormControl>
-          <FormControl.Label>Email ID</FormControl.Label>
-          <Input />
+          <FormControl.Label>Username</FormControl.Label>
+          <Input
+            onChangeText={setUsername}
+            value={username}
+          />
         </FormControl>
         <FormControl>
           <FormControl.Label>Password</FormControl.Label>
-          <Input type="password" />
+          <Input
+            type="password"
+            onChangeText={setPassword}
+            value={password}
+          />
           <Link
             _text={{
               fontSize: "xs",
@@ -71,12 +85,12 @@ export const Login = () => {
             I'm a new user.{" "}
           </Text>
           <Link
+            onPress={() => navigation.navigate('Register')}
             _text={{
               color: "indigo.500",
               fontWeight: "medium",
               fontSize: "sm",
             }}
-            href="#"
           >
             Sign Up
           </Link>

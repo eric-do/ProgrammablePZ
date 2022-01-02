@@ -1,5 +1,6 @@
-import create from 'zustand';
-import { createRideSlice } from './Ride';
+import create, { GetState, SetState } from 'zustand';
+import { createRideSlice, RideState } from './Ride';
+import { createUserSlice, AuthState } from './Auth';
 
 type StateFromFunctions<T extends [...any]> = T extends [infer F, ...(infer R)]
   ? F extends (...args: any) => object
@@ -7,10 +8,14 @@ type StateFromFunctions<T extends [...any]> = T extends [infer F, ...(infer R)]
     : unknown
   : unknown;
 
-type State = StateFromFunctions<[
-  typeof createRideSlice
-]>
+// export type StoreState = StateFromFunctions<[
+//   typeof createRideSlice,
+//   typeof createUserSlice
+// ]>;
 
-export const useStore = create<State>(set => ({
-  ...createRideSlice(set)
+export type StoreState = RideState & AuthState;
+
+export const useStore = create<StoreState>((set) => ({
+  ...createRideSlice(set),
+  ...createUserSlice(set)
 }));

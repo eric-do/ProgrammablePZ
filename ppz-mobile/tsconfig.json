@@ -4,7 +4,9 @@
     "strict": true,
     "baseUrl": ".",
     "paths": {
-      "features/*": ["features/*/index", "features/*"]
+      "features/*": ["features/*/index", "features/*"],
+      "types/*": ["types/*/index", "types/*"],
+      "store/*": ["store/*/index", "store/*"]
     },
   },
   "exclude": ["node_modules", "babel.config.js"]
