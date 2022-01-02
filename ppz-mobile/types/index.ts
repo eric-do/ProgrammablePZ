@@ -32,3 +32,25 @@ export interface User {
   username: string;
   is_friend: boolean;
 }
+
+export interface LoginCredentials {
+  username: string;
+  password: string;
+}
+
+export interface RegistrationCredentials {
+  username: string;
+  password: string;
+  email: string;
+}
+
+export interface User {
+  id: string;
+  username: string;
+  email: string;
+}
+
+export interface AuthenticatedUser {
+  jwt: string | null;
+  user: AuthenticatedUser | null;
+}

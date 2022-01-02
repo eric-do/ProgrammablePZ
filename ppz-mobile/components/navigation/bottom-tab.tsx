@@ -1,7 +1,7 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Timer } from '../../features/timer';
-import { Profile } from '../../features/profile';
+import { ProfileNavigationStack } from '../../features/profile';
 import { Rides } from '../../features/rides';
 
 const Tab = createBottomTabNavigator();
@@ -26,7 +26,7 @@ export const AppTabs = () => {
       />
       <Tab.Screen
         name="Profile"
-        component={Profile}
+        component={ProfileNavigationStack}
         options={{ title: 'Profile'}}
       />
     </Tab.Navigator>
