@@ -9,6 +9,7 @@ const Tab = createBottomTabNavigator();
 export const AppTabs = () => {
   return (
     <Tab.Navigator
+      initialRouteName="Timer"
       screenOptions={{
         headerShown: false
       }}

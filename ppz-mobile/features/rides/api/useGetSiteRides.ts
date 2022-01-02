@@ -31,7 +31,6 @@ export const useGetRides = () => {
         try {
           setPending(true);
           const rides = await getRides({ offset, limit });
-          console.log(rides.length)
           setPending(false)
           setRides(rides);
         } catch (err) {

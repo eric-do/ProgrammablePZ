@@ -13,6 +13,7 @@ import { Ride } from '../../../types';
 
 type RidesStackParamList = {
   SiteRides: undefined;
+  SocialRides: undefined;
   ZoneInput: undefined;
   RideProgress: undefined
 };
@@ -20,7 +21,7 @@ type RidesStackParamList = {
 type Props = NativeStackScreenProps<RidesStackParamList, 'SiteRides'>;
 
 export const SiteRides = ({ navigation }: Props) => {
-  const { rides, isPending, error, getMoreRides } = useGetRides();
+  const { rides, isPending, error } = useGetRides();
   const setRide = useStore(state => state.setRide);
 
   const navigateToTimer = (ride: Ride) => {

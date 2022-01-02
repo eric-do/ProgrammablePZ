@@ -13,6 +13,7 @@ const Stack = createNativeStackNavigator();
 export const Rides = () => {
   return (
       <Stack.Navigator
+        initialRouteName="SiteRides"
         screenOptions={{
           headerShown: false
         }}
