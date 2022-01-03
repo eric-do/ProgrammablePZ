@@ -3,7 +3,10 @@ import {
   Text,
   Box,
   Heading,
-  Pressable
+  Pressable,
+  Badge,
+  VStack,
+  Flex
 } from "native-base";
 import { Ride } from '../../../types';
 import { RideBarChart } from '../../../components/RideBarChart';
@@ -14,18 +17,40 @@ interface RideCardProps {
 }
 
 export const RideCard = ({ ride, onPress }: RideCardProps ) => {
+  const newCutoffDate = new Date();
+  const rideDate = ride.createdOn ? new Date(ride.createdOn) : new Date();
+  newCutoffDate.setMonth(newCutoffDate.getMonth() - 1);
+
   return (
     <Pressable onPress={() => onPress(ride)}>
       <Box>
         <Box
-          h={70}
+          h='80px'
           px='5%'
           py='7px'
           bgColor='darkBlue.800'
           borderTopLeftRadius='5px'
           borderTopRightRadius='5px'
         >
-          <RideBarChart ride={ride} />
+          <VStack>
+            <Box h='15%'>
+              <Flex
+                top={0}
+                right={0}
+                position='absolute'
+              >
+                {
+                  rideDate > newCutoffDate &&
+                  <Badge _text={{ fontSize: 10 }}>
+                    NEW RIDE
+                  </Badge>
+                }
+              </Flex>
+            </Box>
+            <Box h='85%' pt='3%'>
+            <RideBarChart ride={ride} />
+            </Box>
+          </VStack>
         </Box>
         <Box
           py='5px'
