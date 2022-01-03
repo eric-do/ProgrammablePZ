@@ -47,7 +47,7 @@ export const ZoneInput = ({ navigation }: Props) => {
   const totalMinutes = Object.values(zoneSummary).reduce((sum, current) => sum + current, 0);
 
   return (
-    <Screen title={'Timer'}>
+    <Screen title={'Power Zones'}>
       <VStack space={3} w="60%">
         {
           Object.entries(zoneSummary).sort((a, b) => parseInt(a[0]) - parseInt(b[0])).map((zone, idx) => (
@@ -87,6 +87,7 @@ export const ZoneInput = ({ navigation }: Props) => {
       </Button.Group>
       <Button.Group px="10%" justifyContent='center'>
         <Button
+          isDisabled={ride.intervals.length === 0}
           w='50%'
           colorScheme="green"
           onPress={() => navigation.navigate('RideProgress')}
