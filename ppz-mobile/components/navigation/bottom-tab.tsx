@@ -4,6 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { Timer } from '../../features/timer';
 import { ProfileNavigationStack } from '../../features/profile';
 import { AuthNavigationStack } from 'features/auth';
+import { FeedNavigationStack } from 'features/feed'
 import { Rides } from '../../features/rides';
 import { useStore } from 'store';import { Icon } from 'native-base';
 
@@ -27,7 +28,9 @@ export const AppTabs = () => {
           const icons: RouteIconDictionary = {
             Timer: focused ? 'timer' : 'timer-outline',
             Rides: focused ? 'bicycle' : 'bicycle-outline',
-            ProfileNavigationStack: focused ? 'person-circle' : 'person-circle-outline'
+            ProfileNavigationStack: focused ? 'person-circle' : 'person-circle-outline',
+            FeedNavigationStack: focused ? 'md-people-sharp' : 'md-people-outline',
+            AuthNavigationStack: focused ? 'log-in-sharp' : 'log-out-outline'
           }
 
           return <Ionicons name={icons[route.name]} size={size} color={color} />
@@ -46,6 +49,13 @@ export const AppTabs = () => {
         component={Rides}
         options={{ title: 'Rides'}}
       />
+      { auth &&
+        <Tab.Screen
+          name="FeedNavigationStack"
+          component={FeedNavigationStack}
+          options={{ title: 'Ride Feed' }}
+        />
+      }
       {
         auth ?
         <Tab.Screen
