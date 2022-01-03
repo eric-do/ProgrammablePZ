@@ -67,6 +67,7 @@ export const Login = ({ navigation }: Props) => {
             <FormControl.Label>Username</FormControl.Label>
             <Input
               onChangeText={setUsername}
+              onSubmitEditing={() => login({ username, password })}
               value={username}
             />
           </FormControl>
@@ -75,6 +76,7 @@ export const Login = ({ navigation }: Props) => {
             <Input
               type="password"
               onChangeText={setPassword}
+              onSubmitEditing={() => login({ username, password })}
               value={password}
             />
             <Link

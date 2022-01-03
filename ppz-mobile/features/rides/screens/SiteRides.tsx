@@ -3,7 +3,9 @@ import {
   Heading,
   VStack,
   Box,
-  ScrollView
+  ScrollView,
+  Center,
+  Text
 } from "native-base";
 import { useGetRides } from '../api/';
 import { RideCard } from '../components/RideCard';
@@ -42,6 +44,12 @@ export const SiteRides = ({ navigation }: Props) => {
               onPress={ride => navigateToTimer(ride)}
             />
           ))
+        }
+        {
+          error &&
+            <Center mt='50%'>
+              <Text>There was a problem getting rides. Try again later.</Text>
+            </Center>
         }
       </VStack>
     </Box>
