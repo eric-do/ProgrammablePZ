@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import {
   Box,
   Text,
@@ -11,6 +11,7 @@ import {
   HStack,
   Center,
   NativeBaseProvider,
+  useToast
 } from "native-base";
 import { NativeStackScreenProps} from '@react-navigation/native-stack';
 import { AuthStackParamList } from '../';
@@ -22,7 +23,20 @@ type Props = NativeStackScreenProps<AuthStackParamList, 'Login'>;
 export const Login = ({ navigation }: Props) => {
   const [username, setUsername] = useState<string>('')
   const [password, setPassword] = useState<string>('')
+  const toast = useToast();
   const { auth, error, login } = useLoginUser();
+
+  useEffect(() => {
+    if (error && username) {
+      toast.show({
+        title: 'Invalid login',
+        description: "Username or password are incorrect",
+        isClosable: true,
+        bg: 'red.400',
+        color: 'gray.600'
+      })
+    }
+  }, [error])
 
   return (
     <Screen>

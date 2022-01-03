@@ -25,6 +25,7 @@ export const useLoginUser = () => {
           setAuth(auth)
         }
       } catch (err) {
+        console.log(err);
         setError(true);
       }
     }
