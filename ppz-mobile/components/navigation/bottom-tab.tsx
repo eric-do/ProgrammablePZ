@@ -32,12 +32,12 @@ export const AppTabs = () => {
       {
         auth ?
         <Tab.Screen
-          name="Profile"
+          name="ProfileNavigationStack"
           component={ProfileNavigationStack}
           options={{ title: 'Profile'}}
         /> :
         <Tab.Screen
-          name="Authentication"
+          name="AuthNavigationStack"
           component={AuthNavigationStack}
           options={{ title: 'Login'}}
         />

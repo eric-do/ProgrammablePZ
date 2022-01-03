@@ -13,7 +13,7 @@ const Stack = createNativeStackNavigator();
 export const ProfileNavigationStack = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name='Authentication' component={AuthNavigationStack} />
+      <Stack.Screen name='Profile' component={Profile} />
     </Stack.Navigator>
   );
 }
