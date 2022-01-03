@@ -50,8 +50,9 @@ export const ZoneInput = ({ navigation }: Props) => {
     <Screen title={'Timer'}>
       <VStack space={3} w="60%">
         {
-          Object.entries(zoneSummary).sort((a, b) => parseInt(a[0]) - parseInt(b[0])).map(zone => (
+          Object.entries(zoneSummary).sort((a, b) => parseInt(a[0]) - parseInt(b[0])).map((zone, idx) => (
             <TableRow
+              key={idx}
               category={`Zone ${zone[0]}`}
               quantity={Math.ceil(zone[1] / 60)}
               unit='minutes'

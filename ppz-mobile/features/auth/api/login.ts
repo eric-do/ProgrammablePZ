@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { AxiosResponse } from 'axios';
 import { LoginCredentials, AuthenticatedUser } from 'types';
 import { axios } from 'lib';
 import * as storage from 'utils/storage';

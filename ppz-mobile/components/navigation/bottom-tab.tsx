@@ -1,11 +1,16 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Ionicons } from '@expo/vector-icons';
 import { Timer } from '../../features/timer';
 import { ProfileNavigationStack } from '../../features/profile';
 import { AuthNavigationStack } from 'features/auth';
 import { Rides } from '../../features/rides';
-import { useStore } from 'store';
+import { useStore } from 'store';import { Icon } from 'native-base';
 
+type Icon = keyof typeof Ionicons.glyphMap;
+type RouteIconDictionary = {
+  [k: string]: Icon
+}
 
 const Tab = createBottomTabNavigator();
 
@@ -15,9 +20,21 @@ export const AppTabs = () => {
   return (
     <Tab.Navigator
       initialRouteName="Timer"
-      screenOptions={{
-        headerShown: false
-      }}
+      screenOptions={({ route }) => ({
+        headerShown: false,
+        tabBarIcon: ({ focused, color, size }) => {
+
+          const icons: RouteIconDictionary = {
+            Timer: focused ? 'timer' : 'timer-outline',
+            Rides: focused ? 'bicycle' : 'bicycle-outline',
+            ProfileNavigationStack: focused ? 'person-circle' : 'person-circle-outline'
+          }
+
+          return <Ionicons name={icons[route.name]} size={size} color={color} />
+        },
+        tabBarActiveTintColor: 'tomato',
+        tabBarInactiveTintColor: 'gray',
+      })}
     >
       <Tab.Screen
         name="Timer"
