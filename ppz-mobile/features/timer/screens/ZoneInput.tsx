@@ -53,7 +53,7 @@ export const ZoneInput = ({ navigation }: Props) => {
           Object.entries(zoneSummary).sort((a, b) => parseInt(a[0]) - parseInt(b[0])).map(zone => (
             <TableRow
               category={`Zone ${zone[0]}`}
-              quantity={zone[1] / 60}
+              quantity={Math.ceil(zone[1] / 60)}
               unit='minutes'
             />
           ))
@@ -61,7 +61,7 @@ export const ZoneInput = ({ navigation }: Props) => {
         <Divider backgroundColor={'gray.600'} w={200}/>
         <TableRow
           category='Total'
-          quantity={totalMinutes / 60}
+          quantity={Math.ceil(totalMinutes / 60)}
           unit='minutes'
         />
       </VStack>

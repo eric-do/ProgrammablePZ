@@ -7,7 +7,8 @@
       "features/*": ["features/*/index", "features/*"],
       "components/*": ["components/*/index", "components/*"],
       "types/*": ["types/*/index", "types/*"],
-      "store/*": ["store/*/index", "store/*"]
+      "store/*": ["store/*/index", "store/*"],
+      "utils/*": ["utils/*/index", "utils/*"],
     },
   },
   "exclude": ["node_modules", "babel.config.js"]

@@ -15,12 +15,14 @@ import {
 import { NativeStackScreenProps} from '@react-navigation/native-stack';
 import { AuthStackParamList } from '../';
 import { Screen } from 'components/layout/'
+import { useLoginUser } from '../api';
 
 type Props = NativeStackScreenProps<AuthStackParamList, 'Login'>;
 
 export const Login = ({ navigation }: Props) => {
   const [username, setUsername] = useState<string>('')
   const [password, setPassword] = useState<string>('')
+  const { auth, error, login } = useLoginUser();
 
   return (
     <Screen>
@@ -73,7 +75,11 @@ export const Login = ({ navigation }: Props) => {
               Forget Password?
             </Link>
           </FormControl>
-          <Button mt="2" colorScheme="indigo">
+          <Button
+            mt="2"
+            colorScheme="indigo"
+            onPress={() => login({ username, password })}
+          >
             Sign in
           </Button>
           <HStack mt="6" justifyContent="center">

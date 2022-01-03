@@ -12,6 +12,7 @@ module.exports = function(api) {
             "features": ["./features"],
             "components": ["./components"],
             "types": ["./types"],
+            "utils": ["./utils"],
             "store": ["./store"]
           }
         }
