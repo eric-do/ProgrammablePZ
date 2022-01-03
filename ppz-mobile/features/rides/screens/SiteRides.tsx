@@ -36,7 +36,7 @@ export const SiteRides = ({ navigation }: Props) => {
       <ScrollView>
         <Box alignItems='center'>
           <VStack w='90%' space={3}>
-            <Heading alignSelf='center' mb='5px' mt={10}>Rides</Heading>
+            <Heading alignSelf='center' mb='5px' mt={5}>Rides</Heading>
             {
               rides && rides.map((ride, index) => (
                 <RideCard

@@ -41,13 +41,13 @@ export const RideFeed = ({ navigation }: Props) => {
         }
         {
           rides.length === 0 &&
-          <Center mt='50%'>
+          <Center mt='80%'>
             <Text>There are no rides on your feed. Try adding some friends!</Text>
           </Center>
         }
         {
           error &&
-          <Center mt='50%'>
+          <Center mt='80%'>
             <Text>There was a problem getting your feed. Try again later.</Text>
           </Center>
         }

@@ -16,6 +16,7 @@ import {
 } from "native-base";
 import NativeBaseIcon from "./components/NativeBaseIcon";
 import { AppTabs } from "./components/navigation";
+import { AuthenticationProvider } from "features/auth/AuthenticationProvider";
 
 // Define the config
 const config = {
@@ -30,7 +31,9 @@ export default function App() {
   return (
     <NavigationContainer>
       <NativeBaseProvider>
-        <AppTabs />
+        <AuthenticationProvider>
+          <AppTabs />
+        </AuthenticationProvider>
       </NativeBaseProvider>
     </NavigationContainer>
   );
