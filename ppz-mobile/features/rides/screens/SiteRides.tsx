@@ -32,27 +32,29 @@ export const SiteRides = ({ navigation }: Props) => {
   }
 
   return (
-    <ScrollView>
-    <Box alignItems='center'>
-      <VStack w='90%' space={3}>
-        <Heading alignSelf='center' mb='5px' mt={10}>Rides</Heading>
-        {
-          rides && rides.map((ride, index) => (
-            <RideCard
-              ride={ride}
-              key={ride.id}
-              onPress={ride => navigateToTimer(ride)}
-            />
-          ))
-        }
-        {
-          error &&
-            <Center mt='50%'>
-              <Text>There was a problem getting rides. Try again later.</Text>
-            </Center>
-        }
-      </VStack>
+    <Box safeArea>
+      <ScrollView>
+        <Box alignItems='center'>
+          <VStack w='90%' space={3}>
+            <Heading alignSelf='center' mb='5px' mt={10}>Rides</Heading>
+            {
+              rides && rides.map((ride, index) => (
+                <RideCard
+                  ride={ride}
+                  key={ride.id}
+                  onPress={ride => navigateToTimer(ride)}
+                />
+              ))
+            }
+            {
+              error &&
+                <Center mt='50%'>
+                  <Text>There was a problem getting rides. Try again later.</Text>
+                </Center>
+            }
+          </VStack>
+        </Box>
+      </ScrollView>
     </Box>
-    </ScrollView>
   )
 };

@@ -30,9 +30,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <NativeBaseProvider>
-        <Box safeArea>
         <AppTabs />
-        </Box>
       </NativeBaseProvider>
     </NavigationContainer>
   );
