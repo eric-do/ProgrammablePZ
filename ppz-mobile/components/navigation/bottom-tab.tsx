@@ -47,7 +47,10 @@ export const AppTabs = () => {
       <Tab.Screen
         name="Rides"
         component={Rides}
-        options={{ title: 'Rides'}}
+        options={{
+          title: 'Rides',
+          headerShown: true
+        }}
       />
       { auth &&
         <Tab.Screen

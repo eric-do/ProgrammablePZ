@@ -8,7 +8,7 @@ export interface Ride {
   timeInSeconds: number;
   creator_id?: string;
   username?: string;
-  type?: string;
+  type: string;
   id?: number;
   title?: string;
   metadata?: {

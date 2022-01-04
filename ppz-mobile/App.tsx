@@ -1,20 +1,9 @@
 import React from "react";
 import { NavigationContainer } from '@react-navigation/native';
 import {
-  Text,
-  Link,
-  HStack,
-  Center,
-  Heading,
-  Switch,
-  useColorMode,
   NativeBaseProvider,
   extendTheme,
-  VStack,
-  Code,
-  Box,
 } from "native-base";
-import NativeBaseIcon from "./components/NativeBaseIcon";
 import { AppTabs } from "./components/navigation";
 import { AuthenticationProvider } from "features/auth/AuthenticationProvider";
 
