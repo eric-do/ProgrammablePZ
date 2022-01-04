@@ -32,7 +32,7 @@ export const SiteRides = ({ navigation }: Props) => {
   }
 
   return (
-    <Box>
+    <Box mt='10px'>
       <ScrollView>
         <Box alignItems='center' bgColor='gray.200'>
           <VStack w='100%' space={5}>

@@ -12,7 +12,11 @@ const Stack = createNativeStackNavigator();
 
 export const ProfileNavigationStack = () => {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={({ route }) => ({
+        headerShown: false
+      })}
+    >
       <Stack.Screen name='Profile' component={Profile} />
     </Stack.Navigator>
   );

@@ -28,8 +28,7 @@ export const RideFeed = ({ navigation }: Props) => {
   return (
     <ScrollView>
     <Box alignItems='center'>
-      <VStack w='90%' space={3}>
-        <Heading alignSelf='center' mb='5px' mt={10}>Rides</Heading>
+      <VStack w='100%' space={3}>
         {
           rides && rides.map((ride, index) => (
             <RideCard

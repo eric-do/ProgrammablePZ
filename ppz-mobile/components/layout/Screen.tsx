@@ -23,12 +23,12 @@ export const Screen = ({ children, title }: ScreenProps) => {
   return (
     <Center
       _dark={{ bg: "blueGray.900" }}
-      _light={{ bg: "blueGray.50" }}
+      _light={{ bg: "white" }}
       px={4}
       flex={1}
     >
       <VStack w='100%' space={5} alignItems="center">
-        <Heading alignSelf='center'>{title}</Heading>
+        <Heading fontSize='lg' alignSelf='center'>{title}</Heading>
         { children }
       </VStack>
     </Center>

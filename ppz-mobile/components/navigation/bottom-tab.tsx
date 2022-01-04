@@ -22,7 +22,7 @@ export const AppTabs = () => {
     <Tab.Navigator
       initialRouteName="Timer"
       screenOptions={({ route }) => ({
-        headerShown: false,
+        headerShown: true,
         tabBarIcon: ({ focused, color, size }) => {
 
           const icons: RouteIconDictionary = {
