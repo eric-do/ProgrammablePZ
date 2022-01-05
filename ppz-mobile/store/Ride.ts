@@ -4,7 +4,8 @@ import { StoreState } from './'
 
 const defaultRide: Ride = {
   intervals: [],
-  timeInSeconds: 0
+  timeInSeconds: 0,
+  type: 'pz'
 };
 
 export interface RideState {
@@ -21,6 +22,7 @@ export const createRideSlice: any = (set: SetState<StoreState>) => ({
       ride: {
         intervals: [],
         timeInSeconds: 0,
+        type: 'pz',
         title: `${new Date().toLocaleDateString('en-US')} ride`
       }
     }))

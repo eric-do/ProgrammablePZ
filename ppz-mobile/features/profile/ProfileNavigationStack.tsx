@@ -5,8 +5,14 @@ import {
 } from "native-base";
 import { createNativeStackNavigator} from '@react-navigation/native-stack';
 import { Screen } from "../../components/layout/Screen";
-import { Profile } from './screens'
+import { Profile, Followers, Following } from './screens'
 import { AuthNavigationStack } from 'features/auth';
+
+export type ProfileStackParamList = {
+  Profile: undefined,
+  Followers: undefined,
+  Following: undefined,
+};
 
 const Stack = createNativeStackNavigator();
 
@@ -18,6 +24,8 @@ export const ProfileNavigationStack = () => {
       })}
     >
       <Stack.Screen name='Profile' component={Profile} />
+      <Stack.Screen name='Followers' component={Followers} />
+      <Stack.Screen name='Following' component={Following} />
     </Stack.Navigator>
   );
 }
