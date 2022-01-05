@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Text,
@@ -12,15 +12,32 @@ import {
   Center,
   NativeBaseProvider,
   Divider,
-  Badge
+  Badge,
+  Slide
 } from "native-base"
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { ProfileStackParamList } from 'features/profile';
+import { Ionicons } from '@expo/vector-icons';
+import { useStore } from 'store';
+import { UserListItem } from '../components';
 
-type Props = NativeStackScreenProps<ProfileStackParamList, 'Followers'>;
+export const Followers = () => {
+  const [isOpen, setIsOpen] = useState<boolean>(false)
+  const followers = useStore(state => state.followers)
 
-export const Followers = ({ navigation }: Props) => {
   return (
-    <Text>Followers</Text>
+    <Box w='100%' bgColor='white' p='15px'>
+      {
+        followers.map((follower, idx) => (
+          <Box key={follower.id}>
+            <UserListItem user={follower}  />
+            { idx < followers.length - 1 && <Divider my={0} />}
+          </Box>
+        ))
+      }
+      <Slide in={isOpen} placement='bottom'>
+        <Box bgColor='white'>
+          <Heading>Follow options</Heading>
+        </Box>
+      </Slide>
+    </Box>
   );
 };
