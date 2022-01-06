@@ -1,22 +1,10 @@
 import React, { useState } from 'react';
 import {
-  Box,
   Text,
-  Heading,
-  VStack,
-  FormControl,
-  Input,
-  Link,
-  Button,
   HStack,
-  Center,
-  NativeBaseProvider,
-  Divider,
   Badge,
-  Slide
 } from "native-base"
 import { User } from 'types';
-import { Ionicons } from '@expo/vector-icons';
 
 interface ItemProps {
   user: User;

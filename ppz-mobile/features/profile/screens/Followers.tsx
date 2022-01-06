@@ -1,26 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Box,
-  Text,
-  Heading,
-  VStack,
-  FormControl,
-  Input,
-  Link,
-  Button,
-  HStack,
-  Center,
-  NativeBaseProvider,
   Divider,
-  Badge,
-  Slide
+  Center,
+  Text
 } from "native-base"
-import { Ionicons } from '@expo/vector-icons';
 import { useStore } from 'store';
 import { UserListItem } from '../components';
 
 export const Followers = () => {
-  const [isOpen, setIsOpen] = useState<boolean>(false)
   const followers = useStore(state => state.followers)
 
   return (
@@ -33,11 +21,12 @@ export const Followers = () => {
           </Box>
         ))
       }
-      <Slide in={isOpen} placement='bottom'>
-        <Box bgColor='white'>
-          <Heading>Follow options</Heading>
-        </Box>
-      </Slide>
+      {
+        followers.length === 0 &&
+        <Center>
+          <Text>No one is following you yet. Try following other users!</Text>
+        </Center>
+      }
     </Box>
   );
 };
