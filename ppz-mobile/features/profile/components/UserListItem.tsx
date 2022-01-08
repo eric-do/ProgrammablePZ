@@ -5,6 +5,7 @@ import {
   Badge,
 } from "native-base"
 import { User } from 'types';
+import { FollowButton, UnfollowButton } from 'features/profile/components';
 
 interface ItemProps {
   user: User;
@@ -18,10 +19,10 @@ export const UserListItem = ({ user}: ItemProps) => {
       <Text>{user.username}</Text>
       <HStack alignItems='center'>
         { user.is_friend &&
-            <Badge variant='solid' colorScheme="orange">Following</Badge>
+          <FollowButton user={user} />
         }
         { !user.is_friend &&
-          <Badge variant='outline' colorScheme="orange">Follow Back</Badge>
+          <UnfollowButton user={user} />
         }
       </HStack>
     </HStack>
