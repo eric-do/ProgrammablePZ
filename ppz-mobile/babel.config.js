@@ -13,7 +13,8 @@ module.exports = function(api) {
             "components": ["./components"],
             "types": ["./types"],
             "utils": ["./utils"],
-            "store": ["./store"]
+            "store": ["./store"],
+            "providers": ["./providers"]
           }
         }
       ],

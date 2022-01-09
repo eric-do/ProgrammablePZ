@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { useInfiniteQuery } from 'react-query';
 import { axios } from 'lib/axios';
-import { Ride} from 'types'
+import { Ride } from 'types'
 
 export const getTimeline = ({
   limit = 10,

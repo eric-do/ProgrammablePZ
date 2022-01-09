@@ -6,6 +6,7 @@ import {
 } from "native-base";
 import { AppTabs } from "./components/navigation";
 import { AuthenticationProvider } from "features/auth/AuthenticationProvider";
+import { QueryProvider } from "providers/QueryClientProvider";
 
 // Define the config
 const config = {
@@ -19,11 +20,13 @@ export const theme = extendTheme({ config });
 export default function App() {
   return (
     <NavigationContainer>
-      <NativeBaseProvider>
-        <AuthenticationProvider>
-          <AppTabs />
-        </AuthenticationProvider>
-      </NativeBaseProvider>
+      <QueryProvider>
+        <NativeBaseProvider>
+          <AuthenticationProvider>
+            <AppTabs />
+          </AuthenticationProvider>
+        </NativeBaseProvider>
+      </QueryProvider>
     </NavigationContainer>
   );
 }

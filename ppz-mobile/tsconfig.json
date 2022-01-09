@@ -9,6 +9,7 @@
       "types/*": ["types/*/index", "types/*"],
       "store/*": ["store/*/index", "store/*"],
       "utils/*": ["utils/*/index", "utils/*"],
+      "providers/*": ["providers/*/index", "providers/*"],
     },
   },
   "exclude": ["node_modules", "babel.config.js"]

@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Text,
   HStack,
-  Badge,
 } from "native-base"
 import { User } from 'types';
-import { FollowButton, UnfollowButton } from 'features/profile/components';
+import { FollowButton } from 'features/profile/components/FollowButton';
+import { UnfollowButton } from 'features/profile/components/UnfollowButton';
 
 interface ItemProps {
   user: User;

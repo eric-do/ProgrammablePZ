@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
   Text,
   Divider,
@@ -27,11 +27,17 @@ interface RideCardProps {
 }
 
 export const RideCard = ({ ride, onPress }: RideCardProps ) => {
-  const minutes = Math.ceil(ride.timeInSeconds / 60);
-  const seconds = ride.timeInSeconds % 60;
-  const newCutoffDate = new Date();
-  const rideDate = ride.createdOn ? new Date(ride.createdOn) : new Date();
-  newCutoffDate.setMonth(newCutoffDate.getMonth() - 1);
+  const { minutes, seconds } = useMemo(() => {
+    const minutes = Math.ceil(ride.timeInSeconds / 60);
+    const seconds = ride.timeInSeconds % 60;
+    return { minutes, seconds };
+  }, [ride.timeInSeconds]);
+  const { newCutoffDate, rideDate } = useMemo(() => {
+    const newCutoffDate = new Date();
+    const rideDate = ride.createdOn ? new Date(ride.createdOn) : new Date();
+    newCutoffDate.setMonth(newCutoffDate.getMonth() - 1);
+    return { rideDate, newCutoffDate };
+  }, [ride.createdOn])
 
   return (
     <Pressable onPress={() => onPress(ride)}>

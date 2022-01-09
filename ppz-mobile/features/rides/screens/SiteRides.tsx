@@ -1,13 +1,14 @@
 import React from 'react';
 import {
   Heading,
+  FlatList,
   VStack,
   Box,
   ScrollView,
   Center,
   Text
 } from "native-base";
-import { useGetRides } from '../api/';
+import { useGetRides, useInfiniteRides } from '../api/';
 import { RideCard } from '../components/RideCard';
 import { NativeStackScreenProps} from '@react-navigation/native-stack';
 import { useStore } from '../../../store';
@@ -23,8 +24,9 @@ type RidesStackParamList = {
 type Props = NativeStackScreenProps<RidesStackParamList, 'SiteRides'>;
 
 export const SiteRides = ({ navigation }: Props) => {
-  const { rides, isPending, error } = useGetRides();
+  // const { rides, isPending, error } = useGetRides();
   const setRide = useStore(state => state.setRide);
+  const { rides, isFetching, error, fetchNextPage } = useInfiniteRides();
 
   const navigateToTimer = (ride: Ride) => {
     setRide(ride)
@@ -33,18 +35,23 @@ export const SiteRides = ({ navigation }: Props) => {
 
   return (
     <Box mt='10px'>
-      <ScrollView>
+      {/* <ScrollView> */}
         <Box alignItems='center' bgColor='gray.200'>
           <VStack w='100%' space={5}>
-            {
-              rides && rides.map((ride, index) => (
+            <FlatList
+              data={rides}
+              renderItem={({ item, index }) => (
                 <RideCard
-                  ride={ride}
-                  key={ride.id}
+                  ride={item}
+                  key={item.id}
                   onPress={ride => navigateToTimer(ride)}
                 />
-              ))
-            }
+              )}
+              ItemSeparatorComponent={
+                () => <Box h='10px'/>
+              }
+            >
+            </FlatList>
             {
               error &&
                 <Center mt='50%'>
@@ -53,7 +60,7 @@ export const SiteRides = ({ navigation }: Props) => {
             }
           </VStack>
         </Box>
-      </ScrollView>
+      {/* </ScrollView> */}
     </Box>
   )
 };

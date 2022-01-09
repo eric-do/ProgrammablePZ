@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useInfiniteQuery, InfiniteData, UseInfiniteQueryOptions } from 'react-query';
 import { axios } from '../../../lib'
 import { Ride } from '../../../types'
 import { AxiosError } from 'axios';
@@ -40,4 +41,28 @@ export const useGetRides = () => {
     fetchRides();
   }, [offset])
   return { rides, isPending, error, getMoreRides }
+}
+
+interface TransformedResponse extends InfiniteData<Ride[]> {
+  rides: Ride[]
+}
+
+export const useInfiniteRides = () => {
+  const { data, fetchNextPage, isFetching, error } = useInfiniteQuery('site-rides', ({
+    pageParam = 0
+  }) => getRides({
+    offset: pageParam,
+    limit: 20
+  }), {
+    select: (data) => {
+      const rides: Ride[] = [...data.pages].flat();
+      return { ...data, rides };
+    },
+    getNextPageParam: (lastPage, allPages) => allPages.length + 1,
+  })
+  let rides : Ride[] = [];
+  if (data) {
+    rides = [...data.pages].flat();
+  }
+  return { rides, fetchNextPage, isFetching, error}
 }
