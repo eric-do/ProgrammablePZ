@@ -28,38 +28,3 @@ export const getFollowing = ({
     }
   });
 };
-
-interface UseGetFollowsProps {
-  limit: number;
-  offset: number;
-}
-
-export const useGetFollows = ({ limit, offset }: UseGetFollowsProps) => {
-  const [follows, setFollows] = useState<User[]>([]);
-  const [error, setError] = useState<boolean>(false);
-  const [isPending, setPending] = useState<boolean>(false);
-  const id = useStore(state => state.auth?.user.id);
-
-  useEffect(() => {
-    (async () => {
-      try {
-        if (id) {
-          setPending(true);
-          const follows = await getFollowing({
-            user_id: id,
-            limit,
-            offset
-          })
-          console.log({follows})
-          setPending(false);
-          setFollows(follows);
-        }
-      } catch (err) {
-        console.log(err);
-        setError(true);
-      }
-    })();
-  }, [id])
-
-  return { follows, error, isPending };
-}
