@@ -5,14 +5,14 @@ import { Ride } from '../../../types'
 import { AxiosError } from 'axios';
 
 interface RequestProps {
-  offset: number;
   limit: number;
+  page: number;
 }
 
-const getRides = ({ offset, limit} : RequestProps): Promise<Ride[]>  => {
+const getRides = ({ page, limit} : RequestProps): Promise<Ride[]>  => {
   return axios.get('/api/rides', {
     params : {
-      offset,
+      page,
       limit
     }
   })
@@ -22,16 +22,16 @@ export const useGetRides = () => {
   const [rides, setRides] = useState<Ride[]>([]);
   const [isPending, setPending] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
-  const [offset, setOffset] = useState<number>(0);
+  const [page, setPage] = useState<number>(0);
   const limit = 20;
 
-  const getMoreRides = () => setOffset(prev => prev + 1);
+  const getMoreRides = () => setPage(prev => prev + 1);
 
   useEffect(() => {
     const fetchRides = async () => {
         try {
           setPending(true);
-          const rides = await getRides({ offset, limit });
+          const rides = await getRides({ page, limit });
           setPending(false)
           setRides(rides);
         } catch (err) {
@@ -39,7 +39,7 @@ export const useGetRides = () => {
         }
       }
     fetchRides();
-  }, [offset])
+  }, [page])
   return { rides, isPending, error, getMoreRides }
 }
 
@@ -49,9 +49,9 @@ interface TransformedResponse extends InfiniteData<Ride[]> {
 
 export const useInfiniteRides = () => {
   const { data, fetchNextPage, isFetching, error } = useInfiniteQuery('site-rides', ({
-    pageParam = 0
+    pageParam = 1
   }) => getRides({
-    offset: pageParam,
+    page: pageParam,
     limit: 20
   }), {
     select: (data) => {

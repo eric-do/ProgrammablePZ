@@ -47,6 +47,7 @@ export const SiteRides = ({ navigation }: Props) => {
                   onPress={ride => navigateToTimer(ride)}
                 />
               )}
+              onEndReached={() => fetchNextPage()}
               ItemSeparatorComponent={
                 () => <Box h='10px'/>
               }

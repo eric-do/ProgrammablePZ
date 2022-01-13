@@ -94,14 +94,15 @@ describe('Rides', () => {
       );
     });
 
-    it("Should handle pagination using sort", async () => {
+    it("Should handle pagination using pagination and limit", async () => {
       const [{ id: firstId }] = await insertRideToDB(testRide)
       const [{ id: secondId }] = await insertRideToDB(testRide)
       const [{ id: thirdId }] = await insertRideToDB(testRide)
 
       const firstResponse = await request(app).get(`/api/rides`);
-      const secondResponse = await request(app).get(`/api/rides?limit=1&offset=2`);
+      const secondResponse = await request(app).get(`/api/rides?limit=1&page=3`);
 
+      console.log(firstResponse.body[0].id, secondResponse.body[0].id)
       expect(firstResponse.body[0].id).to.eql(thirdId)
       expect(secondResponse.body[0].id).to.eql(firstId)
     })
@@ -160,13 +161,13 @@ describe('Rides', () => {
       expect(response.body.length).to.eql(1);
     })
 
-    it("Should respond with rides filtered by user and offset for pagination", async () => {
+    it("Should respond with rides filtered by user and page for pagination", async () => {
       for (let i = 0; i < 6; i++) {
         await postRide(testRide);
       }
 
-      const response1 = await request(app).get(`/api/rides?user=${testValidUser.username}&limit=3&offset=0`);
-      const response2 = await request(app).get(`/api/rides?user=${testValidUser.username}&limit=3&offset=3`);
+      const response1 = await request(app).get(`/api/rides?user=${testValidUser.username}&limit=3&page=1`);
+      const response2 = await request(app).get(`/api/rides?user=${testValidUser.username}&limit=3&page=2`);
       const ids = [...response1.body, ...response2.body].map(ride => ride.id);
       const uniqueIds = new Set([...ids]);
       expect(response1.status).to.eql(200);

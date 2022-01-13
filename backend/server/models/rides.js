@@ -4,7 +4,7 @@ const getRides = async (
   types,
   lengths,
   limit = 10,
-  offset
+  page = 1
 ) => {
   const q = `
     SELECT *
@@ -14,7 +14,7 @@ const getRides = async (
     ORDER BY created_on DESC
     LIMIT $3 OFFSET $4
   `;
-
+  const offset = (page - 1) * limit;
   const rides = await query(q, [types, lengths, limit, offset]);
   return rides;
 }
@@ -24,7 +24,7 @@ const getRidesCreatedByUser = async (
   types,
   lengths,
   limit = 10,
-  offset
+  page = 1,
 ) => {
   const q = `
     SELECT
@@ -60,7 +60,7 @@ const getRidesCreatedByUser = async (
     ORDER BY r.created_on DESC
     LIMIT $4 OFFSET $5
   `;
-
+  const offset = (page - 1) * limit;
   const rides = await query(q, [user, types, lengths, limit, offset]);
   return rides;
 }
