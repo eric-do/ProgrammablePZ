@@ -220,7 +220,7 @@ const SaveRideModal = ({ showModal, setShowModal }: ModalProps) => {
   const [minutes, setMinutes] = useState<string>('30');
   const ride = useStore(state => state.ride);
 
-  const addZoneAndCloseModal = () => {
+  const saveRideAndCloseModal = () => {
     setShowModal(false);
   }
 
@@ -268,7 +268,7 @@ const SaveRideModal = ({ showModal, setShowModal }: ModalProps) => {
               <Select.Item label='90 minutes' value='90' />
             </Select>
           </FormControl>
-          <Button onPress={addZoneAndCloseModal}>Save</Button>
+          <Button onPress={saveRideAndCloseModal}>Save</Button>
         </VStack>
       </Modal.Body>
       </Modal.Content>

@@ -24,7 +24,6 @@ type RidesStackParamList = {
 type Props = NativeStackScreenProps<RidesStackParamList, 'SiteRides'>;
 
 export const SiteRides = ({ navigation }: Props) => {
-  // const { rides, isPending, error } = useGetRides();
   const setRide = useStore(state => state.setRide);
   const { rides, isFetching, error, fetchNextPage } = useInfiniteRides();
 

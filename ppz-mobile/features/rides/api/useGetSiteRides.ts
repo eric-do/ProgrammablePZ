@@ -58,6 +58,7 @@ export const useInfiniteRides = () => {
       const rides: Ride[] = [...data.pages].flat();
       return { ...data, rides };
     },
+    refetchOnWindowFocus: true,
     getNextPageParam: (lastPage, allPages) => allPages.length + 1,
   })
   let rides : Ride[] = [];

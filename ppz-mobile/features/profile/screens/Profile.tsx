@@ -14,6 +14,7 @@ import {
   Divider,
   Badge
 } from "native-base"
+import { Ionicons } from '@expo/vector-icons';
 import { useStore } from 'store';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { ProfileStackParamList } from 'features/profile';
@@ -57,20 +58,40 @@ export const Profile = ({ navigation }: Props) => {
   }, [user])
 
   return (
-    <VStack w='100%' space={4}>
+    <VStack w='100%' space={0}>
       <Box w='100%' bgColor='white' p='15px'>
         <Text fontWeight='bold'>{user?.username}</Text>
         <HStack justifyContent='space-between'>
           <HStack alignItems='center'>
-            <MetaData description='Following' quantity={followingCount} onPress={() => navigation.navigate('Following')}/>
+            <MetaData
+              description='Following'
+              quantity={followingCount}
+              onPress={() => navigation.navigate('Following')}
+            />
             <MetaDivider />
-            <MetaData description='Followers' quantity={followerCount} onPress={() => navigation.navigate('Followers')}/>
+            <MetaData
+              description='Followers'
+              quantity={followerCount}
+              onPress={() => navigation.navigate('Followers')}
+            />
           </HStack>
           <HStack alignItems='center'>
             <Badge variant='outline' colorScheme="orange">Edit Profile</Badge>
           </HStack>
         </HStack>
       </Box>
+      <Divider />
+      <HStack
+        justifyContent={'space-between'}
+        bgColor='white'
+        p='15px'
+        mt={0}
+      >
+        <Text>Saved Rides</Text>
+        <Center>
+          <Ionicons name='chevron-forward' />
+        </Center>
+      </HStack>
     </VStack>
   )
 }
