@@ -17,6 +17,7 @@ import { useStore } from "../../../store";
 import { Screen } from '../../../components/layout/Screen';
 import { zoneColorSchemes } from "../../../utils/colors";
 import { RideBarChart } from "../../../components/RideBarChart";
+import { useFocus } from 'hooks';
 
 type TimerStackParamList = {
   ZoneInput: undefined;
@@ -130,21 +131,33 @@ interface ModalProps {
 
 const ZoneModal = ({ showModal, setShowModal }: ModalProps) => {
   const [zone, setZone] = useState<number>(1);
-  const [minutes, setMinutes] = useState<number>(3);
+  const [minutes, setMinutes] = useState<string>('');
+  const [seconds, setSeconds] = useState<string>('');
+  const [minutesInput, setFocusMinutes] = useFocus();
+  const [secondsInput, setFocusSeconds] = useFocus();
   const { ride, setRide,} = useStore(state => ({
     ride: state.ride,
     setRide: state.setRide
   }))
 
+  const handleMinuteChange = (minutes: string) => {
+    setMinutes(minutes);
+    if (minutes.length >= 2) {
+      setFocusSeconds();
+    }
+  }
+
   const addZoneAndCloseModal = () => {
     const updatedRide = {...ride}
     updatedRide.intervals.push({
-      length: minutes * 60,
+      length: parseInt(minutes) * 60,
       zone: zone
     });
     updatedRide.timeInSeconds = updatedRide.intervals.reduce((sum, interval) => (
       sum + interval.length
     ), 0);
+    setMinutes('');
+    setSeconds('');
     setRide(updatedRide);
     setShowModal(false);
   }
@@ -174,20 +187,26 @@ const ZoneModal = ({ showModal, setShowModal }: ModalProps) => {
             </Slider.Track>
             <Slider.Thumb />
           </Slider>
-          <Text>Minutes: {minutes}</Text>
-          <Slider
-            defaultValue={zone}
-            minValue={1}
-            maxValue={30}
-            accessibilityLabel="Time"
-            step={1}
-            onChange={(minutes: number) => setMinutes(minutes)}
-          >
-            <Slider.Track>
-              <Slider.FilledTrack />
-            </Slider.Track>
-            <Slider.Thumb />
-          </Slider>
+          <Text>Time</Text>
+          <HStack>
+          <Input
+            w='15%'
+            value={minutes}
+            keyboardType='number-pad'
+            ref={minutesInput}
+            onChangeText={handleMinuteChange}
+            maxLength={2}
+            textAlign={'center'}
+          />
+          <Text px={2}>:</Text>
+          <Input
+            w='15%'
+            keyboardType='number-pad'
+            ref={secondsInput}
+            maxLength={2}
+            textAlign={'center'}
+          />
+          </HStack>
           <Button onPress={addZoneAndCloseModal}>Add zone</Button>
           </VStack>
         </Modal.Body>
