@@ -6,7 +6,7 @@ import {
   ScrollView,
   Text,
   Center
-} from "native-base";;
+} from 'native-base';;
 import { NativeStackScreenProps} from '@react-navigation/native-stack';
 import { Ride } from 'types';
 import { useStore } from 'store';

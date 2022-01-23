@@ -10,7 +10,7 @@ import {
   Button,
   HStack,
   Center,
-  NativeBaseProvider,
+  Pressable,
   Divider,
   Badge
 } from "native-base"
@@ -81,17 +81,21 @@ export const Profile = ({ navigation }: Props) => {
         </HStack>
       </Box>
       <Divider />
-      <HStack
-        justifyContent={'space-between'}
-        bgColor='white'
-        p='15px'
-        mt={0}
+      <Pressable
+        onPress={() => navigation.navigate('SavedRides')}
       >
-        <Text>Saved Rides</Text>
-        <Center>
-          <Ionicons name='chevron-forward' />
-        </Center>
-      </HStack>
+        <HStack
+          justifyContent={'space-between'}
+          bgColor='white'
+          p='15px'
+          mt={0}
+        >
+          <Text>Saved Rides</Text>
+          <Center>
+            <Ionicons name='chevron-forward' />
+          </Center>
+        </HStack>
+      </Pressable>
     </VStack>
   )
 }
