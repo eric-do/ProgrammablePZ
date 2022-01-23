@@ -18,6 +18,7 @@ import { Screen } from '../../../components/layout/Screen';
 import { zoneColorSchemes } from "../../../utils/colors";
 import { RideBarChart } from "../../../components/RideBarChart";
 import { useFocus } from 'hooks';
+import { useCreateRide } from 'features/timer/api';
 
 type TimerStackParamList = {
   ZoneInput: undefined;
@@ -219,8 +220,13 @@ const SaveRideModal = ({ showModal, setShowModal }: ModalProps) => {
   const [type, setType] = useState<string>('pz');
   const [minutes, setMinutes] = useState<string>('30');
   const ride = useStore(state => state.ride);
+  const createRideMutation = useCreateRide();
 
   const saveRideAndCloseModal = () => {
+    createRideMutation.mutateAsync({ data: { ride } }, {
+      onSuccess: () => console.log('Added'),
+      onError: () => console.log('Error saving ride'),
+    });
     setShowModal(false);
   }
 
