@@ -34,7 +34,6 @@ export const SiteRides = ({ navigation }: Props) => {
 
   return (
     <Box mt='10px'>
-      {/* <ScrollView> */}
         <Box alignItems='center' bgColor='gray.200'>
           <VStack w='100%' space={5}>
             <FlatList
@@ -60,7 +59,6 @@ export const SiteRides = ({ navigation }: Props) => {
             }
           </VStack>
         </Box>
-      {/* </ScrollView> */}
     </Box>
   )
 };
