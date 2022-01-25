@@ -54,3 +54,10 @@ export interface AuthenticatedUser {
   jwt: string;
   user: User;
 }
+
+export interface DiscussionComment {
+  user: string;
+  date: string;
+  comment: string;
+  avatar: string;
+}

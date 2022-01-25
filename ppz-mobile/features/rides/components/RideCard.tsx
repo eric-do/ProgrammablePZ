@@ -10,7 +10,7 @@ import {
   Flex,
   HStack
 } from "native-base";
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, FontAwesome } from '@expo/vector-icons';
 import { Ride } from '../../../types';
 import { RideBarChart } from '../../../components/RideBarChart';
 
@@ -106,10 +106,19 @@ export const RideCard = ({
                 unit=''
               />
             </HStack>
-            <HStack alignItems='center'>
+            <HStack
+              alignItems='center'
+              space={3}
+            >
+              <FontAwesome
+                name='thumbs-o-up'
+                size={20}
+                color='#3f3f46'
+              />
               <Ionicons
                 name='chatbox-outline'
                 size={20}
+                color='#3f3f46'
                 onPress={() => onPressDiscussion(ride)}
               />
             </HStack>
