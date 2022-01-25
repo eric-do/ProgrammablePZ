@@ -24,9 +24,14 @@ const pzDictionary: { [k: string]: string} = {
 interface RideCardProps {
   ride: Ride;
   onPress: (r: Ride) => void;
+  onPressDiscussion: (r: Ride) => void;
 }
 
-export const RideCard = ({ ride, onPress }: RideCardProps ) => {
+export const RideCard = ({
+  ride,
+  onPress,
+  onPressDiscussion
+}: RideCardProps ) => {
   const { minutes, seconds } = useMemo(() => {
     const minutes = Math.ceil(ride.timeInSeconds / 60);
     const seconds = ride.timeInSeconds % 60;
@@ -102,7 +107,11 @@ export const RideCard = ({ ride, onPress }: RideCardProps ) => {
               />
             </HStack>
             <HStack alignItems='center'>
-            <Ionicons name='ios-heart-outline' size={20}/>
+              <Ionicons
+                name='chatbox-outline'
+                size={20}
+                onPress={() => onPressDiscussion(ride)}
+              />
             </HStack>
           </HStack>
         </Box>

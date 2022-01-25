@@ -13,6 +13,7 @@ import {
 } from './screens'
 import { ZoneInput, RideProgress } from 'features/timer/screens';
 import { AuthNavigationStack } from 'features/auth';
+import { RideDiscussion } from 'features/rides/screens';
 
 export type ProfileStackParamList = {
   Profile: undefined,
@@ -21,6 +22,7 @@ export type ProfileStackParamList = {
   SavedRides: undefined,
   ZoneInput: undefined,
   RideProgress: undefined,
+  RideDiscussion: { rideId: number },
 };
 
 const Stack = createNativeStackNavigator();
@@ -38,6 +40,7 @@ export const ProfileNavigationStack = () => {
       <Stack.Screen name='SavedRides' component={SavedRides} />
       <Stack.Screen name='ZoneInput' component={ZoneInput} />
       <Stack.Screen name='RideProgress' component={RideProgress} />
+      <Stack.Screen name='RideDiscussion' component={RideDiscussion} />
     </Stack.Navigator>
   );
 }

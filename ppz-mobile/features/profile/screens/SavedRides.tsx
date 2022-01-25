@@ -30,6 +30,10 @@ export const SavedRides = ({ navigation }: Props) => {
     navigation.navigate('ZoneInput');
   }
 
+  const navigateToDiscussion = (ride: Ride) => {
+    ride.id && navigation.navigate('RideDiscussion', { rideId: ride.id });
+  }
+
   return (
     <Box mt='10px'>
       <Box alignItems='center' bgColor='gray.200'>
@@ -41,6 +45,7 @@ export const SavedRides = ({ navigation }: Props) => {
                 ride={item}
                 key={item.id}
                 onPress={ride => navigateToTimer(ride)}
+                onPressDiscussion={navigateToDiscussion}
               />
             )}
             onEndReached={() => fetchNextPage()}

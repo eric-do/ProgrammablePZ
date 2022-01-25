@@ -13,15 +13,9 @@ import { RideCard } from '../components/RideCard';
 import { NativeStackScreenProps} from '@react-navigation/native-stack';
 import { useStore } from '../../../store';
 import { Ride } from '../../../types';
+import { TimerStackParamList } from '../';
 
-type RidesStackParamList = {
-  SiteRides: undefined;
-  SocialRides: undefined;
-  ZoneInput: undefined;
-  RideProgress: undefined
-};
-
-type Props = NativeStackScreenProps<RidesStackParamList, 'SiteRides'>;
+type Props = NativeStackScreenProps<TimerStackParamList, 'SiteRides'>;
 
 export const SiteRides = ({ navigation }: Props) => {
   const setRide = useStore(state => state.setRide);
@@ -30,6 +24,10 @@ export const SiteRides = ({ navigation }: Props) => {
   const navigateToTimer = (ride: Ride) => {
     setRide(ride)
     navigation.navigate('ZoneInput');
+  }
+
+  const navigateToDiscussion = (ride: Ride) => {
+    ride.id && navigation.navigate('RideDiscussion', { rideId: ride.id })
   }
 
   return (
@@ -43,6 +41,7 @@ export const SiteRides = ({ navigation }: Props) => {
                   ride={item}
                   key={item.id}
                   onPress={ride => navigateToTimer(ride)}
+                  onPressDiscussion={navigateToDiscussion}
                 />
               )}
               onEndReached={() => fetchNextPage()}
