@@ -1,5 +1,6 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Ionicons } from '@expo/vector-icons';
 import { Timer } from '../../features/timer';
 import { ProfileNavigationStack } from '../../features/profile';
@@ -7,13 +8,28 @@ import { AuthNavigationStack } from 'features/auth';
 import { FeedNavigationStack } from 'features/feed'
 import { Rides } from '../../features/rides';
 import { useStore } from 'store';import { Icon } from 'native-base';
+import { RideDiscussion } from 'features/rides/screens/RideDiscussion';
 
 type Icon = keyof typeof Ionicons.glyphMap;
 type RouteIconDictionary = {
   [k: string]: Icon
 }
 
+const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
+
+export const AppNavigation = () => {
+  return (
+    <Stack.Navigator
+      screenOptions={({ route }) => ({
+        headerShown: false
+      })}
+    >
+      <Stack.Screen name="Home" component={AppTabs} />
+      <Stack.Screen name="RideDiscussion" component={RideDiscussion} options={{headerShown: true}}/>
+    </Stack.Navigator>
+  );
+}
 
 export const AppTabs = () => {
   const auth = useStore(state => state.auth);

@@ -4,7 +4,7 @@ import {
   NativeBaseProvider,
   extendTheme,
 } from "native-base";
-import { AppTabs } from "./components/navigation";
+import { AppTabs, AppNavigation } from "./components/navigation";
 import { AuthenticationProvider } from "features/auth/AuthenticationProvider";
 import { QueryProvider } from "providers/QueryClientProvider";
 
@@ -23,7 +23,7 @@ export default function App() {
       <QueryProvider>
         <NativeBaseProvider>
           <AuthenticationProvider>
-            <AppTabs />
+            <AppNavigation />
           </AuthenticationProvider>
         </NativeBaseProvider>
       </QueryProvider>

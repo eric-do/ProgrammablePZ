@@ -25,7 +25,6 @@ export const Rides = () => {
         <Stack.Screen name="SocialRides" component={SocialRides} />
         <Stack.Screen name="ZoneInput" component={ZoneInput} />
         <Stack.Screen name="RideProgress" component={RideProgress} />
-        <Stack.Screen name="RideDiscussion" component={RideDiscussion} />
       </Stack.Navigator>
   )
 }

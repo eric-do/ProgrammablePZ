@@ -35,7 +35,7 @@ export const RideFeed = ({ navigation }: Props) => {
     <Box alignItems='center'>
       <VStack w='100%' space={3}>
         {
-          rides && rides.map((ride, index) => (
+          rides && rides.map(ride => (
             <RideCard
               ride={ride}
               key={ride.id}
