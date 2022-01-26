@@ -50,6 +50,7 @@ type Props = NativeStackScreenProps<TimerStackParamList, 'RideDiscussion'>;
 
 export const RideDiscussion = ({ route }: Props) => {
   const { rideId } = route.params;
+  const [comment, setComment] = useState<string>('');
   const [keyboardOffset, setKeyboardOffset] = useState(0);
   const onKeyboardShow = (event: KeyboardEvent) => setKeyboardOffset(event.endCoordinates.height - 78);
   const onKeyboardHide = () => setKeyboardOffset(0);
@@ -106,12 +107,21 @@ export const RideDiscussion = ({ route }: Props) => {
           bottom={keyboardOffset}
         >
           <Input
-            value='test'
+            value={comment}
             bgColor='white'
             w="85%"
-            onChangeText={() => {}}
+            onChangeText={setComment}
+            borderRadius={0}
+            borderWidth={0}
+            placeholder='Add a comment'
           />
-          <Button w='15%'>Send</Button>
+          <Button
+            w='15%'
+            bg='white'
+            borderRadius={0}
+          >
+            <Text color='#3f3f46'>Send</Text>
+          </Button>
         </HStack>
       </KeyboardAvoidingView>
     </Box>
