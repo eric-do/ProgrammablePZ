@@ -22,7 +22,12 @@ export const RideFeed = ({ navigation }: Props) => {
 
   const navigateToTimer = (ride: Ride) => {
     setRide(ride)
-    // navigation.navigate('ZoneInput');
+    ride.id && navigation.navigate('RideDiscussion', { rideId: ride.id });
+  }
+
+  const navigateToDiscussion = (ride: Ride) => {
+    setRide(ride)
+    ride.id && navigation.navigate('RideDiscussion', { rideId: ride.id });
   }
 
   return (
@@ -34,6 +39,7 @@ export const RideFeed = ({ navigation }: Props) => {
             <RideCard
               ride={ride}
               key={ride.id}
+              onPressDiscussion={navigateToDiscussion}
               onPress={ride => navigateToTimer(ride)}
             />
           ))

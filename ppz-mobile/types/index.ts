@@ -56,6 +56,7 @@ export interface AuthenticatedUser {
 }
 
 export interface DiscussionComment {
+  id: number;
   user: string;
   date: string;
   comment: string;

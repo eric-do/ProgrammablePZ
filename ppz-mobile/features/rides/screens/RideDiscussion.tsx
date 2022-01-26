@@ -14,18 +14,21 @@ import { DiscussionComment} from 'types';
 
 const comments: DiscussionComment[] = [
   {
+    id: 1,
     user: 'Eric',
     date: 'January 24, 2022',
     comment: 'I love this ride',
     avatar: 'https://loremflickr.com/500/500'
   },
   {
+    id: 2,
     user: 'Tina',
     date: 'January 26, 2022',
     comment: 'I hate it',
     avatar: 'https://loremflickr.com/500/500'
   },
   {
+    id: 3,
     user: 'Jess',
     date: 'January 28, 2022',
     comment: 'Best ride ever',
@@ -43,7 +46,11 @@ export const RideDiscussion = ({ route }: Props) => {
       <FlatList
         data={comments}
         renderItem={({ item }) => (
-          <Box bgColor='white' p={3}>
+          <Box
+            bgColor='white'
+            key={item.id}
+            p={3}
+          >
             <HStack space={3}>
               <Avatar
                 source={{
