@@ -26,7 +26,6 @@ export const AppNavigation = () => {
       })}
     >
       <Stack.Screen name="Home" component={AppTabs} />
-      <Stack.Screen name="RideDiscussion" component={RideDiscussion} options={{headerShown: true}}/>
     </Stack.Navigator>
   );
 }

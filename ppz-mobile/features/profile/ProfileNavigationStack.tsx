@@ -40,7 +40,7 @@ export const ProfileNavigationStack = () => {
       <Stack.Screen name='SavedRides' component={SavedRides} />
       <Stack.Screen name='ZoneInput' component={ZoneInput} />
       <Stack.Screen name='RideProgress' component={RideProgress} />
-      {/* <Stack.Screen name='RideDiscussion' component={RideDiscussion} /> */}
+      <Stack.Screen name='RideDiscussion' component={RideDiscussion} />
     </Stack.Navigator>
   );
 }

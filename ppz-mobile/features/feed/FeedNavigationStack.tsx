@@ -19,6 +19,7 @@ export const FeedNavigationStack = () => {
       }}
     >
       <Stack.Screen name="RideFeed" component={RideFeed} />
+      <Stack.Screen name="RideDiscussion" component={RideDiscussion} />
     </Stack.Navigator>
   )
 }
