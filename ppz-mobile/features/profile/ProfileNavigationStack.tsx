@@ -9,7 +9,8 @@ import {
   Profile,
   Followers,
   Following,
-  SavedRides
+  SavedRides,
+  FindMembers
 } from './screens'
 import { ZoneInput, RideProgress } from 'features/timer/screens';
 import { AuthNavigationStack } from 'features/auth';
@@ -17,8 +18,10 @@ import { RideDiscussion } from 'features/rides/screens';
 
 export type ProfileStackParamList = {
   Profile: undefined,
+  EditProfile: undefined,
   Followers: undefined,
   Following: undefined,
+  FindMembers: undefined,
   SavedRides: undefined,
   ZoneInput: undefined,
   RideProgress: undefined,
@@ -37,6 +40,7 @@ export const ProfileNavigationStack = () => {
       <Stack.Screen name='Profile' component={Profile} />
       <Stack.Screen name='Followers' component={Followers} />
       <Stack.Screen name='Following' component={Following} />
+      <Stack.Screen name='FindMembers' component={FindMembers} />
       <Stack.Screen name='SavedRides' component={SavedRides} />
       <Stack.Screen name='ZoneInput' component={ZoneInput} />
       <Stack.Screen name='RideProgress' component={RideProgress} />

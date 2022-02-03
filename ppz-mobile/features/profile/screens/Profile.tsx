@@ -21,6 +21,22 @@ import { ProfileStackParamList } from 'features/profile';
 
 type Props = NativeStackScreenProps<ProfileStackParamList, 'Profile'>;
 
+interface ProfileSection {
+  screen: keyof ProfileStackParamList,
+  title: string
+}
+
+const profileSections: ProfileSection[] = [
+  {
+    screen: 'FindMembers',
+    title: 'Find Members'
+  },
+  {
+    screen: 'SavedRides',
+    title: 'Saved Rides'
+  }
+]
+
 export const Profile = ({ navigation }: Props) => {
   const user = useStore(state => state.auth?.user);
   const {
@@ -80,22 +96,29 @@ export const Profile = ({ navigation }: Props) => {
           </HStack>
         </HStack>
       </Box>
-      <Divider />
-      <Pressable
-        onPress={() => navigation.navigate('SavedRides')}
-      >
-        <HStack
-          justifyContent={'space-between'}
-          bgColor='white'
-          p='15px'
-          mt={0}
-        >
-          <Text>Saved Rides</Text>
-          <Center>
-            <Ionicons name='chevron-forward' />
-          </Center>
-        </HStack>
-      </Pressable>
+      <Divider h='1.3px'/>
+      <VStack space='1.3px'>
+      {
+        profileSections.map((section, index) => (
+          <Pressable
+            key={index}
+            onPress={() => navigation.navigate(section.screen)}
+          >
+            <HStack
+              justifyContent={'space-between'}
+              bgColor='white'
+              p='15px'
+              mt={0}
+            >
+              <Text>{section.title}</Text>
+              <Center>
+                <Ionicons name='chevron-forward' />
+              </Center>
+            </HStack>
+          </Pressable>
+        ))
+      }
+      </VStack>
     </VStack>
   )
 }
