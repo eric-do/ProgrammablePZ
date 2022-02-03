@@ -18,7 +18,6 @@ export const FollowButton = ({ user }: ButtonProps) => {
 
   const onPress = async () => {
     try {
-      console.log('Following')
       await addFollow({ id: user.id });
       setFollowing({ id: user.id });
     } catch (err) {

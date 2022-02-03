@@ -24,7 +24,7 @@ export const Following = () => {
       limit: 20
     }
   });
-  console.log(data)
+
   return (
     <Page title="Friends">
       { isLoading && <Center><Spinner /></Center> }

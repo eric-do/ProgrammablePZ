@@ -23,8 +23,6 @@ export const SavedRides = ({ navigation }: Props) => {
   const setRide = useStore(state => state.setRide);
   const { rides, fetchNextPage, isFetching, error } = useGetSavedRides(auth);
 
-  rides && console.log(rides);
-
   const navigateToTimer = (ride: Ride) => {
     setRide(ride);
     navigation.navigate('ZoneInput');
