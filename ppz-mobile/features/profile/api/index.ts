@@ -4,3 +4,4 @@ export * from './getSocialMetadata';
 export * from './addFollow';
 export * from './deleteFollow';
 export * from './useGetSavedRides';
+export * from './findMembers';
