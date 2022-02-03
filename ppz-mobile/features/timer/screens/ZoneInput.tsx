@@ -10,10 +10,13 @@ import {
   FormControl,
   Input,
   Select,
-  Divider
+  Divider,
+  useToast,
+  KeyboardAvoidingView
 } from "native-base";
+import { Platform } from 'react-native';
 import { NativeStackScreenProps} from '@react-navigation/native-stack';
-import { useStore } from "../../../store";
+import { useStore } from "store";
 import { Screen } from '../../../components/layout/Screen';
 import { zoneColorSchemes } from "../../../utils/colors";
 import { RideBarChart } from "../../../components/RideBarChart";
@@ -38,6 +41,7 @@ export const ZoneInput = ({ navigation }: Props) => {
     ride: state.ride,
     resetRide: state.resetRide
   }))
+  const auth = useStore(state => state.auth);
 
   const zoneSummary = ride.intervals.reduce((acc: ZoneSummary, interval) => {
     return {
@@ -90,19 +94,24 @@ export const ZoneInput = ({ navigation }: Props) => {
       <Button.Group px="10%" justifyContent='center'>
         <Button
           isDisabled={ride.intervals.length === 0}
-          w='50%'
+          w={ auth ? '50%' : '100%' }
           colorScheme="green"
           onPress={() => navigation.navigate('RideProgress')}
         >
           Start!
         </Button>
-        <Button
-          w='50%'
-          colorScheme="pink"
-          onPress={() => setShowSaveModal(true)}
-        >
-          Save ride
-        </Button>
+        <>
+          {
+            auth &&
+              <Button
+                w='50%'
+                colorScheme="pink"
+                onPress={() => setShowSaveModal(true)}
+              >
+                Save ride
+              </Button>
+          }
+        </>
       </Button.Group>
       <ZoneModal showModal={showInputModal} setShowModal={setShowInputModal}/>
       <SaveRideModal showModal={showSaveModal} setShowModal={setShowSaveModal}/>
@@ -165,6 +174,7 @@ const ZoneModal = ({ showModal, setShowModal }: ModalProps) => {
 
   return (
     <Modal
+      avoidKeyboard
       isOpen={showModal}
       onClose={() => setShowModal(false)}
     >
@@ -221,11 +231,20 @@ const SaveRideModal = ({ showModal, setShowModal }: ModalProps) => {
   const [minutes, setMinutes] = useState<string>('30');
   const ride = useStore(state => state.ride);
   const createRideMutation = useCreateRide();
+  const toast = useToast();
 
   const saveRideAndCloseModal = () => {
     createRideMutation.mutateAsync({ data: { ride } }, {
-      onSuccess: () => console.log('Added'),
-      onError: () => console.log('Error saving ride'),
+      onSuccess: () => toast.show({
+        title: 'Ride saved',
+        description: 'Find this ride in your Profile.',
+        status: 'success'
+      }),
+      onError: () => toast.show({
+        title: 'Error saving ride',
+        description: 'Please try again later.',
+        status: 'error'
+      }),
     });
     setShowModal(false);
   }
@@ -234,6 +253,7 @@ const SaveRideModal = ({ showModal, setShowModal }: ModalProps) => {
     <Modal
       isOpen={showModal}
       onClose={() => setShowModal(false)}
+      avoidKeyboard
     >
       <Modal.Content>
       <Modal.CloseButton />

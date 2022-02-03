@@ -1,11 +1,13 @@
-import React, { useMemo } from "react";
+import React from "react";
 import {
   Heading,
   VStack,
   Box,
   Progress,
   Text,
-  Spacer
+  Center,
+  Spacer,
+  HStack
 } from "native-base";
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useTimer } from '../../../hooks';
@@ -33,30 +35,49 @@ export const RideProgress = ({ navigation }: Props) => {
     minimumIntegerDigits: 2,
     useGrouping: false
   });
+  const secondsElapsedInMinute = (seconds === 0 ? 0 : 60 - seconds).toLocaleString('en-US', {
+    minimumIntegerDigits: 2,
+    useGrouping: false
+  });
+  const minutesElapsedInRide = Math.floor(elapsedTime / 60);
   const minutesLeftInZone = Math.floor((ride.intervals[currentInterval].length - currentZoneTime) / 60);
+  const minutesElapsedInZone = Math.floor(currentZoneTime / 60);
   return (
     <Screen>
       <VStack h='60%' space={4} justifyContent={'center'}>
       <Spacer />
-      <Heading alignSelf='center' size='md'>Zone Progress</Heading>
+      <Heading alignSelf='center' size='md'>Ride Progress</Heading>
       <Heading alignSelf='center' size='sm'>{`Zone ${currentZone}`}</Heading>
-      <Text alignSelf='center'>{minutesLeftInZone}:{secondsLeftInMinute}</Text>
-      <Progress
-        value={percentageZoneComplete}
-        colorScheme={zoneColorSchemes[ride.intervals[currentInterval].zone]}
-        mx="4"
-      />
+      <Box w='100%' alignSelf='center'>
+        <HStack alignItems='center' >
+          <Center w='15%'>
+            <Text>{minutesElapsedInZone}:{secondsElapsedInMinute}</Text>
+          </Center>
+          <Progress
+            value={percentageZoneComplete}
+            colorScheme={zoneColorSchemes[ride.intervals[currentInterval].zone]}
+            size='2.5'
+            w='70%'
+          />
+          <Center w='15%'>
+            <Text>{minutesLeftInZone}:{secondsLeftInMinute}</Text>
+          </Center>
+        </HStack>
+      </Box>
       <Spacer />
-        <Heading alignSelf='center' size='md'>Ride Progress</Heading>
-        <Text alignSelf='center'>{minutesLeftInRide}:{secondsLeftInMinute}</Text>
         <Box h='30%' px='5%'>
           <RideBarChart ride={ride} currentInterval={currentInterval} />
+          <Progress
+            value={percentageRideComplete}
+            colorScheme={'green'}
+            rounded={0}
+            w='101%'
+          />
+          <HStack justifyContent='space-between'>
+            <Text >{minutesElapsedInRide}:{secondsElapsedInMinute}</Text>
+            <Text >{minutesLeftInRide}:{secondsLeftInMinute}</Text>
+          </HStack>
         </Box>
-        <Progress
-          value={percentageRideComplete}
-          colorScheme={'green'}
-          mx="4"
-        />
       </VStack>
     </Screen>
   );

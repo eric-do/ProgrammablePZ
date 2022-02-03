@@ -31,9 +31,6 @@ export const RideBarChart = ({ ride, currentInterval }: BarChartProps) => {
 
   const getBarColor = (interval: number) => {
     if (currentInterval !== undefined) {
-      const color = interval <= currentInterval
-      ? zoneColors[ride.intervals[interval].zone]
-      : inactiveZoneColors[ride.intervals[interval].zone];
       return interval <= currentInterval
         ? zoneColors[ride.intervals[interval].zone]
         : inactiveZoneColors[ride.intervals[interval].zone]
