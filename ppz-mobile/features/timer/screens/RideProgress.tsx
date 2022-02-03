@@ -71,7 +71,6 @@ export const RideProgress = ({ navigation }: Props) => {
             value={percentageRideComplete}
             colorScheme={'green'}
             rounded={0}
-            w='101%'
           />
           <HStack justifyContent='space-between'>
             <Text >{minutesElapsedInRide}:{secondsElapsedInMinute}</Text>

@@ -40,12 +40,12 @@ export const RideBarChart = ({ ride, currentInterval }: BarChartProps) => {
   }
 
   return (
-    <HStack space={0.5} h='100%' alignItems='flex-end'>
+    <HStack h='100%' alignItems='flex-end'>
       {
         ride.intervals.map((interval, index) => {
           return <Box
             key={index}
-            w={`${Math.floor(interval.length / totalTimeInSeconds * 100)}%`}
+            w={`${interval.length / totalTimeInSeconds * 100}%`}
             h={`${Math.floor(interval.zone / 7 * 100)}%`}
             bgColor={getBarColor(index)}
           />
