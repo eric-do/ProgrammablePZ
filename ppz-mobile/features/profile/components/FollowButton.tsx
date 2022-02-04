@@ -7,23 +7,16 @@ import {
 } from "native-base"
 import { User } from 'types';
 import { useStore } from 'store';
+import { useAddFollow } from '../api';
 
 interface ButtonProps {
   user: User;
 };
 
 export const FollowButton = ({ user }: ButtonProps) => {
-  const addFollow = useStore(state => state.addFollow);
-  const setFollowing = useStore(state => state.setFollowing)
+  const { mutate, error } = useAddFollow(user.id);
 
-  const onPress = async () => {
-    try {
-      await addFollow({ id: user.id });
-      setFollowing({ id: user.id });
-    } catch (err) {
-      console.log(err);
-    }
-  }
+  const onPress = () => mutate();
 
   return (
     <Pressable onPress={onPress} >

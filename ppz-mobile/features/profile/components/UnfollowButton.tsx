@@ -8,23 +8,16 @@ import {
 } from "native-base"
 import { User } from 'types';
 import { useStore } from 'store';
+import { useDeleteFollow } from '../api';
 
 interface ButtonProps {
   user: User;
 };
 
 export const UnfollowButton = ({ user }: ButtonProps) => {
-  const deleteFollow = useStore(state => state.deleteFollow);
-  const setFollowers = useStore(state => state.setFollowers);
+  const { mutate } = useDeleteFollow(user.id);
 
-  const onPress = async () => {
-    try {
-      await deleteFollow({ id: user.id });
-      setFollowers({ id: user.id })
-    } catch (err) {
-      console.log(err);
-    }
-  }
+  const onPress = () => mutate();
 
   return (
     <Pressable onPress={onPress}>

@@ -35,11 +35,11 @@ export const createSocialSlice: any = (set: SetState<StoreState>) => ({
   followerCount: 0,
   addFollow: async ({ id }: { id: string }) => {
     if (id) {
-      await addFollow({id});
+      await addFollow(id);
     }
   },
   deleteFollow: ({ id }: { id: string }) => {
-    return deleteFollow({id});
+    return deleteFollow(id);
   },
   setFollowers: async ({
     id,
