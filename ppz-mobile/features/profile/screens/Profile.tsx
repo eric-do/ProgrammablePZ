@@ -18,6 +18,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useStore } from 'store';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { ProfileStackParamList } from 'features/profile';
+import { useGetSocialMeta } from '../api';
 
 type Props = NativeStackScreenProps<ProfileStackParamList, 'Profile'>;
 
@@ -39,19 +40,14 @@ const profileSections: ProfileSection[] = [
 
 export const Profile = ({ navigation }: Props) => {
   const user = useStore(state => state.auth?.user);
+  const { data } = useGetSocialMeta(user?.id);
+
   const {
-    followers,
-    following,
-    followerCount,
-    followingCount,
     setFollowers,
     setFollowing,
     setMetadata
   } = useStore(state => ({
     followers: state.followers,
-    following: state.following,
-    followerCount: state.followerCount,
-    followingCount: state.followingCount,
     setFollowers: state.setFollowers,
     setFollowing: state.setFollowing,
     setMetadata: state.setMetadata,
@@ -81,13 +77,13 @@ export const Profile = ({ navigation }: Props) => {
           <HStack alignItems='center'>
             <MetaData
               description='Following'
-              quantity={followingCount}
+              quantity={data?.friend_count || 0}
               onPress={() => navigation.navigate('Following')}
             />
             <MetaDivider />
             <MetaData
               description='Followers'
-              quantity={followerCount}
+              quantity={data?.follower_count || 0}
               onPress={() => navigation.navigate('Followers')}
             />
           </HStack>

@@ -3,24 +3,28 @@ import {
   Box,
   Text,
   Center,
-  Divider
+  Divider,
+  FlatList
 } from "native-base"
 import { useStore } from 'store';
 import { UserListItem } from '../components';
+import { useGetFollowing } from '../api'
 
 export const Following = () => {
-  const following = useStore(state => state.following)
+  const auth = useStore(state => state.auth);
+
+  const { following, isFetching, error, fetchNextPage } = useGetFollowing(auth?.user.id);
 
   return (
     <Box w='100%' bgColor='white' p='15px'>
-      {
-        following.map((follow, idx) => (
-          <Box key={follow.id}>
-            <UserListItem user={follow}  />
-            { idx < following.length - 1 && <Divider my={0} />}
-          </Box>
-        ))
-      }
+      <FlatList
+        data={following}
+        renderItem={({ item }) => (
+          <UserListItem user={item} key={item.id} />
+        )}
+        onEndReached={() => fetchNextPage()}
+        ItemSeparatorComponent={() => <Divider my={0} />}
+      />
       {
         following.length === 0 &&
         <Center>
